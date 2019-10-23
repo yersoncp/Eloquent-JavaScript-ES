@@ -1,4 +1,38 @@
-# Eloquent JavaScript
+# Traducción al español de Eloquent JavaScript
+
+En este repositorio haremos la traducción del libro Eloquent JavaScript en español.
+Por favor revisa las instrucciones para contribuir y las guías de contribución y las 
+
+## Instrucciones para contribuir
+
+1. Has un fork de este repositorio
+2. Revisa los **Issues** para que veas que capítulos están en progreso. Lo más recomendables es tomar un capítulo que nadie esté trabajando
+3. Pon como un Issue que capítulo vas a traducir
+4. Cuando lleves un porcentaje considerable del capítulo, has un PR para integrarlo y crear nuevas versiones de los libros
+5. Un revisor verificará el texto y hará comentarios o aprobará el PR
+
+## Guía de contribución
+
+1. No uses un traductor automático.
+2. Cuando un término se use comúnmente en inglés dentro del entorno de la programación, déjalo sin traducir pero usa cursiva la primera vez que se mencione.
+3. Intenta usar español neutro. No uses regionalismos de tu país, queremos que esta sea una traducción lo más entendible para todos los hablantes de español.
+4. Sigue las reglas de ortografía y gramática.
+5. Si tienes dudas acerca de cómo traducir algo, levanta un Issue para que cooperemos.
+
+## Roles
+
+Aunque la mayoría de los desarrolladores que sabemos inglés podemos traducir el libro, creo que necesitamos por lo menos 2 personas que levanten la mano como:
+
+1. Revisores. Se encargarán de verificar los PR de las nuevas traducciones y aprobar o hacer comentarios sobre el PR para continuar.
+2. Editores. Revisarán la versión final del texto para unificarla en estilo y revisar que no se hayan cometido errores graves.
+
+Si tienes tiempo disponible a la semana para hacer esto, levanta un Issue y te daremos acceso de escritura a este repo.
+
+## Otro tipo de ayuda
+
+Es probable que necesitemos alguien con conocimientos en edición de imágenes para las imágenes ilustrativas y la portada. Si puedes apoyarnos levanta un Issue.
+
+## Eloquent JavaScript
 
 These are the sources used to build the third edition of Eloquent
 JavaScript (https://eloquentjavascript.net).
