@@ -32,6 +32,8 @@ Si tienes tiempo disponible a la semana para hacer esto, levanta un Issue y te d
 
 Es probable que necesitemos alguien con conocimientos en edición de imágenes para las imágenes ilustrativas y la portada. Si puedes apoyarnos levanta un Issue.
 
+Lo que sigue es el README del libro en inglés.
+
 ## Eloquent JavaScript
 
 These are the sources used to build the third edition of Eloquent
