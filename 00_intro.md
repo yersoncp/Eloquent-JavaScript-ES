@@ -4,11 +4,10 @@
 
 {{quote {author: "Ellen Ullman", title: "Close to the Machine: Technophilia and its Discontents", chapter: true}
 
-We think we are creating the system for our own purposes. We believe
-we are making it in our own image... But the computer is not really
-like us. It is a projection of a very slim part of ourselves: that
-portion devoted to logic, order, rule, and clarity.
-
+Creemos que estamos creando el sistema para nuestros propios propósitos. Creemos
+que lo estamos haciendo a nuestra imagen... Pero la computadora no es
+realmente como nosotros. Es una proyección de una parte muy pequeña de nosotros:
+esa porción dedicada a la lógica, el orden, las reglas y la claridad.
 quote}}
 
 {{figure {url: "img/chapter_picture_00.jpg", alt: "Picture of a screwdriver and a circuit board", chapter: "framed"}}}
