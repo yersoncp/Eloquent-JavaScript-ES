@@ -1,13 +1,13 @@
 {{meta {load_files: ["code/journal.js", "code/chapter/04_data.js"], zip: "node/html"}}}
 
-# Data Structures: Objects and Arrays
+# Estructuras de Datos: Objetos y Arrays
 
 {{quote {author: "Charles Babbage", title: "Passages from the Life of a Philosopher (1864)", chapter: true}
 
-On two occasions I have been asked, 'Pray, Mr. Babbage, if you put
-into the machine wrong figures, will the right answers come out?'
-[...] I am not able rightly to apprehend the kind of confusion of
-ideas that could provoke such a question.
+En dos ocasiones me han preguntado, 'Dinos, Sr. Babbage, si pones
+montos equivocadas en la máquina, saldrán las respuestas correctas?
+[...] No soy capaz de comprender correctamente el tipo de confusión de
+ideas que podrían provocar tal pregunta.
 
 quote}}
 
@@ -17,133 +17,135 @@ quote}}
 
 {{index object, "data structure"}}
 
-Numbers, Booleans, and strings are the atoms that ((data)) structures
-are built from. Many types of information require more than one
-atom, though. _Objects_ allow us to group values—including other
-objects—to build more complex structures.
+Los números, los booleanos y los strings son los átomos que constituyen las  
+estructuras de ((datos)). Sin embargo, muchos tipos de información
+requieren más de un átomo. Los _objetos_ nos permiten agrupar valores—incluidos
+otros objetos— para construir estructuras más complejas.
 
-The programs we have built so far have been limited by the fact that
-they were operating only on simple data types. This chapter will
-introduce basic data structures. By the end of it, you'll know enough
-to start writing useful programs.
+Los programas que hemos construido hasta ahora han estado limitados por el
+hecho de que estaban operando solo en tipos de datos simples. Este capítulo
+introducira estructuras de datos básicas. Al final de el, sabrás lo suficiente
+como para comenzar a escribir programas útiles.
 
-The chapter will work through a more or less realistic programming
-example, introducing concepts as they apply to the problem at hand.
-The example code will often build on functions and bindings that were
-introduced earlier in the text.
+El capítulo trabajara a través de un ejemplo de programación más o menos
+realista, presentando nuevos conceptos según se apliquen al problema en
+cuestión. El código de ejemplo a menudo se basara en funciones y vinculaciones
+que fueron introducidas anteriormente en el texto.
 
 {{if book
 
-The online coding ((sandbox)) for the book
-([_https://eloquentjavascript.net/code_](https://eloquentjavascript.net/code))
-provides a way to run code in the context of a specific chapter. If
-you decide to work through the examples in another environment, be
-sure to first download the full code for this chapter from the sandbox
-page.
+La ((caja de arena)) en línea para el libro
+([_eloquentjavascript.net/code_](https://eloquentjavascript.net/code)]
+proporciona una forma de ejecutar código en el contexto de un capítulo en
+específico. Si decides trabajar con los ejemplos en otro entorno,
+asegúrate de primero descargar el código completo de este capítulo
+desde la página de la caja de arena.
 
 if}}
 
-## The weresquirrel
+## El Hombre Ardilla
 
 {{index "weresquirrel example", lycanthropy}}
 
-Every now and then, usually between 8 p.m. and 10 p.m.,
-((Jacques)) finds himself transforming into a small furry rodent with
-a bushy tail.
+De vez en cuando, generalmente entre las ocho y las diez de la noche,
+((Jacques)) se encuentra a si mismo
+transformándose en un pequeño roedor peludo con una cola espesa.
 
-On one hand, Jacques is quite glad that he doesn't have classic
-lycanthropy. Turning into a squirrel does cause fewer problems than
-turning into a wolf. Instead of having to worry about accidentally
-eating the neighbor (_that_ would be awkward), he worries about being
-eaten by the neighbor's cat. After two occasions where he woke up on a
-precariously thin branch in the crown of an oak, naked and
-disoriented, he has taken to locking the doors and windows of his room
-at night and putting a few walnuts on the floor to keep himself busy.
+Por un lado, Jacques está muy contento de no tener la licantropía clásica.
+Convertirse en una ardilla causa menos problemas que convertirse en un lobo.
+En lugar de tener que preocuparse por accidentalmente comerse al vecino
+(_eso_ sería incómodo), le preocupa ser comido por el gato del vecino.
+Después de dos ocasiones en las que se despertó en una rama precariamente
+delgada de la copa de un roble, desnudo y desorientado, Jacques se ha dedicado
+a bloquear las puertas y ventanas de su habitación por la noche y
+pone algunas nueces en el piso para mantenerse ocupado.
 
-That takes care of the cat and tree problems. But Jacques would prefer
-to get rid of his condition entirely. The irregular occurrences of the
-transformation make him suspect that they might be triggered by
-something. For a while, he believed that it happened only on days when
-he had been near oak trees. But avoiding oak trees did not stop the
-problem.
+Eso se ocupa de los problemas del gato y el árbol. Pero Jacques preferiría
+deshacerse de su condición por completo. Las ocurrencias irregulares de la
+transformación lo hacen sospechar que estas podrían ser provocadas por
+algo en especifico. Por un tiempo, creyó que solo sucedia en los días
+en los que el había estado cerca de árboles de roble. Pero evitar los robles
+no detuvo el problema.
 
 {{index journal}}
 
-Switching to a more scientific approach, Jacques has started keeping a
-daily log of everything he does on a given day and whether he changed
-form. With this data he hopes to narrow down the conditions that
-trigger the transformations.
+Cambiando a un enfoque más científico, Jacques ha comenzado a mantener un
+registro diario de todo lo que hace en un día determinado y si su forma
+cambio. Con esta información el espera reducir las condiciones que
+desencadenan las transformaciones.
 
-The first thing he needs is a data structure to store this
-information.
+Lo primero que el necesita es una estructura de datos para almacenar esta
+información.
 
-## Data sets
+## Conjuntos de datos
 
-{{index ["data structure", collection], [memory, organization]}}
+{{index "data structure"}}
 
-To work with a chunk of digital data, we'll first have to find a way
-to represent it in our machine's memory. Say, for example, that we
-want to represent a ((collection)) of the numbers 2, 3, 5, 7, and 11.
+Para trabajar con una porción de datos digitales, primero debemos encontrar
+una manera de representarlo en la ((memoria)) de nuestra máquina. Digamos,
+por ejemplo, que queremos representar una ((colección)) de los números
+2, 3, 5, 7 y 11.
 
 {{index string}}
 
-We could get creative with strings—after all, strings can have any
-length, so we can put a lot of data into them—and use `"2 3 5 7 11"`
-as our representation. But this is awkward. You'd have to somehow
-extract the digits and convert them back to numbers to access them.
+Podríamos ponernos creativos con los strings—después de todo, los strings pueden
+tener cualquier longitud, por lo que podemos poner una gran cantidad de
+datos en ellos—y usar `"2 3 5 7 11"` como nuestra representación.
+Pero esto es incómodo. Tendrías que extraer los dígitos de alguna manera
+y convertirlos a números para acceder a ellos.
 
 {{index [array, creation], "[] (array)"}}
 
-Fortunately, JavaScript provides a data type specifically for storing
-sequences of values. It is called an _array_ and is written as a list
-of values between ((square brackets)), separated by commas.
+Afortunadamente, JavaScript proporciona un tipo de datos específicamente
+para almacenar secuencias de valores. Es llamado _array_ y está escrito
+como una lista de valores entre ((corchetes)), separados por comas.
 
 ```
-let listOfNumbers = [2, 3, 5, 7, 11];
-console.log(listOfNumbers[2]);
+let listaDeNumeros = [2, 3, 5, 7, 11];
+console.log(listaDeNumeros[2]);
 // → 5
-console.log(listOfNumbers[0]);
+console.log(listaDeNumeros[0]);
 // → 2
-console.log(listOfNumbers[2 - 1]);
+console.log(listaDeNumeros[2 - 1]);
 // → 3
 ```
 
 {{index "[] (subscript)", [array, indexing]}}
 
-The notation for getting at the elements inside an array also uses
-((square brackets)). A pair of square brackets immediately after an
-expression, with another expression inside of them, will look up the
-element in the left-hand expression that corresponds to the
-_((index))_ given by the expression in the brackets.
+La notación para llegar a los elementos dentro de un array también utiliza
+((corchetes)). Un par de corchetes inmediatamente después de una
+expresión, con otra expresión dentro de ellos, buscará al
+elemento en la expresión de la izquierda que corresponde al
+_((índice))_ dado por la expresión entre corchetes.
 
 {{id array_indexing}}
 {{index "zero-based counting"}}
 
-The first index of an array is zero, not one. So the first element is
-retrieved with `listOfNumbers[0]`. Zero-based counting has a long
-tradition in technology and in certain ways makes a lot of sense, but
-it takes some getting used to. Think of the index as the amount of
-items to skip, counting from the start of the array.
+El primer índice de un array es cero, no uno. Entonces el primer elemento es
+alcanzado con `listaDeNumeros[0]`. El conteo basado en cero tiene una larga
+tradición en el mundo de la tecnología, y en ciertas maneras tiene mucho
+sentido, pero toma algo de tiempo acostumbrarse. Piensa en el índice como
+la cantidad de elementos a saltar, contando desde el comienzo del array.
 
 {{id properties}}
 
-## Properties
+## Propiedades
 
-{{index "Math object", "Math.max function", ["length property", "for string"], [object, property], "period character", [property, access]}}
+{{index "Math object", "Math.max function", ["length property", "for string"], [object, property], "period character"}}
 
-We've seen a few suspicious-looking expressions like `myString.length`
-(to get the length of a string) and `Math.max` (the maximum function)
-in past chapters. These are expressions that access a _property_
-of some value. In the first case, we access the `length` property of
-the value in `myString`. In the second, we access the property named
-`max` in the `Math` object (which is a collection of
-mathematics-related constants and functions).
+Hasta ahora hemos visto algunas expresiones sospechosas como `miString.length`
+(para obtener la longitud de un string) y `Math.max` (la función máxima)
+en capítulos anteriores. Estas son expresiones que acceden a la _((propiedad))_
+de algún valor. En el primer caso, accedemos a la propiedad `length` de
+el valor en `miString`. En el segundo, accedemos a la propiedad llamada
+`max` en el objeto `Math` (que es una colección de
+constantes y funciones relacionadas con las matemáticas).
 
-{{index [property, access], null, undefined}}
+{{index property, null, undefined}}
 
-Almost all JavaScript values have properties. The exceptions are
-`null` and `undefined`. If you try to access a property on one of
-these nonvalues, you get an error.
+Casi todos los valores de JavaScript tienen propiedades. Las excepciones son
+`null` y `undefined`. Si intentas acceder a una propiedad en alguno de
+estos no-valores, obtienes un error.
 
 ```{test: no}
 null.length;
@@ -151,400 +153,408 @@ null.length;
 ```
 
 {{indexsee "dot character", "period character"}}
-{{index "[] (subscript)", "period character", "square brackets", "computed property", [property, access]}}
+{{index "[] (subscript)", "period character", "square brackets", "computed property"}}
 
-The two main ways to access properties in JavaScript are with a dot
-and with square brackets. Both `value.x` and `value[x]` access a
-property on `value`—but not necessarily the same property. The
-difference is in how `x` is interpreted. When using a dot, the word
-after the dot is the literal name of the property. When using square
-brackets, the expression between the brackets is _evaluated_ to get
-the property name. Whereas `value.x` fetches the property of `value`
-named "x", `value[x]` tries to evaluate the expression `x` and uses
-the result, converted to a string, as the property name.
+Las dos formas principales de acceder a las propiedades en JavaScript son
+con un punto y con corchetes. Tanto `valor.x` como `valor[x]` acceden una
+((propiedad)) en `valor`—pero no necesariamente la misma propiedad. La
+diferencia está en cómo se interpreta `x`. Cuando se usa un punto, la palabra
+después del punto es el nombre literal de la propiedad. Cuando usas
+corchetes, la expresión entre corchetes es _evaluada_ para obtener
+el nombre de la propiedad. Mientras `valor.x` obtiene la propiedad de `valor`
+llamada "x", `valor[x]` intenta evaluar la expresión `x` y usa
+el resultado, convertido en un string, como el nombre de la propiedad.
 
-So if you know that the property you are interested in is called
-_color_, you say `value.color`. If you want to extract the property
-named by the value held in the binding `i`, you say `value[i]`.
-Property names are strings. They can be any string, but the dot notation works only with
-names that look like valid binding names. So if you want to access a
-property named _2_ or _John Doe_, you must use square brackets:
-`value[2]` or `value["John Doe"]`.
+Entonces, si sabes que la propiedad que te interesa se llama
+_color_, dices `valor.color`. Si quieres extraer la propiedad
+nombrado por el valor mantenido en la vinculación `i`, dices `valor[i]`.
+Los nombres de las propiedades son strings. Pueden ser cualquier string,
+pero la notación de puntos solo funciona con nombres que se vean como nombres
+de vinculaciones válidos. Entonces, si quieres acceder a una
+propiedad llamada _2_ o _Juan Perez_, debes usar corchetes:
+`valor[2]` o `valor["Juan Perez"]`.
 
-The elements in an ((array)) are stored as the array's properties, using
-numbers as property names. Because you can't use the dot notation with
-numbers and usually want to use a binding that holds the index
-anyway, you have to use the bracket notation to get at them.
+Los elementos en un ((array)) son almacenados como propiedades del array,
+usando números como nombres de propiedad. Ya que no puedes usar la notación
+de puntos con números, y que generalmente quieres utilizar una vinculación
+que contenga el índice de cualquier manera,
+debes de usar la notación de corchetes para llegar a ellos.
 
 {{index ["length property", "for array"], [array, "length of"]}}
 
-The `length` property of an array tells us how many elements it has.
-This property name is a valid binding name, and we know its name in
-advance, so to find the length of an array, you typically write
-`array.length` because that's easier to write than `array["length"]`.
+La propiedad `length` de un array nos dice cuántos elementos este tiene.
+Este nombre de propiedad es un nombre de vinculación válido, y
+sabemos su nombre en avance, así que para encontrar la longitud de un array,
+normalmente escribes `array.length` ya que es más fácil de escribir que
+`array["length"]`.
 
 {{id methods}}
 
-## Methods
+## Métodos
 
 {{index [function, "as property"], method, string}}
 
-Both string and array objects contain, in addition to the `length`
-property, a number of properties that hold function values.
+Ambos objetos de string y array contienen, además de la propiedad
+`length`, una serie de propiedades que tienen valores de función.
 
 ```
-let doh = "Doh";
-console.log(typeof doh.toUpperCase);
+let ouch = "Ouch";
+console.log(typeof ouch.toUpperCase);
 // → function
-console.log(doh.toUpperCase());
-// → DOH
+console.log(ouch.toUpperCase());
+// → OUCH
 ```
 
 {{index "case conversion", "toUpperCase method", "toLowerCase method"}}
 
-Every string has a `toUpperCase` property. When called, it will return
-a copy of the string in which all letters have been converted to
-uppercase. There is also `toLowerCase`, going the other way.
+Cada string tiene una propiedad `toUpperCase` ("a mayúsculas").
+Cuando se llame, regresará una copia del string en la que todas las
+letras han sido convertido a mayúsculas. También hay `toLowerCase`
+("a minúsculas"), que hace lo contrario.
 
-{{index "this binding"}}
+{{index this}}
 
-Interestingly, even though the call to `toUpperCase` does not pass any
-arguments, the function somehow has access to the string `"Doh"`, the
-value whose property we called. How this works is described in
-[Chapter ?](object#obj_methods).
+Curiosamente, a pesar de que la llamada a `toUpperCase` no pasa ningún
+argumento, la función de alguna manera tiene acceso al string `"Ouch"`, el
+valor de cuya propiedad llamamos. Cómo funciona esto se describe en el
+[Capítulo 6](objeto#metodos_de_objeto).
 
-Properties that contain functions are generally called _methods_ of
-the value they belong to, as in "`toUpperCase` is a method of a
+Las propiedades que contienen funciones generalmente son llamadas _metodos_
+del valor al que pertenecen. Como en, "`toUpperCase` es un método de
 string".
 
 {{id array_methods}}
 
-This example demonstrates two methods you can use to manipulate
+Este ejemplo demuestra dos métodos que puedes usar para manipular
 arrays:
 
 ```
-let sequence = [1, 2, 3];
-sequence.push(4);
-sequence.push(5);
-console.log(sequence);
+let secuencia = [1, 2, 3];
+secuencia.push(4);
+secuencia.push(5);
+console.log(secuencia);
 // → [1, 2, 3, 4, 5]
-console.log(sequence.pop());
+console.log(secuencia.pop());
 // → 5
-console.log(sequence);
+console.log(secuencia);
 // → [1, 2, 3, 4]
 ```
 
 {{index collection, array, "push method", "pop method"}}
 
-The `push` method adds values to the end of an array, and the
-`pop` method does the opposite, removing the last value in the array
-and returning it.
+El método `push` agrega valores al final de un array, y el
+el método `pop` hace lo contrario, eliminando el último valor en el array
+y retornandolo.
 
-{{index ["data structure", stack]}}
+Estos nombres algo tontos son los términos tradicionales para las operaciones en
+una _((pila))_. Una pila, en programación, es una ((estructura de datos)) que
+te permite agregar valores a ella y volverlos a sacar en el
+orden opuesto, de modo que lo que se agregó de último se elimine primero.
+Estas son comunes en la programación—es posible que recuerdes la ((pila))
+de llamadas en [el capítulo anterior](funciones#pila), que es una
+instancia de la misma idea.
 
-These somewhat silly names are the traditional terms for operations on
-a _((stack))_. A stack, in programming, is a data structure that
-allows you to push values into it and pop them out again in the
-opposite order so that the thing that was added last is removed first.
-These are common in programming—you might remember the function ((call
-stack)) from [the previous chapter](functions#stack), which is an
-instance of the same idea.
-
-## Objects
+## Objetos
 
 {{index journal, "weresquirrel example", array, record}}
 
-Back to the weresquirrel. A set of daily log entries can be
-represented as an array. But the entries do not consist of just a
-number or a string—each entry needs to store a list of activities and
-a Boolean value that indicates whether Jacques turned into a squirrel
-or not. Ideally, we would like to group these together into a single
-value and then put those grouped values into an array of log entries.
+De vuelta al Hombre-Ardilla. Un conjunto de entradas diarias puede ser
+representado como un array. Pero estas entradas no consisten en solo un
+número o un string—cada entrada necesita almacenar una lista de actividades y
+un valor booleano que indica si Jacques se convirtió en una ardilla
+o no. Idealmente, nos gustaría agrupar estos en un solo
+valor y luego agrupar estos valores en un array de registro de entradas.
 
-{{index [syntax, object], [property, definition], [braces, object], "{} (object)"}}
+{{index syntax, property, "curly braces", "{} (object)"}}
 
-Values of the type _((object))_ are arbitrary collections of
-properties. One way to create an object is by using braces as an
-expression.
+Los valores del tipo _((objeto))_ son colecciones arbitrarias de
+propiedades. Una forma de crear un objeto es mediante el uso de llaves
+como una expresión.
 
 ```
-let day1 = {
-  squirrel: false,
-  events: ["work", "touched tree", "pizza", "running"]
+let dia1 = {
+  ardilla: false,
+  eventos: ["trabajo", "toque un arbol", "pizza", "salir a correr"]
 };
-console.log(day1.squirrel);
+console.log(dia1.ardilla);
 // → false
-console.log(day1.wolf);
+console.log(dia1.lobo);
 // → undefined
-day1.wolf = false;
-console.log(day1.wolf);
+dia1.lobo = false;
+console.log(dia1.lobo);
 // → false
 ```
 
 {{index [quoting, "of object properties"], "colon character"}}
 
-Inside the braces, there is a list of properties separated by commas.
-Each property has a name followed by a colon and a value. When an
-object is written over multiple lines, indenting it like in the
-example helps with readability. Properties whose names aren't valid
-binding names or valid numbers have to be quoted.
+Dentro de las llaves, hay una lista de propiedades separadas por comas.
+Cada propiedad tiene un nombre seguido de dos puntos y un valor. Cuando un
+objeto está escrito en varias líneas, indentar como en el
+ejemplo ayuda con la legibilidad. Las propiedades cuyos nombres no sean
+nombres válidos de vinculaciones o números válidos deben estar entre comillas.
 
 ```
-let descriptions = {
-  work: "Went to work",
-  "touched tree": "Touched a tree"
+let descripciones = {
+  trabajo: "Fui a trabajar",
+  "toque un arbol": "Toque un arbol"
 };
 ```
 
-{{index [braces, object]}}
-
-This means that braces have _two_ meanings in JavaScript. At
-the start of a ((statement)), they start a ((block)) of statements. In
-any other position, they describe an object. Fortunately, it is rarely
-useful to start a statement with an object in braces, so the
-ambiguity between these two is not much of a problem.
+Esto significa que las ((llaves)) tienen _dos_ significados en JavaScript. Al
+comienzo de una ((declaración)), comienzan un ((bloque)) de declaraciones. En
+cualquier otra posición, describen un objeto. Afortunadamente, es raramente
+útil comenzar una declaración con un objeto en llaves, por lo que
+la ambigüedad entre estas dos acciones no es un gran problema.
 
 {{index undefined}}
 
-Reading a property that doesn't exist will give you the value
-`undefined`.
+Leer una propiedad que no existe te dará el valor `undefined`.
 
 {{index [property, assignment], mutability, "= operator"}}
 
-It is possible to assign a value to a property expression with the `=`
-operator. This will replace the property's value if it already existed
-or create a new property on the object if it didn't.
+Es posible asignarle un valor a una expresión de propiedad con un
+operador `=`. Esto reemplazará el valor de la propiedad si ya tenia uno
+o crea una nueva propiedad en el objeto si no fuera así.
 
-{{index "tentacle (analogy)", [property, "model of"], [binding, "model of"]}}
+{{index "tentacle (analogy)", [property, "model of"]}}
 
-To briefly return to our tentacle model of ((binding))s—property
-bindings are similar. They _grasp_ values, but other bindings and
-properties might be holding onto those same values. You may think of
-objects as octopuses with any number of tentacles, each of which has a
-name tattooed on it.
+Para volver brevemente a nuestro modelo de ((vinculaciones)) como
+tentáculos—Las vinculaciones de propiedad son similares. Ellas _agarran_
+valores, pero otras vinculaciones y propiedades pueden estar agarrando
+esos mismos valores. Puedes pensar en los objetos como pulpos con cualquier
+cantidad de tentáculos, cada uno de los cuales tiene un nombre tatuado en él.
 
 {{index "delete operator", [property, deletion]}}
 
-The `delete` operator cuts off a tentacle from such an octopus. It is
-a unary operator that, when applied to an object property,
-will remove the named property from the object. This is not a common
-thing to do, but it is possible.
+El operador `delete` ("eliminar") corta un tentáculo de dicho pulpo. Es
+un operador unario que, cuando se aplica a la propiedad de un objeto,
+eliminará la propiedad nombrada de dicho objeto. Esto no es algo que hagas
+todo el tiempo, pero es posible.
 
 ```
-let anObject = {left: 1, right: 2};
-console.log(anObject.left);
+let unObjeto = {izquierda: 1, derecha: 2};
+console.log(unObjeto.izquierda);
 // → 1
-delete anObject.left;
-console.log(anObject.left);
+delete unObjeto.izquierda;
+console.log(unObjeto.izquierda);
 // → undefined
-console.log("left" in anObject);
+console.log("izquierda" in unObjeto);
 // → false
-console.log("right" in anObject);
+console.log("derecha" in unObjeto);
 // → true
 ```
 
 {{index "in operator", [property, "testing for"], object}}
 
-The binary `in` operator, when applied to a string and an object,
-tells you whether that object has a property with that name. The difference
-between setting a property to `undefined` and actually deleting it is
-that, in the first case, the object still _has_ the property (it just
-doesn't have a very interesting value), whereas in the second case the
-property is no longer present and `in` will return `false`.
+El operador binario `in` ("en"), cuando se aplica a un string y un objeto,
+te dice si ese objeto tiene una propiedad con ese nombre. La diferencia
+entre darle un valor de `undefined` a una propiedad y eliminarla realmente es
+que, en el primer caso, el objeto todavía _tiene_ la propiedad (solo que
+no tiene un valor muy interesante), mientras que en el segundo caso
+la propiedad ya no está presente e `in` retornara `false`.
 
 {{index "Object.keys function"}}
 
-To find out what properties an object has, you can use the
-`Object.keys` function. You give it an object, and it returns an array
-of strings—the object's property names.
+Para saber qué propiedades tiene un objeto, puedes usar la función
+`Object.keys`. Le das un objeto y devuelve un array
+de strings—los nombres de las propiedades del objeto.
 
 ```
 console.log(Object.keys({x: 0, y: 0, z: 2}));
 // → ["x", "y", "z"]
 ```
 
-There's an `Object.assign` function that copies all properties from
-one object into another.
+Hay una función `Object.assign` que copia todas las propiedades de
+un objeto a otro.
 
 ```
-let objectA = {a: 1, b: 2};
-Object.assign(objectA, {b: 3, c: 4});
-console.log(objectA);
+let objetoA = {a: 1, b: 2};
+Object.assign(objetoA, {b: 3, c: 4});
+console.log(objetoA);
 // → {a: 1, b: 3, c: 4}
 ```
 
 {{index array, collection}}
 
-Arrays, then, are just a kind of object specialized for storing
-sequences of things. If you evaluate `typeof []`, it produces
-`"object"`. You can see them as long, flat octopuses with all their
-tentacles in a neat row, labeled with numbers.
+Los arrays son, entonces, solo un tipo de objeto especializado para almacenar
+secuencias de cosas. Si evalúas `typeof []`, este produce
+`"object"`. Podrias imaginarlos como pulpos largos y planos con todos sus
+tentáculos en una fila ordenada, etiquetados con números.
 
 {{index journal, "weresquirrel example"}}
 
-We will represent the journal that Jacques keeps as an array of objects.
+Representaremos el diario de Jacques como un array de objetos.
 
 ```{test: wrap}
-let journal = [
-  {events: ["work", "touched tree", "pizza",
-            "running", "television"],
-   squirrel: false},
-  {events: ["work", "ice cream", "cauliflower",
-            "lasagna", "touched tree", "brushed teeth"],
-   squirrel: false},
-  {events: ["weekend", "cycling", "break", "peanuts",
-            "beer"],
-   squirrel: true},
-  /* and so on... */
+let diario = [
+  {eventos: ["trabajo", "toque un arbol", "pizza",
+            "sali a correr", "television"],
+   ardilla: false},
+  {eventos: ["trabajo", "helado", "coliflor",
+            "lasaña", "toque un arbol", "me cepille los dientes"],
+   ardilla: false},
+  {eventos: ["fin de semana", "monte la bicicleta", "descanso", "nueces",
+            "cerveza"],
+   ardilla: true},
+  /* y asi sucesivamente... */
 ];
 ```
 
-## Mutability
+## Mutabilidad
 
-We will get to actual programming _real_ soon now. First there's one
-more piece of theory to understand.
+Llegaremos a la programación real _pronto_. Pero primero, hay una pieza
+más de teoría por entender.
 
-{{index mutability, "side effect", number, string, Boolean, [object, mutability]}}
+{{index mutability, "side effect", number, string, Boolean, object}}
 
-We saw that object values can be modified. The types of values
-discussed in earlier chapters, such as numbers, strings, and Booleans,
-are all _((immutable))_—it is impossible to change values of those
-types. You can combine them and derive new values from them, but when
-you take a specific string value, that value will always remain the
-same. The text inside it cannot be changed. If you have a string that
-contains `"cat"`, it is not possible for other code to change a
-character in your string to make it spell `"rat"`.
+Vimos que los valores de objeto pueden ser modificados. Los tipos de valores
+discutidos en capítulos anteriores, como números, strings y booleanos,
+son todos _((inmutables))_—es imposible cambiar los valores de aquellos
+tipos. Puedes combinarlos y obtener nuevos valores a partir de ellos, pero cuando
+tomas un valor de string específico, ese valor siempre será el
+mismo. El texto dentro de él no puede ser cambiado. Si tienes un string que
+contiene `"gato"`, no es posible que otro código cambie un
+carácter en tu string para que deletree `"rato"`.
 
-Objects work differently. You _can_ change their properties,
-causing a single object value to have different content at different times.
+Los objetos funcionan de una manera diferente. Tu _puedes_ cambiar sus
+propiedades, haciendo que un único valor de objeto tenga contenido diferente en
+diferentes momentos.
 
-{{index [object, identity], identity, [memory, organization], mutability}}
+{{index [object, identity], identity, memory, mutability}}
 
-When we have two numbers, 120 and 120, we can consider them precisely
-the same number, whether or not they refer to the same physical bits.
-With objects, there is a difference between having two references to
-the same object and having two different objects that contain the same
-properties. Consider the following code:
+Cuando tenemos dos números, 120 y 120, podemos considerarlos el mismo número
+precisamente, ya sea que hagan referencia o no a los mismos bits físicos.
+Con los objetos, hay una diferencia entre tener dos referencias a
+el mismo objeto y tener dos objetos diferentes que contengan las mismas
+propiedades. Considera el siguiente código:
 
 ```
-let object1 = {value: 10};
-let object2 = object1;
-let object3 = {value: 10};
+let objeto1 = {valor: 10};
+let objeto2 = objeto1;
+let objeto3 = {valor: 10};
 
-console.log(object1 == object2);
+console.log(objeto1 == objeto2);
 // → true
-console.log(object1 == object3);
+console.log(objeto1 == objeto3);
 // → false
 
-object1.value = 15;
-console.log(object2.value);
+objeto1.valor = 15;
+console.log(objeto2.valor);
 // → 15
-console.log(object3.value);
+console.log(objeto3.valor);
 // → 10
 ```
 
 {{index "tentacle (analogy)", [binding, "model of"]}}
 
-The `object1` and `object2` bindings grasp the _same_ object, which is
-why changing `object1` also changes the value of `object2`. They are
-said to have the same _identity_. The binding `object3` points to a
-different object, which initially contains the same properties as
-`object1` but lives a separate life.
+Las vinculaciones `objeto1` y `objeto2` agarran el _mismo_ objeto, que es
+la razon por la cual cambiar `objeto1` también cambia el valor de `objeto2`.
+Se dice que tienen la misma _identidad_. La vinculación `objeto3` apunta a un
+objeto diferente, que inicialmente contiene las mismas propiedades que
+`objeto1` pero vive una vida separada.
 
-{{index "const keyword", "let keyword", [binding, "as state"]}}
+{{index "const keyword", "let keyword"}}
 
-Bindings can also be changeable or constant, but this is separate from
-the way their values behave. Even though number values don't change,
-you can use a `let` binding to keep track of a changing number by
-changing the value the binding points at. Similarly, though a `const`
-binding to an object can itself not be changed and will continue to
-point at the same object, the _contents_ of that object might change.
+Las vinculaciones también pueden ser cambiables o constantes, pero esto es
+independiente de la forma en la que se comportan sus valores. Aunque los
+valores numéricos no cambian, puedes usar una ((vinculación)) `let` para hacer
+un seguimiento de un número que cambia al cambiar el valor al que apunta la
+vinculación. Del mismo modo, aunque una vinculación `const` a un objeto no
+pueda ser cambiada en si misma y continuará apuntando al mismo objeto,
+los _contenidos_ de ese objeto pueden cambiar.
 
 ```{test: no}
-const score = {visitors: 0, home: 0};
-// This is okay
-score.visitors = 1;
-// This isn't allowed
-score = {visitors: 1, home: 1};
+const puntuacion = {visitantes: 0, locales: 0};
+// Esto esta bien
+puntuacion.visitantes = 1;
+// Esto no esta permitido
+puntuacion = {visitantes: 1, locales: 1};
 ```
 
 {{index "== operator", [comparison, "of objects"], "deep comparison"}}
 
-When you compare objects with JavaScript's `==` operator, it compares
-by identity: it will produce `true` only if both objects are precisely
-the same value. Comparing different objects will return `false`, even
-if they have identical properties. There is no "deep" comparison
-operation built into JavaScript, which compares objects by contents,
-but it is possible to write it yourself (which is one of the
-[exercises](data#exercise_deep_compare) at the end of this chapter).
+Cuando comparas objetos con el operador `==` en JavaScript, este los compara
+por identidad: producirá `true` solo si ambos objetos son precisamente
+el mismo valor. Comparar diferentes objetos retornara `false`, incluso
+si tienen propiedades idénticas. No hay una operación de comparación "profunda"
+incorporada en JavaScript, que compare objetos por contenidos,
+pero es posible que la escribas tu mismo (que es uno de los
+[ejercicios](datos#ejercicio_comparacion_profunda) al final de este capítulo).
 
-## The lycanthrope's log
+## El diario del licántropo
 
 {{index "weresquirrel example", lycanthropy, "addEntry function"}}
 
-So, Jacques starts up his JavaScript interpreter and sets up the
-environment he needs to keep his ((journal)).
+Asi que Jacques inicia su intérprete de JavaScript y establece el
+entorno que necesita para mantener su ((diario)).
 
 ```{includeCode: true}
-let journal = [];
+let diario = [];
 
-function addEntry(events, squirrel) {
-  journal.push({events, squirrel});
+function añadirEntrada(eventos, ardilla) {
+  diario.push({eventos, ardilla});
 }
 ```
 
-{{index [braces, object], "{} (object)", [property, definition]}}
+{{index "curly braces", "{} (object)"}}
 
-Note that the object added to the journal looks a little odd. Instead
-of declaring properties like `events: events`, it just gives a
-property name. This is shorthand that means the same thing—if a
-property name in brace notation isn't followed by a value, its
-value is taken from the binding with the same name.
+Ten en cuenta que el objeto agregado al diario se ve un poco extraño. En lugar
+de declarar propiedades como `eventos: eventos`, simplemente da un
+nombre de ((propiedad)). Este es un atajo que representa lo mismo—si el
+nombre de propiedad en la notación de llaves no es seguido por un valor, su
+el valor se toma de la vinculación con el mismo nombre.
 
-So then, every evening at 10 p.m.—or sometimes the next morning, after
+Entonces, todas las noches a las diez—o algunas veces a la mañana siguiente,
+después de bajar del estante superior de su biblioteca—Jacques registra el
+día.
+
+
+So then, every evening at ten—or sometimes the next morning, after
 climbing down from the top shelf of his bookcase—Jacques records the
 day.
 
 ```
-addEntry(["work", "touched tree", "pizza", "running",
+añadirEntrada(["trabajo", "toque un arbol", "pizza", "sali a correr",
           "television"], false);
-addEntry(["work", "ice cream", "cauliflower", "lasagna",
-          "touched tree", "brushed teeth"], false);
-addEntry(["weekend", "cycling", "break", "peanuts",
-          "beer"], true);
+añadirEntrada(["trabajo", "helado", "coliflor", "lasaña",
+          "toque un arbol", "me cepille los dientes"], false);
+añadirEntrada(["fin de semana", "monte la bicicleta", "descanso", "nueces",
+          "cerveza"], true);
 ```
 
-Once he has enough data points, he intends to use statistics to find
-out which of these events may be related to the squirrelifications.
+Una vez que tiene suficientes puntos de datos, tiene la intención de utilizar
+estadísticas para encontrar cuál de estos eventos puede estar
+relacionado con la transformación a ardilla.
 
 {{index correlation}}
 
-_Correlation_ is a measure of ((dependence)) between statistical
-variables. A statistical variable is not quite the same as a
-programming variable. In statistics you typically have a set of
-_measurements_, and each variable is measured for every measurement.
-Correlation between variables is usually expressed as a value that
-ranges from -1 to 1. Zero correlation means the variables are not
-related. A correlation of one indicates that the two are perfectly
-related—if you know one, you also know the other. Negative one also
-means that the variables are perfectly related but that they are
-opposites—when one is true, the other is false.
+La _correlación_ es una medida de ((dependencia)) entre variables estadísticas.
+Una variable estadística no es lo mismo que una variable de programación.
+En las estadísticas, normalmente tienes un conjunto de _medidas_,
+y cada variable se mide para cada medida. La correlación entre variables
+generalmente se expresa como un valor que
+varia de -1 a 1. Una correlación de cero significa que las variables no estan
+relacionadas. Una correlación de uno indica que las dos están perfectamente
+relacionadas—si conoces una, también conoces la otra. Uno negativo también
+significa que las variables están perfectamente relacionadas pero que son
+opuestas—cuando una es verdadera, la otra es falsa.
 
 {{index "phi coefficient"}}
 
-To compute the measure of correlation between two Boolean variables,
-we can use the _phi coefficient_ (_ϕ_). This is a formula whose input
-is a ((frequency table)) containing the number of times the different
-combinations of the variables were observed. The output of the formula
-is a number between -1 and 1 that describes the correlation.
+Para calcular la medida de correlación entre dos variables booleanas,
+podemos usar el _coeficiente phi_ (_ϕ_). Esta es una fórmula cuya entrada
+es una ((tabla de frecuencias)) que contiene la cantidad de veces que
+las diferentes combinaciones de las variables fueron observadas.
+El resultado de la fórmula es un número entre -1 y 1 que describe
+la correlación.
 
-We could take the event of eating ((pizza)) and put that in a
-frequency table like this, where each number indicates the amount of
-times that combination occurred in our measurements:
+Podríamos tomar el evento de comer ((pizza)) y poner eso en una
+tabla de frecuencias como esta, donde cada número indica la cantidad de
+veces que ocurrió esa combinación en nuestras mediciones:
 
 {{figure {url: "img/pizza-squirrel.svg", alt: "Eating pizza versus turning into a squirrel", width: "7cm"}}}
 
-If we call that table _n_, we can compute _ϕ_ using the following formula:
+Si llamamos a esa tabla _n_, podemos calcular _ϕ_ usando la siguiente fórmula:
 
 {{if html
 
@@ -569,63 +579,63 @@ if}}
 
 if}}
 
-(If at this point you're putting the book down to focus on a terrible
-flashback to 10th grade math class—hold on! I do not intend to torture
-you with endless pages of cryptic notation—it's just this one formula for
-now. And even with this one, all we do is turn it into JavaScript.)
+(Si en este momento estas bajando el libro para enfocarte en un terrible
+flashback a la clase de matemática de 10° grado—espera!
+No tengo la intención de torturarte con infinitas páginas de notación
+críptica—solo esta fórmula para ahora. E incluso con esta,
+todo lo que haremos es convertirla en JavaScript.)
 
-The notation [_n_~01~]{if html}[[$n_{01}$]{latex}]{if tex} indicates
-the number of measurements where the first variable (squirrelness) is
-false (0) and the second variable (pizza) is true (1). In the pizza
-table, [_n_~01~]{if html}[[$n_{01}$]{latex}]{if tex} is 9.
+La notación [_n_~01~]{if html}[[$n_{01}$]{latex}]{if tex} indica
+el número de mediciones donde la primera variable (ardilla) es
+falso (0) y la segunda variable (pizza) es verdadera (1). En la tabla
+de pizza, [_n_~01~]{if html}[[$n_{01}$]{latex}]{if tex} es 9.
 
-The value [_n_~1•~]{if html}[[$n_{1\bullet}$]{latex}]{if tex} refers
-to the sum of all measurements where the first variable is true, which
-is 5 in the example table. Likewise, [_n_~•0~]{if
-html}[[$n_{\bullet0}$]{latex}]{if tex} refers to the sum of the
-measurements where the second variable is false.
+El valor [_n_~1•~]{if html}[[$n_{1\bullet}$]{latex}]{if tex} se refiere
+a la suma de todas las medidas donde la primera variable es verdadera, que
+es 5 en la tabla de ejemplo. Del mismo modo, [_n_~•0~]{if
+html}[[$n_{\bullet0}$]{latex}]{if tex} se refiere a la suma de las
+mediciones donde la segunda variable es falsa.
 
 {{index correlation, "phi coefficient"}}
 
-So for the pizza table, the part above the division line (the
-dividend) would be 1×76−4×9 = 40, and the part below it (the
-divisor) would be the square root of 5×85×10×80, or [√340000]{if
-html}[[$\sqrt{340000}$]{latex}]{if tex}. This comes out to _ϕ_ ≈
-0.069, which is tiny. Eating ((pizza)) does not appear to have
-influence on the transformations.
+Entonces para la tabla de pizza, la parte arriba de la línea de división (el
+dividendo) sería 1×76−4×9 = 40, y la parte inferior (el
+divisor) sería la raíz cuadrada de 5×85×10×80, o [√340000]{if
+html}[[$\sqrt{340000}$]{latex}]{if tex}. Esto da _ϕ_ ≈
+0.069, que es muy pequeño. Comer ((pizza)) no parece tener
+influencia en las transformaciones.
 
-## Computing correlation
+## Calculando correlación
 
 {{index [array, "as table"], [nesting, "of arrays"]}}
 
-We can represent a two-by-two ((table)) in JavaScript with a
-four-element array (`[76, 9, 4, 1]`). We could also use other
-representations, such as an array containing two two-element arrays
-(`[[76, 9], [4, 1]]`) or an object with property names like `"11"` and
-`"01"`, but the flat array is simple and makes the expressions that
-access the table pleasantly short. We'll interpret the indices to the
-array as two-((bit)) ((binary number))s, where the leftmost (most
-significant) digit refers to the squirrel variable and the rightmost
-(least significant) digit refers to the event variable. For example,
-the binary number `10` refers to the case where Jacques did turn into
-a squirrel, but the event (say, "pizza") didn't occur. This happened
-four times. And since binary `10` is 2 in decimal notation, we will
-store this number at index 2 of the array.
+Podemos representar una ((tabla)) de dos-por-dos en JavaScript con un
+array de cuatro elementos (`[76, 9, 4, 1]`). También podríamos usar otras
+representaciones, como un array que contiene dos arrays de dos elementos
+(`[[76, 9], [4, 1]]`) o un objeto con nombres de propiedad como `"11"` y
+`"01"`, pero el array plano es simple y hace que las expresiones que
+acceden a la tabla agradablemente cortas. Interpretaremos los índices del
+array como ((número binario))s de dos-((bits)) , donde el dígito más a la
+izquierda (más significativo) se refiere a la variable ardilla y el digito
+mas a la derecha (menos significativo) se refiere a la variable de evento.
+Por ejemplo, el número binario `10` se refiere al caso en que Jacques se
+convirtió en una ardilla, pero el evento (por ejemplo, "pizza") no ocurrió.
+Esto ocurrió cuatro veces. Y dado que el `10` binario es 2 en notación decimal,
+almacenaremos este número en el índice 2 del array.
 
 {{index "phi coefficient", "phi function"}}
 
 {{id phi_function}}
 
-This is the function that computes the _ϕ_ coefficient from such an
-array:
+Esta es la función que calcula el coeficiente _ϕ_ de tal array:
 
 ```{includeCode: strip_log, test: clip}
-function phi(table) {
-  return (table[3] * table[0] - table[2] * table[1]) /
-    Math.sqrt((table[2] + table[3]) *
-              (table[0] + table[1]) *
-              (table[1] + table[3]) *
-              (table[0] + table[2]));
+function phi(tabla) {
+  return (tabla[3] * tabla[0] - tabla[2] * tabla[1]) /
+    Math.sqrt((tabla[2] + tabla[3]) *
+              (tabla[0] + tabla[1]) *
+              (tabla[1] + tabla[3]) *
+              (tabla[0] + tabla[2]));
 }
 
 console.log(phi([76, 9, 4, 1]));
@@ -634,249 +644,247 @@ console.log(phi([76, 9, 4, 1]));
 
 {{index "square root", "Math.sqrt function"}}
 
-This is a direct translation of the _ϕ_ formula into JavaScript.
-`Math.sqrt` is the square root function, as provided by the `Math`
-object in a standard JavaScript environment. We have to add two fields
-from the table to get fields like [n~1•~]{if
-html}[[$n_{1\bullet}$]{latex}]{if tex} because the sums of rows or
-columns are not stored directly in our data structure.
+Esta es una traducción directa de la fórmula _ϕ_ a JavaScript.
+`Math.sqrt` es la función de raíz cuadrada, proporcionada por el objeto
+`Math` en un entorno de JavaScript estándar. Tenemos que sumar dos campos
+de la tabla para obtener campos como [n~1•~]{if
+html}[[$n_{1\bullet}$]{latex}]{if tex} porque las sumas de filas o
+columnas no se almacenan directamente en nuestra estructura de datos.
 
 {{index "JOURNAL data set"}}
 
-Jacques kept his journal for three months. The resulting ((data set))
-is available in the [coding
-sandbox](https://eloquentjavascript.net/code#4) for this chapter[
-([_https://eloquentjavascript.net/code#4_](https://eloquentjavascript.net/code#4))]{if
-book}, where it is stored in the `JOURNAL` binding and in a
-downloadable
-[file](https://eloquentjavascript.net/code/journal.js).
+Jacques mantuvo su diario por tres meses. El ((conjunto de datos)) resultante
+está disponible en la [caja de arena](https://eloquentjavascript.net/code#4)
+para este capítulo[([_eloquentjavascript.net/code#4_](https://eloquentjavascript.net/code#4))]{if
+book}, donde se almacena en la vinculación `JOURNAL`, y en un
+[archivo](https://eloquentjavascript.net/code/journal.js) descargable.
 
 {{index "tableFor function"}}
 
-To extract a two-by-two ((table)) for a specific event from the
-journal, we must loop over all the entries and tally how many times
-the event occurs in relation to squirrel transformations.
+Para extraer una ((tabla)) de dos por dos para un evento en específico del
+diario, debemos hacer un ciclo a traves de todas las entradas y contar
+cuántas veces ocurre el evento en relación a las transformaciones de ardilla.
 
 ```{includeCode: strip_log}
-function tableFor(event, journal) {
-  let table = [0, 0, 0, 0];
-  for (let i = 0; i < journal.length; i++) {
-    let entry = journal[i], index = 0;
-    if (entry.events.includes(event)) index += 1;
-    if (entry.squirrel) index += 2;
-    table[index] += 1;
+function tablaPara(evento, diario) {
+  let tabla = [0, 0, 0, 0];
+  for (let i = 0; i < diario.length; i++) {
+    let entrada = diario[i], index = 0;
+    if (entrada.eventos.includes(evento)) index += 1;
+    if (entrada.ardilla) index += 2;
+    tabla[index] += 1;
   }
-  return table;
+  return tabla;
 }
 
-console.log(tableFor("pizza", JOURNAL));
+console.log(tablaPara("pizza", JOURNAL));
 // → [76, 9, 4, 1]
 ```
 
 {{index [array, searching], "includes method"}}
 
-Arrays have an `includes` method that checks whether a given value
-exists in the array. The function uses that to determine whether the
-event name it is interested in is part of the event list for a given
-day.
+Los array tienen un método `includes` ("incluye") que verifica si un valor dado
+existe en el array. La función usa eso para determinar si el nombre del evento
+en el que estamos interesados forma parte de la lista de eventos para
+un determinado día.
 
 {{index [array, indexing]}}
 
-The body of the loop in `tableFor` figures out which box in the table
-each journal entry falls into by checking whether the entry contains
-the specific event it's interested in and whether the event happens
-alongside a squirrel incident. The loop then adds one to the correct
-box in the table.
+El cuerpo del ciclo en `tablaPara` determina en cual caja de la tabla
+cae cada entrada del diario al verificar si la entrada contiene
+el evento específico que nos interesa y si el evento ocurre
+junto con un incidente de ardilla. El ciclo luego agrega uno a la caja correcta
+en la tabla.
 
-We now have the tools we need to compute individual ((correlation))s.
-The only step remaining is to find a correlation for every type of
-event that was recorded and see whether anything stands out.
+Ahora tenemos las herramientas que necesitamos para calcular las
+((correlaciónes)) individuales. El único paso que queda es encontrar una
+correlación para cada tipo de evento que se escribio en el diario
+y ver si algo se destaca.
 
 {{id for_of_loop}}
 
-## Array loops
+## Ciclos de array
 
 {{index "for loop", loop, [array, iteration]}}
 
-In the `tableFor` function, there's a loop like this:
+En la función `tablaPara`, hay un ciclo como este:
 
 ```
-for (let i = 0; i < JOURNAL.length; i++) {
-  let entry = JOURNAL[i];
-  // Do something with entry
+for (let i = 0; i < DIARIO.length; i++) {
+  let entrada = DIARIO[i];
+  // Hacer con algo con la entrada
 }
 ```
 
-This kind of loop is common in classical JavaScript—going over arrays
-one element at a time is something that comes up a lot, and to do that
-you'd run a counter over the length of the array and pick out each
-element in turn.
+Este tipo de ciclo es común en JavaScript clasico—ir a traves de los arrays
+un elemento a la vez es algo que surge mucho, y para hacer eso
+correrias un contador sobre la longitud del array y elegirías cada
+elemento en turnos.
 
-There is a simpler way to write such loops in modern JavaScript.
+Hay una forma más simple de escribir tales ciclos en JavaScript moderno.
 
 ```
-for (let entry of JOURNAL) {
-  console.log(`${entry.events.length} events.`);
+for (let entrada of DIARIO) {
+  console.log(`${entrada.eventos.length} eventos.`);
 }
 ```
 
 {{index "for/of loop"}}
 
-When a `for` loop looks like this, with the word `of` after a variable
-definition, it will loop over the elements of the value given after
-`of`. This works not only for arrays but also for strings and some
-other data structures. We'll discuss _how_ it works in [Chapter
-?](object).
+Cuando un ciclo `for` se vea de esta manera, con la palabra `of` ("de")
+después de una definición de variable, recorrerá los elementos del valor
+dado después `of`. Esto funciona no solo para arrays, sino también para
+strings y algunas otras estructuras de datos. Vamos a discutir _como_ funciona
+en el [Capítulo 6](objeto).
 
 {{id analysis}}
 
-## The final analysis
+## El análisis final
 
 {{index journal, "weresquirrel example", "journalEvents function"}}
 
-We need to compute a correlation for every type of event that occurs
-in the data set. To do that, we first need to _find_ every type of
-event.
+Necesitamos calcular una correlación para cada tipo de evento que ocurra
+en el conjunto de datos. Para hacer eso, primero tenemos que _encontrar_
+cada tipo de evento.
 
 {{index "includes method", "push method"}}
 
 ```{includeCode: "strip_log"}
-function journalEvents(journal) {
-  let events = [];
-  for (let entry of journal) {
-    for (let event of entry.events) {
-      if (!events.includes(event)) {
-        events.push(event);
+function eventosDiario(diario) {
+  let eventos = [];
+  for (let entrada of diario) {
+    for (let evento of entrada.eventos) {
+      if (!eventos.includes(evento)) {
+        eventos.push(evento);
       }
     }
   }
-  return events;
+  return eventos;
 }
 
-console.log(journalEvents(JOURNAL));
-// → ["carrot", "exercise", "weekend", "bread", …]
+console.log(eventosDiario(DIARIO));
+// → ["zanahoria", "ejercicio", "fin de semana", "pan", …]
 ```
 
-By going over all the events and adding those that aren't already in
-there to the `events` array, the function collects every type of
-event.
+Yendo a traves de todos los eventos, y agregando aquellos que aún no están en
+allí en el array `eventos`, la función recolecta cada tipo de evento.
 
-Using that, we can see all the ((correlation))s.
+Usando eso, podemos ver todos las ((correlaciones)).
 
 ```{test: no}
-for (let event of journalEvents(JOURNAL)) {
-  console.log(event + ":", phi(tableFor(event, JOURNAL)));
+for (let evento of eventosDiario(DIARIO)) {
+  console.log(evento + ":", phi(tablaPara(evento, DIARIO)));
 }
-// → carrot:   0.0140970969
-// → exercise: 0.0685994341
-// → weekend:  0.1371988681
-// → bread:   -0.0757554019
-// → pudding: -0.0648203724
+// → zanahoria:      0.0140970969
+// → ejercicio:      0.0685994341
+// → fin de semana:  0.1371988681
+// → pan:           -0.0757554019
+// → pudin:         -0.0648203724
 // and so on...
 ```
 
-Most correlations seem to lie close to zero. Eating carrots, bread, or
-pudding apparently does not trigger squirrel-lycanthropy. It _does_
-seem to occur somewhat more often on weekends. Let's filter the
-results to show only correlations greater than 0.1 or less than -0.1.
+La mayoría de las correlaciones parecen estar cercanas a cero. Come
+zanahorias, pan o pudín aparentemente no desencadena la licantropía de ardilla.
+_Parece_ ocurrir un poco más a menudo los fines de semana. Filtremos los
+resultados para solo mostrar correlaciones mayores que 0.1 o menores que -0.1.
 
 ```{test: no, startCode: true}
-for (let event of journalEvents(JOURNAL)) {
-  let correlation = phi(tableFor(event, JOURNAL));
-  if (correlation > 0.1 || correlation < -0.1) {
-    console.log(event + ":", correlation);
+for (let evento of eventosDiario(DIARIO)) {
+  let correlacion = phi(tablaPara(evento, DIARIO));
+  if (correlacion > 0.1 || correlacion < -0.1) {
+    console.log(evento + ":", correlacion);
   }
 }
-// → weekend:        0.1371988681
-// → brushed teeth: -0.3805211953
-// → candy:          0.1296407447
-// → work:          -0.1371988681
-// → spaghetti:      0.2425356250
-// → reading:        0.1106828054
-// → peanuts:        0.5902679812
+// → fin de semana:           0.1371988681
+// → me cepille los dientes: -0.3805211953
+// → dulces:                  0.1296407447
+// → trabajo:                -0.1371988681
+// → spaghetti:               0.2425356250
+// → leer:                    0.1106828054
+// → nueces:                  0.5902679812
 ```
 
-Aha! There are two factors with a ((correlation)) that's clearly stronger
-than the others. Eating ((peanuts)) has a strong positive effect on
-the chance of turning into a squirrel, whereas brushing his teeth has
-a significant negative effect.
+A-ha! Hay dos factores con una ((correlación)) que es claramente más fuerte
+que las otras. Comer ((nueces)) tiene un fuerte efecto positivo en
+la posibilidad de convertirse en una ardilla, mientras que cepillarse
+los dientes tiene un significativo efecto negativo.
 
-Interesting. Let's try something.
+Interesante. Intentemos algo.
 
-```
-for (let entry of JOURNAL) {
-  if (entry.events.includes("peanuts") &&
-     !entry.events.includes("brushed teeth")) {
-    entry.events.push("peanut teeth");
+```{includeCode: strip_log}
+for (let entrada of DIARIO) {
+  if (entrada.eventos.includes("nueces") &&
+     !entrada.eventos.includes("me cepille los dientes")) {
+    entrada.eventos.push("dientes con nueces");
   }
 }
-console.log(phi(tableFor("peanut teeth", JOURNAL)));
+console.log(phi(tablaPara("dientes con nueces", DIARIO)));
 // → 1
 ```
 
-That's a strong result. The phenomenon occurs precisely when Jacques
-eats ((peanuts)) and fails to brush his teeth. If only he weren't such
-a slob about dental hygiene, he'd have never even noticed his
-affliction.
+Ese es un resultado fuerte. El fenómeno ocurre precisamente cuando Jacques
+come ((nueces)) y no se cepilla los dientes. Si tan solo él no hubiese sido
+tan flojo con su higiene dental, él nunca habría notado su aflicción.
 
-Knowing this, Jacques stops eating peanuts altogether and finds that
-his transformations don't come back.
+Sabiendo esto, Jacques deja de comer nueces y descubre que sus transformaciones
+no vuelven.
 
 {{index "weresquirrel example"}}
 
-For a few years, things go great for Jacques. But at some point he
-loses his job. Because he lives in a nasty country where having no job
-means having no medical services, he is forced to take employment with
-a ((circus)) where he performs as _The Incredible Squirrelman_,
-stuffing his mouth with peanut butter before every show.
+Durante algunos años, las cosas van bien para Jacques. Pero en algún momento él
+pierde su trabajo. Porque vive en un país desagradable donde no tener trabajo
+significa que no tiene servicios médicos, se ve obligado a trabajar con
+a ((circo)) donde actua como _El Increible Hombre-Ardilla_,
+llenando su boca con mantequilla de maní antes de cada presentación.
 
-One day, fed up with this pitiful existence, Jacques fails to change
-back into his human form, hops through a crack in the circus tent, and
-vanishes into the forest. He is never seen again.
+Un día, harto de esta existencia lamentable, Jacques no puede cambiar
+de vuelta a su forma humana, salta a través de una grieta en la carpa del
+circo, y se desvanece en el bosque. Nunca se le ve de nuevo.
 
-## Further arrayology
+## Arrayología avanzada
 
-{{index [array, methods], [method, array]}}
+{{index [array, methods], method}}
 
-Before finishing the chapter, I want to introduce you to a few more
-object-related concepts. I'll start by introducing some generally
-useful array methods.
+Antes de terminar el capítulo, quiero presentarte algunos conceptos extras
+relacionados a los objetos. Comenzaré introduciendo algunos en métodos de
+arrays útiles generalmente.
 
 {{index "push method", "pop method", "shift method", "unshift method"}}
 
-We saw `push` and `pop`, which add and remove elements at the
-end of an array, [earlier](data#array_methods) in this
-chapter. The corresponding methods for adding and removing things at
-the start of an array are called `unshift` and `shift`.
+Vimos `push` y `pop`, que agregan y removen elementos en el
+final de un array, [anteriormente](datos#array_methods) en este
+capítulo. Los métodos correspondientes para agregar y remover cosas en
+el comienzo de un array se llaman `unshift` y `shift`.
 
 ```
-let todoList = [];
-function remember(task) {
-  todoList.push(task);
+let listaDeTareas = [];
+function recordar(tarea) {
+  listaDeTareas.push(tarea);
 }
-function getTask() {
-  return todoList.shift();
+function obtenerTarea() {
+  return listaDeTareas.shift();
 }
-function rememberUrgently(task) {
-  todoList.unshift(task);
+function recordarUrgentemente(tarea) {
+  listaDeTareas.unshift(tarea);
 }
 ```
 
 {{index "task management example"}}
 
-That program manages a queue of tasks. You add tasks to the end of the
-queue by calling `remember("groceries")`, and when you're ready to do
-something, you call `getTask()` to get (and remove) the front item
-from the queue. The `rememberUrgently` function also adds a task but
-adds it to the front instead of the back of the queue.
+Ese programa administra una cola de tareas. Agregas tareas al final de la
+cola al llamar `recordar("verduras")`, y cuando estés listo para hacer
+algo, llamas a `obtenerTarea()` para obtener (y eliminar) el elemento frontal
+de la cola. La función `recordarUrgentemente` también agrega una tarea pero
+la agrega al frente en lugar de a la parte posterior de la cola.
 
 {{index [array, searching], "indexOf method", "lastIndexOf method"}}
 
-To search for a specific value, arrays provide an `indexOf` method. The method
-searches through the array from the start to the end and returns the
-index at which the requested value was found—or -1 if it wasn't found.
-To search from the end instead of the start, there's a similar method
-called `lastIndexOf`.
+Para buscar un valor específico, los arrays proporcionan un método `indexOf`
+("indice de").
+Este busca a través del array desde el principio hasta el final y retorna el
+índice en el que se encontró el valor solicitado—o -1 si este no fue encontrado.
+Para buscar desde el final en lugar del inicio, hay un método similar
+llamado `lastIndexOf` ("ultimo indice de").
 
 ```
 console.log([1, 2, 3, 2, 1].indexOf(2));
@@ -885,14 +893,14 @@ console.log([1, 2, 3, 2, 1].lastIndexOf(2));
 // → 3
 ```
 
-Both `indexOf` and `lastIndexOf` take an optional second argument that
-indicates where to start searching.
+Tanto `indexOf` como `lastIndexOf` toman un segundo argumento opcional que
+indica dónde comenzar la búsqueda.
 
 {{index "slice method", [array, indexing]}}
 
-Another fundamental array method is `slice`, which takes start and end
-indices and returns an array that has only the elements between them.
-The start index is inclusive, the end index exclusive.
+Otro método fundamental de array es `slice` ("rebanar"), que toma índices de
+inicio y fin y retorna un array que solo tiene los elementos entre ellos.
+El índice de inicio es inclusivo, el índice final es exclusivo.
 
 ```
 console.log([0, 1, 2, 3, 4].slice(2, 4));
@@ -903,85 +911,85 @@ console.log([0, 1, 2, 3, 4].slice(2));
 
 {{index [string, indexing]}}
 
-When the end index is not given, `slice` will take all of the elements
-after the start index. You can also omit the start index to copy the
-entire array.
+Cuando no se proporcione el índice final, `slice` tomará todos los elementos
+después del índice de inicio. También puedes omitir el índice de inicio
+para copiar todo el array.
 
 {{index concatenation, "concat method"}}
 
-The `concat` method can be used to glue arrays together to create a
-new array, similar to what the `+` operator does for strings.
+El método `concat` ("concatenar") se puede usar para unir arrays y asi crear un
+nuevo array, similar a lo que hace el operador `+` para los strings.
 
-The following example shows both `concat` and `slice` in action. It takes
-an array and an index, and it returns a new array that is a copy of
-the original array with the element at the given index removed.
+El siguiente ejemplo muestra tanto `concat` como `slice` en acción. Toma un
+array y un índice, y retorna un nuevo array que es una copia del
+array original pero eliminando al elemento en el índice dado:
 
 ```
-function remove(array, index) {
-  return array.slice(0, index)
-    .concat(array.slice(index + 1));
+function remover(array, indice) {
+  return array.slice(0, indice)
+    .concat(array.slice(indice + 1));
 }
-console.log(remove(["a", "b", "c", "d", "e"], 2));
+console.log(remover(["a", "b", "c", "d", "e"], 2));
 // → ["a", "b", "d", "e"]
 ```
 
-If you pass `concat` an argument that is not an array, that value will
-be added to the new array as if it were a one-element array.
+Si a `concat` le pasas un argumento que no es un array, ese valor
+sera agregado al nuevo array como si este fuera un array de un solo elemento.
 
-## Strings and their properties
+## Strings y sus propiedades
 
 {{index [string, properties]}}
 
-We can read properties like `length` and `toUpperCase` from string
-values. But if you try to add a new property, it doesn't stick.
+Podemos leer propiedades como `length` y `toUpperCase` de valores string.
+Pero si intentas agregar una nueva propiedad, esta no se mantiene.
 
 ```
 let kim = "Kim";
-kim.age = 88;
-console.log(kim.age);
+kim.edad = 88;
+console.log(kim.edad);
 // → undefined
 ```
 
-Values of type string, number, and Boolean are not objects, and though
-the language doesn't complain if you try to set new properties on
-them, it doesn't actually store those properties. As mentioned earlier,
-such values are immutable and cannot be changed.
+Los valores de tipo string, número, y Booleano no son objetos, y aunque
+el lenguaje no se queja si intentas establecer nuevas propiedades en
+ellos, en realidad no almacena esas propiedades. Como se mencionó antes,
+tales valores son inmutables y no pueden ser cambiados.
 
 {{index [string, methods], "slice method", "indexOf method", [string, searching]}}
 
-But these types do have built-in properties. Every string value has a
-number of methods. Some very useful ones are `slice` and `indexOf`,
-which resemble the array methods of the same name.
+Pero estos tipos tienen propiedades integradas. Cada valor de string tiene un
+numero de metodos. Algunos muy útiles son `slice` e `indexOf`,
+que se parecen a los métodos de array de los mismos nombres.
 
 ```
-console.log("coconuts".slice(4, 7));
-// → nut
-console.log("coconut".indexOf("u"));
-// → 5
+console.log("panaderia".slice(0, 3));
+// → pan
+console.log("panaderia".indexOf("a"));
+// → 1
 ```
 
-One difference is that a string's `indexOf` can search for a string
-containing more than one character, whereas the corresponding array
-method looks only for a single element.
+Una diferencia es que el `indexOf` de un string puede buscar por un string
+que contenga más de un carácter, mientras que el método correspondiente al
+array solo busca por un elemento único.
 
 ```
-console.log("one two three".indexOf("ee"));
-// → 11
+console.log("uno dos tres".indexOf("tres"));
+// → 8
 ```
 
-{{index [whitespace, trimming], "trim method"}}
+{{index whitespace, "trim method"}}
 
-The `trim` method removes whitespace (spaces, newlines, tabs, and
-similar characters) from the start and end of a string.
+El método `trim` ("recortar") elimina los espacios en blanco (espacios, saltos
+de linea, tabulaciones y caracteres similares) del inicio y final de un string.
 
 ```
-console.log("  okay \n ".trim());
-// → okay
+console.log("  okey \n ".trim());
+// → okey
 ```
 
-The `zeroPad` function from the [previous chapter](functions) also
-exists as a method. It is called `padStart` and takes the desired
-length and padding character as arguments.
+La función `alcocharConCeros` del [capítulo anterior](funciones) también
+existe como un método. Se llama `padStart` ("alcohar inicio") y
+toma la longitud deseada y el carácter de relleno como argumentos.
 
 ```
 console.log(String(6).padStart(3, "0"));
@@ -990,23 +998,23 @@ console.log(String(6).padStart(3, "0"));
 
 {{id split}}
 
-You can split a string on every occurrence of another string with
-`split` and join it again with `join`.
+Puedes dividir un string en cada ocurrencia de otro string con el metodo
+`split` ("dividir"), y unirlo nuevamente con `join` ("unir").
 
 ```
-let sentence = "Secretarybirds specialize in stomping";
-let words = sentence.split(" ");
-console.log(words);
-// → ["Secretarybirds", "specialize", "in", "stomping"]
-console.log(words.join(". "));
-// → Secretarybirds. specialize. in. stomping
+let oracion = "Los pajaros secretarios se especializan en pisotear";
+let palabras = oracion.split(" ");
+console.log(palabras);
+// → ["Los", "pajaros", "secretarios", "se", "especializan", "en", "pisotear"]
+console.log(palabras.join(". "));
+// → Los. pajaros. secretarios. se. especializan. en. pisotear
 ```
 
 {{index "repeat method"}}
 
-A string can be repeated with the `repeat` method, which creates a new
-string containing multiple copies of the original string, glued
-together.
+Se puede repetir un string con el método `repeat` ("repetir"), el cual
+crea un nuevo string que contiene múltiples copias concatenadas
+del string original.
 
 ```
 console.log("LA".repeat(3));
@@ -1015,10 +1023,10 @@ console.log("LA".repeat(3));
 
 {{index ["length property", "for string"], [string, indexing]}}
 
-We have already seen the string type's `length` property. Accessing
-the individual characters in a string looks like accessing array
-elements (with a caveat that we'll discuss in [Chapter
-?](higher_order#code_units)).
+Ya hemos visto la propiedad `length` en los valores de tipo string. Acceder a
+los caracteres individuales en un string es similar a acceder a los elementos
+de un array (con una diferencia que discutiremos en el
+[Capítulo 6](orden_superior#unidades_de_codigo)).
 
 ```
 let string = "abc";
@@ -1030,125 +1038,131 @@ console.log(string[1]);
 
 {{id rest_parameters}}
 
-## Rest parameters
+## Parámetros restantes
 
 {{index "Math.max function"}}
 
-It can be useful for a function to accept any number of ((argument))s.
-For example, `Math.max` computes the maximum of _all_ the arguments it
-is given.
+Puede ser útil para una función aceptar cualquier cantidad de ((argumento))s.
+Por ejemplo, `Math.max` calcula el máximo de _todos_ los argumentos que le
+son dados.
 
-{{index "period character", "max example", spread}}
+{{indexsee "period character", "max example", spread}}
 
-To write such a function, you put three dots before the function's
-last ((parameter)), like this:
+Para escribir tal función, pones tres puntos antes del ultimo ((parámetro))
+de la función, asi:
 
-```{includeCode: strip_log}
-function max(...numbers) {
-  let result = -Infinity;
-  for (let number of numbers) {
-    if (number > result) result = number;
+```
+function maximo(...numeros) {
+  let resultado = -Infinity;
+  for (let numero of numeros) {
+    if (numero > resultado) resultado = numero;
   }
-  return result;
+  return resultado;
 }
-console.log(max(4, 1, 9, -2));
+console.log(maximo(4, 1, 9, -2));
 // → 9
 ```
 
-When such a function is called, the _((rest parameter))_ is bound to
-an array containing all further arguments. If there are other
-parameters before it, their values aren't part of that array. When, as
-in `max`, it is the only parameter, it will hold all arguments.
+Cuando se llame a una función como esa, el _((parámetro restante))_ está
+vinculado a un array que contiene todos los argumentos adicionales. Si hay
+otros parámetros antes que él, sus valores no seran parte de ese array.
+Cuando, tal como en `maximo`, sea el único parámetro, contendrá todos
+los argumentos.
 
-{{index [function, application]}}
+{{index "function application"}}
 
-You can use a similar three-dot notation to _call_ a function with an
-array of arguments.
+Puedes usar una notación de tres-puntos similar para _llamar_ una función con
+un array de argumentos.
 
 ```
-let numbers = [5, 1, 7];
-console.log(max(...numbers));
+let numeros = [5, 1, 7];
+console.log(max(...numeros));
 // → 7
 ```
 
-This "((spread))s" out the array into the function call, passing its
-elements as separate arguments. It is possible to include an array
-like that along with other arguments, as in `max(9, ...numbers, 2)`.
+Esto "((extiende))" al array en la llamada de la función, pasando sus
+elementos como argumentos separados. Es posible incluir un array de esa
+manera, junto con otros argumentos, como en `max(9, ...numeros, 2)`.
 
-{{index [array, "of rest arguments"], "square brackets"}}
+{{index array, "square brackets"}}
+
+La notación de corchetes para crear arrays permite al operador de tres-puntos
+extender otro array en el nuevo array:
+
 
 Square bracket array notation similarly allows the triple-dot operator
-to spread another array into the new array.
+to spread another array into the new array:
 
 ```
-let words = ["never", "fully"];
-console.log(["will", ...words, "understand"]);
-// → ["will", "never", "fully", "understand"]
+let palabras = ["nunca", "entenderas"];
+console.log(["tu", ...palabras, "completamente"]);
+// → ["tu", "nunca", "entenderas", "completamente"]
 ```
 
-## The Math object
+## El objeto Math
 
 {{index "Math object", "Math.min function", "Math.max function", "Math.sqrt function", minimum, maximum, "square root"}}
 
-As we've seen, `Math` is a grab bag of number-related utility
-functions, such as `Math.max` (maximum), `Math.min` (minimum), and
-`Math.sqrt` (square root).
+Como hemos visto, `Math` es una bolsa de sorpresas de utilidades relacionadas
+a los numeros, como `Math.max` (máximo), `Math.min` (mínimo) y
+`Math.sqrt` (raíz cuadrada).
 
-{{index namespace, [object, property]}}
+{{index namespace, "namespace pollution", object}}
 
 {{id namespace_pollution}}
 
-The `Math` object is used as a container to group a bunch of related
-functionality. There is only one `Math` object, and it is almost never
-useful as a value. Rather, it provides a _namespace_ so that all these
-functions and values do not have to be global bindings.
+El objeto `Math` es usado como un contenedor que agrupa un grupo de
+funcionalidades relacionadas. Solo hay un objeto `Math`, y casi nunca es
+útil como un valor. Más bien, proporciona un _espacio de nombre_
+para que todos estas funciones y valores no tengan que ser vinculaciones
+globales.
 
 {{index [binding, naming]}}
 
-Having too many global bindings "pollutes" the namespace. The more
-names have been taken, the more likely you are to accidentally
-overwrite the value of some existing binding. For example, it's not
-unlikely to want to name something `max` in one of your programs.
-Since JavaScript's built-in `max` function is tucked safely inside the
-`Math` object, we don't have to worry about overwriting it.
+Tener demasiadas vinculaciones globales "contamina" el espacio de nombres.
+Cuanto más nombres hayan sido tomados, es más probable que accidentalmente
+sobrescribas el valor de algunas vinculaciones existentes. Por ejemplo, no es
+es poco probable que quieras nombrar algo `max` en alguno de tus programas.
+Dado que la función `max` ya incorporada en JavaScript está escondida dentro del
+Objeto `Math`, no tenemos que preocuparnos por sobrescribirla.
 
 {{index "let keyword", "const keyword"}}
 
-Many languages will stop you, or at least warn you, when you are
-defining a binding with a name that is already taken. JavaScript does
-this for bindings you declared with `let` or `const`
-but—perversely—not for standard bindings nor for bindings declared
-with `var` or `function`.
+Muchos lenguajes te detendrán, o al menos te advertirán, cuando estes por
+definir una vinculación con un nombre que ya este tomado. JavaScript hace
+esto para vinculaciones que hayas declarado con `let` o` const`
+pero-perversamente-no para vinculaciones estándar, ni para
+vinculaciones declaradas con `var` o `function`.
 
 {{index "Math.cos function", "Math.sin function", "Math.tan function", "Math.acos function", "Math.asin function", "Math.atan function", "Math.PI constant", cosine, sine, tangent, "PI constant", pi}}
 
-Back to the `Math` object. If you need to do ((trigonometry)), `Math`
-can help. It contains `cos` (cosine), `sin` (sine), and `tan`
-(tangent), as well as their inverse functions, `acos`, `asin`, and
-`atan`, respectively. The number π (pi)—or at least the closest
-approximation that fits in a JavaScript number—is available as
-`Math.PI`. There is an old programming tradition of writing the names
-of ((constant)) values in all caps.
+De vuelta al objeto `Math`. Si necesitas hacer ((trigonometría)), `Math` te
+puede ayudar. Contiene `cos` (coseno), `sin` (seno) y `tan`
+(tangente), así como sus funciones inversas, `acos`, `asin`, y
+`atan`, respectivamente. El número π (pi)—o al menos la aproximación
+más cercano que cabe en un número de JavaScript—está disponible como
+`Math.PI`. Hay una vieja tradición en la programación de escribir los nombres
+de los valores ((constantes)) en mayúsculas.
 
 ```{test: no}
-function randomPointOnCircle(radius) {
-  let angle = Math.random() * 2 * Math.PI;
-  return {x: radius * Math.cos(angle),
-          y: radius * Math.sin(angle)};
+function puntoAleatorioEnCirculo(radio) {
+  let angulo = Math.random() * 2 * Math.PI;
+  return {x: radio * Math.cos(angulo),
+          y: radio * Math.sin(angulo)};
 }
-console.log(randomPointOnCircle(2));
+console.log(puntoAleatorioEnCirculo(2));
 // → {x: 0.3667, y: 1.966}
 ```
 
-If sines and cosines are not something you are familiar with, don't
-worry. When they are used in this book, in [Chapter ?](dom#sin_cos),
-I'll explain them.
+Si los senos y los cosenos son algo con lo que no estas familiarizado,
+no te preocupes. Cuando se usen en este libro, en el
+[Capítulo 14](dom#seno_coseno), te los explicaré.
 
 {{index "Math.random function", "random number"}}
 
-The previous example used `Math.random`. This is a function that
-returns a new pseudorandom number between zero (inclusive) and one
-(exclusive) every time you call it.
+El ejemplo anterior usó `Math.random`. Esta es una función que
+retorna un nuevo número pseudoaleatorio entre cero (inclusivo) y uno
+(exclusivo) cada vez que la llamas.
 
 ```{test: no}
 console.log(Math.random());
@@ -1161,60 +1175,61 @@ console.log(Math.random());
 
 {{index "pseudorandom number", "random number"}}
 
-Though computers are deterministic machines—they always react the same
-way if given the same input—it is possible to have them produce
-numbers that appear random. To do that, the machine keeps some hidden
-value, and whenever you ask for a new random number, it performs
-complicated computations on this hidden value to create a new value.
-It stores a new value and returns some number derived from it. That
-way, it can produce ever new, hard-to-predict numbers in a way that
-_seems_ random.
+Aunque las computadoras son máquinas deterministas—siempre reaccionan de la
+misma manera manera dada la misma entrada—es posible hacer que
+produzcan números que parecen aleatorios. Para hacer eso, la máquina mantiene
+algun valor escondido, y cada vez que le pidas un nuevo número aleatorio,
+realiza calculos complicados en este valor oculto para crear un nuevo valor.
+Esta almacena un nuevo valor y retorna un número derivado de él.
+De esta manera, puede producir números nuevos y difíciles de predecir de
+una manera que _parece_ aleatoria.
 
 {{index rounding, "Math.floor function"}}
 
-If we want a whole random number instead of a fractional one, we can
-use `Math.floor` (which rounds down to the nearest whole number) on
-the result of `Math.random`.
+Si queremos un número entero al azar en lugar de uno fraccionario, podemos
+usar `Math.floor` (que redondea hacia abajo al número entero más cercano) con
+el resultado de `Math.random`.
 
 ```{test: no}
 console.log(Math.floor(Math.random() * 10));
 // → 2
 ```
 
-Multiplying the random number by 10 gives us a number greater than or
-equal to 0 and below 10. Since `Math.floor` rounds down, this
-expression will produce, with equal chance, any number from 0 through
+Multiplicar el número aleatorio por 10 nos da un número mayor que o
+igual a cero e inferior a 10. Como `Math.floor` redondea hacia abajo, esta
+expresión producirá, con la misma probabilidad, cualquier número desde 0 hasta
 9.
 
 {{index "Math.ceil function", "Math.round function", "Math.abs function", "absolute value"}}
 
-There are also the functions `Math.ceil` (for "ceiling", which rounds
-up to a whole number), `Math.round` (to the nearest whole number), and
-`Math.abs`, which takes the absolute value of a number, meaning it
-negates negative values but leaves positive ones as they are.
+También están las funciones `Math.ceil` (que redondea hacia arriba hasta llegar
+al número entero mas cercano), `Math.round` (al número entero más cercano), y
+`Math.abs`, que toma el valor absoluto de un número, lo que significa que
+niega los valores negativos pero deja los positivos tal y como estan.
 
-## Destructuring
+## Desestructurar
 
 {{index "phi function"}}
 
-Let's go back to the `phi` function for a moment.
+Volvamos a la función `phi` por un momento:
 
 ```{test: wrap}
-function phi(table) {
-  return (table[3] * table[0] - table[2] * table[1]) /
-    Math.sqrt((table[2] + table[3]) *
-              (table[0] + table[1]) *
-              (table[1] + table[3]) *
-              (table[0] + table[2]));
+function phi(tabla) {
+  return (tabla[3] * tabla[0] - tabla[2] * tabla[1]) /
+    Math.sqrt((tabla[2] + tabla[3]) *
+              (tabla[0] + tabla[1]) *
+              (tabla[1] + tabla[3]) *
+              (tabla[0] + tabla[2]));
 }
 ```
 
 {{index "destructuring binding", parameter}}
 
-One of the reasons this function is awkward to read is that we have a
-binding pointing at our array, but we'd much prefer to have bindings
-for the _elements_ of the array, that is, `let n00 = table[0]` and so on.
-Fortunately, there is a succinct way to do this in JavaScript.
+Una de las razones por las que esta función es incómoda de leer es que
+tenemos una vinculación apuntando a nuestro array, pero preferiríamos tener
+vinculaciones para los _elementos_ del array, es decir, `let n00 = tabla[0]`
+y así sucesivamente. Afortunadamente, hay una forma concisa de hacer esto en
+JavaScript.
 
 ```
 function phi([n00, n01, n10, n11]) {
@@ -1224,157 +1239,157 @@ function phi([n00, n01, n10, n11]) {
 }
 ```
 
-{{index "let keyword", "var keyword", "const keyword", [binding, destructuring]}}
+{{index "let keyword", "var keyword", "const keyword"}}
 
-This also works for bindings created with `let`, `var`, or
-`const`. If you know the value you are binding is an array, you can
-use ((square brackets)) to "look inside" of the value, binding its
-contents.
+Esto también funciona para ((vinculaciones)) creadas con `let`, `var`, o
+`const`. Si sabes que el valor que estas vinculando es un array, puedes
+usar ((corchetes)) para "mirar dentro" del valor, y asi vincular sus
+contenidos.
 
-{{index [object, property], [braces, object]}}
+{{index object, "curly braces"}}
 
-A similar trick works for objects, using braces instead of square
-brackets.
+Un truco similar funciona para objetos, utilizando llaves en lugar de corchetes.
 
 ```
-let {name} = {name: "Faraji", age: 23};
-console.log(name);
+let {nombre} = {nombre: "Faraji", edad: 23};
+console.log(nombre);
 // → Faraji
 ```
 
 {{index null, undefined}}
 
-Note that if you try to destructure `null` or `undefined`, you get an
-error, much as you would if you directly try to access a property
-of those values.
+Ten en cuenta que si intentas desestructurar `null` o `undefined`, obtendrás un
+error, igual como te pasaria si intentaras acceder directamente a una propiedad
+de esos valores.
 
 ## JSON
 
-{{index [array, representation], [object, representation], "data format", [memory, organization]}}
+{{index [array, representation], [object, representation], "data format"}}
 
-Because properties only grasp their value, rather than contain it,
-objects and arrays are stored in the computer's memory as
-sequences of bits holding the _((address))es_—the place in memory—of
-their contents. So an array with another array inside of it consists
-of (at least) one memory region for the inner array, and another for
-the outer array, containing (among other things) a binary number that
-represents the position of the inner array.
+Ya que las propiedades solo agarran su valor, en lugar de contenerlo,
+los objetos y arrays se almacenan en la ((memoria)) de la computadora como
+secuencias de bits que contienen las _((dirección))es_—el lugar en la memoria—de
+sus contenidos. Asi que un array con otro array dentro de el consiste
+en (al menos) una región de memoria para el array interno, y otra para
+el array externo, que contiene (entre otras cosas) un número binario que
+representa la posición del array interno.
 
-If you want to save data in a file for later or send it to another
-computer over the network, you have to somehow convert these tangles
-of memory addresses to a description that can be stored or sent. You
-_could_ send over your entire computer memory along with the address
-of the value you're interested in, I suppose, but that doesn't seem
-like the best approach.
+Si deseas guardar datos en un archivo para más tarde, o para enviarlo a otra
+computadora a través de la red, tienes que convertir de alguna manera estos
+enredos de direcciones de memoria a una descripción que se puede almacenar o
+enviar. Supongo, que _podrías_ enviar toda la memoria de tu computadora
+junto con la dirección del valor que te interesa, pero ese no parece el
+mejor enfoque.
 
 {{indexsee "JavaScript Object Notation", JSON}}
 
 {{index serialization, "World Wide Web"}}
 
-What we can do is _serialize_ the data. That means it is converted
-into a flat description. A popular serialization format is called
-_((JSON))_ (pronounced "Jason"), which stands for JavaScript Object
-Notation. It is widely used as a data storage and communication format
-on the Web, even in languages other than JavaScript.
+Lo que podemos hacer es _serializar_ los datos. Eso significa que son
+convertidos a una descripción plana. Un formato de serialización popular llamado
+_((JSON))_ (pronunciado "Jason"), que significa JavaScript Object
+Notation ("Notación de Objetos JavaScript"). Es ampliamente utilizado
+como un formato de almacenamiento y comunicación de datos
+en la Web, incluso en otros lenguajes diferentes a JavaScript.
 
-{{index [array, notation], [object, creation], [quoting, "in JSON"], comment}}
+{{index array, object, [quoting, "in JSON"], comment}}
 
-JSON looks similar to JavaScript's way of writing arrays and objects,
-with a few restrictions. All property names have to be surrounded by
-double quotes, and only simple data expressions are allowed—no
-function calls, bindings, or anything that involves actual
-computation. Comments are not allowed in JSON.
+JSON es similar a la forma en que JavaScript escribe arrays y objetos,
+con algunas restricciones. Todos los nombres de propiedad deben estar
+rodeados por comillas dobles, y solo se permiten expresiones de datos
+simples—sin llamadas a función, vinculaciones o cualquier otra cosa que
+involucre computaciones reales. Los comentarios no están permitidos en JSON.
 
-A journal entry might look like this when represented as JSON data:
+Una entrada de diario podria verse así cuando se representa como datos JSON:
 
 ```{lang: "application/json"}
 {
-  "squirrel": false,
-  "events": ["work", "touched tree", "pizza", "running"]
+  "ardilla": false,
+  "eventos": ["trabajo", "toque un arbol", "pizza", "sali a correr"]
 }
 ```
 
 {{index "JSON.stringify function", "JSON.parse function", serialization, deserialization, parsing}}
 
-JavaScript gives us the functions `JSON.stringify` and `JSON.parse` to
-convert data to and from this format. The first takes a JavaScript
-value and returns a JSON-encoded string. The second takes such a
-string and converts it to the value it encodes.
+JavaScript nos da las funciones `JSON.stringify` y `JSON.parse` para
+convertir datos hacia y desde este formato. El primero toma un valor en
+JavaScript y retorna un string codificado en JSON. La segunda toma
+un string como ese y lo convierte al valor que este codifica.
 
 ```
-let string = JSON.stringify({squirrel: false,
-                             events: ["weekend"]});
+let string = JSON.stringify({ardilla: false,
+                             eventos: ["fin de semana"]});
 console.log(string);
-// → {"squirrel":false,"events":["weekend"]}
-console.log(JSON.parse(string).events);
-// → ["weekend"]
+// → {"ardilla":false,"eventos":["fin de semana"]}
+console.log(JSON.parse(string).eventos);
+// → ["fin de semana"]
 ```
 
-## Summary
+## Resumen
 
-Objects and arrays (which are a specific kind of object) provide ways
-to group several values into a single value. Conceptually, this allows
-us to put a bunch of related things in a bag and run around with the
-bag, instead of wrapping our arms around all of the individual things
-and trying to hold on to them separately.
+Los objetos y arrays (que son un tipo específico de objeto) proporcionan formas
+de agrupar varios valores en un solo valor. Conceptualmente, esto nos permite
+poner un montón de cosas relacionadas en un bolso y correr alredor con el
+bolso, en lugar de envolver nuestros brazos alrededor de todas las cosas
+individuales, tratando de aferrarnos a ellas por separado.
 
-Most values in JavaScript have properties, the exceptions being `null`
-and `undefined`. Properties are accessed using `value.prop` or
-`value["prop"]`. Objects tend to use names for their properties
-and store more or less a fixed set of them. Arrays, on the other hand,
-usually contain varying amounts of conceptually identical values and
-use numbers (starting from 0) as the names of their properties.
+La mayoría de los valores en JavaScript tienen propiedades, las excepciones
+son `null` y `undefined`. Se accede a las propiedades usando `valor.propiedad` o
+`valor["propiedad"]`. Los objetos tienden a usar nombres para sus propiedades
+y almacenar más o menos un conjunto fijo de ellos. Los arrays, por el otro lado,
+generalmente contienen cantidades variables de valores conceptualmente
+idénticos y usa números (comenzando desde 0) como los nombres de sus propiedades.
 
-There _are_ some named properties in arrays, such as `length` and a
-number of methods. Methods are functions that live in properties and
-(usually) act on the value they are a property of.
+Hay _algunas_ propiedades con nombre en los arrays, como `length` y un
+numero de metodos. Los métodos son funciones que viven en propiedades y
+(por lo general) actuan sobre el valor del que son una propiedad.
 
-You can iterate over arrays using a special kind of `for` loop—`for
-(let element of array)`.
+Puedes iterar sobre los arrays utilizando un tipo especial de ciclo `for`—`for
+(let elemento of array)`.
 
-## Exercises
+## Ejercicios
 
-### The sum of a range
+### La suma de un rango
 
 {{index "summing (exercise)"}}
 
-The [introduction](intro) of this book alluded to the following as a
-nice way to compute the sum of a range of numbers:
+La [introducción](intro) de este libro aludía a lo siguiente como una
+buena forma de calcular la suma de un rango de números:
 
 ```{test: no}
-console.log(sum(range(1, 10)));
+console.log(suma(rango(1, 10)));
 ```
 
 {{index "range function", "sum function"}}
 
-Write a `range` function that takes two arguments, `start` and `end`,
-and returns an array containing all the numbers from `start` up to
-(and including) `end`.
+Escribe una función `rango` que tome dos argumentos, `inicio` y `final`,
+y retorne un array que contenga todos los números desde `inicio` hasta
+(e incluyendo) `final`.
 
-Next, write a `sum` function that takes an array of numbers and
-returns the sum of these numbers. Run the example program and see
-whether it does indeed return 55.
+Luego, escribe una función `suma` que tome un array de números y
+retorne la suma de estos números. Ejecuta el programa de ejemplo y ve
+si realmente retorna 55.
 
 {{index "optional argument"}}
 
-As a bonus assignment, modify your `range` function to take an
-optional third argument that indicates the "step" value used when
-building the array. If no step is given, the elements go up by
-increments of one, corresponding to the old behavior. The function
-call `range(1, 10, 2)` should return `[1, 3, 5, 7, 9]`. Make sure it
-also works with negative step values so that `range(5, 2, -1)`
-produces `[5, 4, 3, 2]`.
+Como una misión extra, modifica tu función `rango` para tomar un
+tercer argumento opcional que indique el valor de "paso" utilizado para cuando
+construyas el array. Si no se da ningún paso, los elementos suben en
+incrementos de uno, correspondiedo al comportamiento anterior. La llamada
+a la función `rango(1, 10, 2)` deberia retornar `[1, 3, 5, 7, 9]`. Asegúrate de
+que también funcione con valores de pasos negativos para que `rango(5, 2, -1)`
+produzca `[5, 4, 3, 2]`.
 
 {{if interactive
 
 ```{test: no}
-// Your code here.
+// Tu código aquí.
 
-console.log(range(1, 10));
+console.log(rango(1, 10));
 // → [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-console.log(range(5, 2, -1));
+console.log(rango(5, 2, -1));
 // → [5, 4, 3, 2]
-console.log(sum(range(1, 10)));
+console.log(sum(rango(1, 10)));
 // → 55
 ```
 
@@ -1384,65 +1399,66 @@ if}}
 
 {{index "summing (exercise)", [array, creation], "square brackets"}}
 
-Building up an array is most easily done by first initializing a
-binding to `[]` (a fresh, empty array) and repeatedly calling its
-`push` method to add a value. Don't forget to return the array at the
-end of the function.
+Construir un array se realiza más fácilmente al inicializar primero una
+vinculación a `[]` (un array nuevo y vacío) y llamando repetidamente a su
+método `push` para agregar un valor. No te olvides de retornar el array al
+final de la función.
 
 {{index [array, indexing], comparison}}
 
-Since the end boundary is inclusive, you'll need to use the `<=`
-operator rather than `<` to check for the end of your loop.
+Dado que el límite final es inclusivo, deberias usar el operador `<=`
+en lugar de `<` para verificar el final de tu ciclo.
 
 {{index "arguments object"}}
 
-The step parameter can be an optional parameter that defaults (using
-the `=` operator) to 1.
+El parámetro de paso puede ser un parámetro opcional que por defecto (usando
+el operador `=`) tenga el valor 1.
 
 {{index "range function", "for loop"}}
 
-Having `range` understand negative step values is probably best done
-by writing two separate loops—one for counting up and one for counting
-down—because the comparison that checks whether the loop is finished
-needs to be `>=` rather than `<=` when counting downward.
+Hacer que `rango` entienda valores de paso negativos es probablemente
+mas facil de realizar al escribir dos ciclos por separado—uno para contar
+hacia arriba y otro para contar hacia abajo—ya que la comparación que verifica
+si el ciclo está terminado necesita ser `>=` en lugar de `<=` cuando se cuenta
+hacia abajo.
 
-It might also be worthwhile to use a different default step, namely,
--1, when the end of the range is smaller than the start. That way,
-`range(5, 2)` returns something meaningful, rather than getting stuck
-in an ((infinite loop)). It is possible to refer to previous
-parameters in the default value of a parameter.
+También puede que valga la pena utilizar un paso predeterminado
+diferente, es decir -1, cuando el final del rango sea menor que el inicio.
+De esa manera, `rango(5, 2)` retornaria algo significativo, en lugar de quedarse
+atascado en un ((ciclo infinito)). Es posible referirse a parámetros anteriores
+en el valor predeterminado de un parámetro.
 
 hint}}
 
-### Reversing an array
+### Revirtiendo un array
 
 {{index "reversing (exercise)", "reverse method", [array, methods]}}
 
-Arrays have a `reverse` method that changes the array by inverting
-the order in which its elements appear. For this exercise, write two
-functions, `reverseArray` and `reverseArrayInPlace`. The first,
-`reverseArray`, takes an array as argument and produces a _new_ array
-that has the same elements in the inverse order. The second,
-`reverseArrayInPlace`, does what the `reverse` method does: it
-_modifies_ the array given as argument by reversing its elements.
-Neither may use the standard `reverse` method.
+Los arrays tienen un método `reverse` que cambia al array invirtiendo
+el orden en que aparecen sus elementos. Para este ejercicio, escribe dos
+funciones, `revertirArray` y `revertirArrayEnSuLugar`. El primero,
+`revertirArray`, toma un array como argumento y produce un _nuevo_ array
+que tiene los mismos elementos pero en el orden inverso. El segundo,
+`revertirArrayEnSuLugar`, hace lo que hace el método` reverse`:
+_modifica_ el array dado como argumento invirtiendo sus elementos.
+Ninguno de los dos puede usar el método `reverse` estándar.
 
 {{index efficiency, "pure function", "side effect"}}
 
-Thinking back to the notes about side effects and pure functions in
-the [previous chapter](functions#pure), which variant do you expect to
-be useful in more situations? Which one runs faster?
+Pensando en las notas acerca de los efectos secundarios y las funciones puras en
+el [capítulo anterior](funciones#pura), qué variante esperas que sea
+útil en más situaciones? Cuál corre más rápido?
 
 {{if interactive
 
 ```{test: no}
-// Your code here.
+// Tu código aquí.
 
-console.log(reverseArray(["A", "B", "C"]));
+console.log(revertirArray(["A", "B", "C"]));
 // → ["C", "B", "A"];
-let arrayValue = [1, 2, 3, 4, 5];
-reverseArrayInPlace(arrayValue);
-console.log(arrayValue);
+let valorArray = [1, 2, 3, 4, 5];
+revertirArrayEnSuLugar(valorArray);
+console.log(valorArray);
 // → [5, 4, 3, 2, 1]
 ```
 
@@ -1452,95 +1468,96 @@ if}}
 
 {{index "reversing (exercise)"}}
 
-There are two obvious ways to implement `reverseArray`. The first is
-to simply go over the input array from front to back and use the
-`unshift` method on the new array to insert each element at its start.
-The second is to loop over the input array backwards and use the `push`
-method. Iterating over an array backwards requires a (somewhat awkward)
-`for` specification, like `(let i = array.length - 1; i >= 0; i--)`.
+Hay dos maneras obvias de implementar `revertirArray`. La primera es
+simplemente pasar a traves del array de entrada de adelante hacia atrás y
+usar el metodo `unshift` en el nuevo array para insertar cada elemento en su
+inicio. La segundo es hacer un ciclo sobre el array de entrada de atrás hacia
+adelante y usar el método `push`. Iterar sobre un array al revés requiere de
+una especificación (algo incómoda) del ciclo `for`, como
+`(let i = array.length - 1; i >= 0; i--)`.
 
 {{index "slice method"}}
 
-Reversing the array in place is harder. You have to be careful not to
-overwrite elements that you will later need. Using `reverseArray` or
-otherwise copying the whole array (`array.slice(0)` is a good way to
-copy an array) works but is cheating.
+Revertir al array en su lugar es más difícil. Tienes que tener cuidado de no
+sobrescribir elementos que necesitarás luego. Usar `revertirArray` o
+de lo contrario, copiar toda el array (`array.slice(0)` es una buena forma de
+copiar un array) funciona pero estás haciendo trampa.
 
-The trick is to _swap_ the first and last elements, then the second
-and second-to-last, and so on. You can do this by looping over half
-the length of the array (use `Math.floor` to round down—you don't need
-to touch the middle element in an array with an odd number of
-elements) and swapping the element at position `i` with the one at
-position `array.length - 1 - i`. You can use a local binding to
-briefly hold on to one of the elements, overwrite that one with its
-mirror image, and then put the value from the local binding in the
-place where the mirror image used to be.
+El truco consiste en _intercambiar_ el primer y el último elemento,
+luego el segundo y el penúltimo, y así sucesivamente. Puedes hacer esto
+haciendo un ciclo basandote en la mitad de la longitud del array
+(use `Math.floor` para redondear—no necesitas tocar el elemento del medio en
+un array con un número impar de elementos) e intercambiar el elemento en
+la posición `i` con el de la posición `array.length - 1 - i`. Puedes usar una
+vinculación local para aferrarse brevemente a uno de los elementos,
+sobrescribirlo con su imagen espejo, y luego poner el valor de la vinculación
+local en el lugar donde solía estar la imagen espejo.
 
 hint}}
 
 {{id list}}
 
-### A list
+### Una lista
 
-{{index ["data structure", list], "list (exercise)", "linked list", array, collection}}
+{{index "data structure", "list (exercise)", "linked list", object, array, collection}}
 
-Objects, as generic blobs of values, can be used to build all sorts of
-data structures. A common data structure is the _list_ (not to be
-confused with array). A list is a nested set of objects, with the
-first object holding a reference to the second, the second to the
-third, and so on.
+Los objetos, como conjuntos genéricos de valores, se pueden usar para construir
+todo tipo de estructuras de datos. Una estructura de datos común es la
+_lista_ (no confundir con un array). Una lista es un conjunto anidado
+de objetos, con el primer objeto conteniendo una referencia al segundo, el
+segundo al tercero, y así sucesivamente.
 
 ```{includeCode: true}
-let list = {
-  value: 1,
-  rest: {
-    value: 2,
-    rest: {
-      value: 3,
-      rest: null
+let lista = {
+  valor: 1,
+  resto: {
+    valor: 2,
+    resto: {
+      valor: 3,
+      resto: null
     }
   }
 };
 ```
 
-The resulting objects form a chain, like this:
+Los objetos resultantes forman una cadena, como esta:
 
-{{figure {url: "img/linked-list.svg", alt: "A linked list",width: "8cm"}}}
+{{figure {url: "img/linked-list.svg", alt: "Una lista vinculada",width: "8cm"}}}
 
-{{index "structure sharing", [memory, structure sharing]}}
+{{index "structure sharing", memory}}
 
-A nice thing about lists is that they can share parts of their
-structure. For example, if I create two new values `{value: 0, rest:
-list}` and `{value: -1, rest: list}` (with `list` referring to the
-binding defined earlier), they are both independent lists, but they
-share the structure that makes up their last three elements. The
-original list is also still a valid three-element list.
+Algo bueno de las listas es que pueden compartir partes de su
+estructura. Por ejemplo, si creo dos nuevos valores `{valor: 0, resto:
+lista}` y `{valor: -1, resto: lista}` (con `lista` refiriéndose a la
+vinculación definida anteriormente), ambos son listas independientes, pero
+comparten la estructura que conforma sus últimos tres elementos.
+La lista original también sigue siendo una lista válida de tres elementos.
 
-Write a function `arrayToList` that builds up a list structure like
-the one shown when given `[1, 2, 3]` as argument. Also write a
-`listToArray` function that produces an array from a list. Then add a
-helper function `prepend`, which takes an element and a list and
-creates a new list that adds the element to the front of the input
-list, and `nth`, which takes a list and a number and returns the
-element at the given position in the list (with zero referring to the
-first element) or `undefined` when there is no such element.
+Escribe una función `arrayALista` que construya una estructura de lista como
+el que se muestra arriba cuando se le da `[1, 2, 3]` como argumento.
+También escribe una función `listaAArray` que produzca un array de una lista.
+Luego agrega una función de utilidad `preceder`, que tome un elemento y
+una lista y creé una nueva lista que agrega el elemento al frente de la lista
+de entrada, y `posicion`, que toma una lista y un número y retorne el
+elemento en la posición dada en la lista (con cero refiriéndose al
+primer elemento) o `undefined` cuando no exista tal elemento.
 
 {{index recursion}}
 
-If you haven't already, also write a recursive version of `nth`.
+Si aún no lo has hecho, también escribe una versión recursiva de `posicion`.
 
 {{if interactive
 
 ```{test: no}
-// Your code here.
+// Tu código aquí.
 
-console.log(arrayToList([10, 20]));
-// → {value: 10, rest: {value: 20, rest: null}}
-console.log(listToArray(arrayToList([10, 20, 30])));
+console.log(arrayALista([10, 20]));
+// → {valor: 10, resto: {valor: 20, resto: null}}
+console.log(listaAArray(arrayALista([10, 20, 30])));
 // → [10, 20, 30]
-console.log(prepend(10, prepend(20, null)));
-// → {value: 10, rest: {value: 20, rest: null}}
-console.log(nth(arrayToList([10, 20, 30]), 1));
+console.log(preceder(10, preceder(20, null)));
+// → {valor: 10, resto: {valor: 20, resto: null}}
+console.log(posicion(arrayALista([10, 20, 30]), 1));
 // → 20
 ```
 
@@ -1550,78 +1567,79 @@ if}}
 
 {{index "list (exercise)", "linked list"}}
 
-Building up a list is easier when done back to front. So `arrayToList`
-could iterate over the array backwards (see the previous exercise) and, for
-each element, add an object to the list. You can use a local binding
-to hold the part of the list that was built so far and use an
-assignment like `list = {value: X, rest: list}` to add an element.
+Crear una lista es más fácil cuando se hace de atrás hacia adelante. Entonces
+`arrayALista` podría iterar sobre el array hacia atrás
+(ver ejercicio anterior) y, para cada elemento, agregar un objeto a la lista.
+Puedes usar una vinculación local para mantener la parte de la lista que se
+construyó hasta el momento y usar una asignación como
+`lista = {valor: X, resto: lista}` para agregar un elemento.
 
 {{index "for loop"}}
 
-To run over a list (in `listToArray` and `nth`), a `for` loop
-specification like this can be used:
+Para correr a traves de una lista (en `listaAArray` y `posicion`),
+una especificación del ciclo `for` como esta se puede utilizar:
 
 ```
-for (let node = list; node; node = node.rest) {}
+for (let nodo = lista; nodo; nodo = nodo.resto) {}
 ```
 
-Can you see how that works? Every iteration of the loop, `node` points
-to the current sublist, and the body can read its `value` property to
-get the current element. At the end of an iteration, `node` moves to
-the next sublist. When that is null, we have reached the end of the
-list, and the loop is finished.
+Puedes ver cómo eso funciona? En cada iteración del ciclo, `nodo` apunta
+a la sublista actual, y el cuerpo puede leer su propiedad `valor` para
+obtener el elemento actual. Al final de una iteración, `nodo` se mueve a
+la siguiente sublista. Cuando eso es nulo, hemos llegado al final de la
+lista y el ciclo termina.
 
 {{index recursion}}
 
-The recursive version of `nth` will, similarly, look at an ever
-smaller part of the "tail" of the list and at the same time count down
-the index until it reaches zero, at which point it can return the
-`value` property of the node it is looking at. To get the zeroth
-element of a list, you simply take the `value` property of its head
-node. To get element _N_ + 1, you take the *N*th element of the list
-that's in this list's `rest` property.
+La versión recursiva de `posición`, de manera similar, mirará a una
+parte más pequeña de la "cola" de la lista y, al mismo tiempo, contara atrás
+el índice hasta que llegue a cero, en cuyo punto puede retornar la propiedad
+`valor` del nodo que está mirando. Para obtener el elemento cero de una lista,
+simplemente toma la propiedad `valor` de su nodo frontal.
+Para obtener el elemento _N_ + 1, toma el elemento _N_ de la lista
+que este en la propiedad `resto` de esta lista.
 
 hint}}
 
 {{id exercise_deep_compare}}
 
-### Deep comparison
+### Comparación profunda
 
-{{index "deep comparison (exercise)", [comparison, deep], "deep comparison", "== operator"}}
+{{index "deep comparison (exercise)", comparison, "deep comparison", "== operator"}}
 
-The `==` operator compares objects by identity. But sometimes you'd
-prefer to compare the values of their actual properties.
+El operador `==` compara objetos por identidad. Pero a veces
+preferirias comparar los valores de sus propiedades reales.
 
-Write a function `deepEqual` that takes two values and returns true
-only if they are the same value or are objects with the same
-properties, where the values of the properties are equal when compared
-with a recursive call to `deepEqual`.
+Escribe una función `igualdadProfunda` que toma dos valores y retorne `true`
+solo si tienen el mismo valor o son objetos con las mismas
+propiedades, donde los valores de las propiedades sean iguales cuando
+comparadas con una llamada recursiva a `igualdadProfunda`.
 
 {{index null, "=== operator", "typeof operator"}}
 
-To find out whether values should be compared directly (use the `===`
-operator for that) or have their properties compared, you can use the
-`typeof` operator. If it produces `"object"` for both values, you
-should do a deep comparison. But you have to take one silly exception
-into account: because of a historical accident, `typeof null` also
-produces `"object"`.
+Para saber si los valores deben ser comparados directamente (usa el
+operador `==` para eso) o si deben tener sus propiedades comparadas,
+puedes usar el operador `typeof`. Si produce `"object"` para ambos valores,
+deberías hacer una comparación profunda. Pero tienes que tomar una
+excepción tonta en cuenta: debido a un accidente histórico, `typeof null`
+también produce `"object"`.
 
 {{index "Object.keys function"}}
 
-The `Object.keys` function will be useful when you need to go over the
-properties of objects to compare them.
+La función `Object.keys` será útil para cuando necesites revisar las
+propiedades de los objetos para compararlos.
 
 {{if interactive
 
 ```{test: no}
-// Your code here.
+// Tu código aquí.
 
-let obj = {here: {is: "an"}, object: 2};
-console.log(deepEqual(obj, obj));
+let objeto = {aqui: {hay: "un"}, objeto: 2};
+console.log(igualdadProfunda(objeto, objeto));
 // → true
-console.log(deepEqual(obj, {here: 1, object: 2}));
+console.log(igualdadProfunda(objeto, {aqui: 1, object: 2}));
 // → false
-console.log(deepEqual(obj, {here: {is: "an"}, object: 2}));
+console.log(igualdadProfunda(objeto, {aqui: {hay: "un"}, objeto: 2}));
 // → true
 ```
 
@@ -1629,30 +1647,29 @@ if}}
 
 {{hint
 
-{{index "deep comparison (exercise)", [comparison, deep], "typeof operator", "=== operator"}}
+{{index "deep comparison (exercise)", "typeof operator", object, "=== operator"}}
 
-Your test for whether you are dealing with a real object will look
-something like `typeof x == "object" && x != null`. Be careful to
-compare properties only when _both_ arguments are objects. In all
-other cases you can just immediately return the result of applying
-`===`.
+Tu prueba de si estás tratando con un objeto real se verá
+algo así como `typeof x == "object" && x != null`. Ten cuidado de
+comparar propiedades solo cuando _ambos_ argumentos sean objetos. En todo los
+otros casos, puede retornar inmediatamente el resultado de aplicar `===`.
 
 {{index "Object.keys function"}}
 
-Use `Object.keys` to go over the properties. You need to test whether
-both objects have the same set of property names and whether those
-properties have identical values. One way to do that is to ensure that
-both objects have the same number of properties (the lengths of the
-property lists are the same). And then, when looping over one of the
-object's properties to compare them, always first make sure
-the other actually has a property by that name. If they have the same
-number of properties and all properties in one also exist in the
-other, they have the same set of property names.
+Usa `Object.keys` para revisar las propiedades. Necesitas probar si
+ambos objetos tienen el mismo conjunto de nombres de propiedad y si esos
+propiedades tienen valores idénticos. Una forma de hacerlo es garantizar que
+ambos objetos tengan el mismo número de propiedades (las longitudes de
+las listas de propiedades son las mismas). Y luego, al hacer un ciclo sobre
+una de las propiedades del objeto para compararlos, siempre asegúrate primero
+de que el otro realmente tenga una propiedad con ese mismo nombre.
+Si tienen el mismo número de propiedades, y todas las propiedades en uno
+también existen en el otro, tienen el mismo conjunto de nombres de propiedad.
 
 {{index "return value"}}
 
-Returning the correct value from the function is best done by
-immediately returning false when a mismatch is found and returning
-true at the end of the function.
+Retornar el valor correcto de la función se realiza mejor al inmediatamente
+retornar falso cuando se encuentre una discrepancia y retornar
+verdadero al final de la función.
 
 hint}}

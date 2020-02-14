@@ -1,11 +1,11 @@
 {{meta {load_files: ["code/chapter/07_robot.js", "code/animatevillage.js"], zip: html}}}
 
-# Project: A Robot
+# Proyecto: Un Robot
 
 {{quote {author: "Edsger Dijkstra", title: "The Threats to Computing Science", chapter: true}
 
-[...] the question of whether Machines Can Think [...] is about as
-relevant as the question of whether Submarines Can Swim.
+[...] la pregunta de si las Maquinas Pueden Pensar [...] es tan
+relevante como la pregunta de si los Submarinos Pueden Nadar.
 
 quote}}
 
@@ -15,556 +15,557 @@ quote}}
 
 {{index "project chapter", "reading code", "writing code"}}
 
-In "project" chapters, I'll stop pummeling you with new theory for a
-brief moment, and instead we'll work through a program together. Theory
-is necessary to learn to program, but reading and understanding actual
-programs is just as important.
+En los capítulos de "proyectos", dejaré de golpearte con teoría nueva
+por un breve momento y en su lugar vamos a trabajar juntos en un programa.
+La teoría es necesaria para aprender a programar, pero leer y entender
+programas reales es igual de importante.
 
-Our project in this chapter is to build an ((automaton)), a little
-program that performs a task in a ((virtual world)). Our automaton
-will be a mail-delivery ((robot)) picking up and dropping off parcels.
+Nuestro proyecto en este capítulo es construir un ((autómata)), un pequeño
+programa que realiza una tarea en un ((mundo virtual)). Nuestro autómata
+será un ((robot)) de entregas por correo que recoge y deja paquetes.
 
-## Meadowfield
+## VillaPradera
 
 {{index "roads array"}}
 
-The village of ((Meadowfield)) isn't very big. It consists of 11
-places with 14 roads between them. It can be described with this
-array of roads:
+El pueblo de ((VillaPradera)) no es muy grande. Este consiste de 11
+lugares con 14 caminos entre ellos. Puede ser describido con este
+array de caminos:
+
 
 ```{includeCode: true}
-const roads = [
-  "Alice's House-Bob's House",   "Alice's House-Cabin",
-  "Alice's House-Post Office",   "Bob's House-Town Hall",
-  "Daria's House-Ernie's House", "Daria's House-Town Hall",
-  "Ernie's House-Grete's House", "Grete's House-Farm",
-  "Grete's House-Shop",          "Marketplace-Farm",
-  "Marketplace-Post Office",     "Marketplace-Shop",
-  "Marketplace-Town Hall",       "Shop-Town Hall"
+const caminos = [
+  "Casa de Alicia-Casa de Bob",        "Casa de Alicia-Cabaña",
+  "Casa de Alicia-Oficina de Correos", "Casa de Bob-Ayuntamiento",
+  "Casa de Daria-Casa de Ernie",       "Casa de Daria-Ayuntamiento",
+  "Casa de Ernie-Casa de Grete",       "Casa de Grete-Granja",
+  "Casa de Grete-Tienda",              "Mercado-Granja",
+  "Mercado-Oficina de Correos",        "Mercado-Tienda",
+  "Mercado-Ayuntamiento",              "Tienda-Ayuntamiento"
 ];
 ```
 
 {{figure {url: "img/village2x.png", alt: "The village of Meadowfield"}}}
 
-The network of roads in the village forms a _((graph))_. A graph is a
-collection of points (places in the village) with lines between them
-(roads). This graph will be the world that our robot moves through.
+La red de caminos en el pueblo forma un _((grafo))_. Un grafo es una
+colección de puntos (lugares en el pueblo) con líneas entre ellos
+(caminos). Este grafo será el mundo por el que nuestro robot se movera.
 
 {{index "roadGraph object"}}
 
-The array of strings isn't very easy to work with. What we're
-interested in is the destinations that we can reach from a given
-place. Let's convert the list of roads to a data structure that, for
-each place, tells us what can be reached from there.
+El array de strings no es muy fácil de trabajar. En lo que estamos
+interesados es en los destinos a los que podemos llegar desde un lugar
+determinado. Vamos a convertir la lista de caminos en una estructura de datos
+que, para cada lugar, nos diga a donde se pueda llegar desde allí.
 
 ```{includeCode: true}
-function buildGraph(edges) {
-  let graph = Object.create(null);
-  function addEdge(from, to) {
-    if (graph[from] == null) {
-      graph[from] = [to];
+function construirGrafo(bordes) {
+  let grafo = Object.create(null);
+  function añadirBorde(desde, hasta) {
+    if (grafo[desde] == null) {
+      grafo[desde] = [hasta];
     } else {
-      graph[from].push(to);
+      grafo[desde].push(hasta);
     }
   }
-  for (let [from, to] of edges.map(r => r.split("-"))) {
-    addEdge(from, to);
-    addEdge(to, from);
+  for (let [desde, hasta] of bordes.map(c => c.split("-"))) {
+    añadirBorde(desde, hasta);
+    añadirBorde(hasta, desde);
   }
-  return graph;
+  return grafo;
 }
 
-const roadGraph = buildGraph(roads);
+const grafoCamino = construirGrafo(roads);
 ```
 
-Given an array of edges, `buildGraph` creates a map object that, for
-each node, stores an array of connected nodes.
+Dado un conjunto de bordes, `construirGrafo` crea un objeto de mapa que, para
+cada nodo, almacena un array de nodos conectados.
 
 {{index "split method"}}
 
-It uses the `split` method to go from the road strings, which have the
-form `"Start-End"`, to two-element arrays containing the start and end
-as separate strings.
+Utiliza el método `split` para ir de los strings de caminos, que tienen la
+forma `"Comienzo-Final"`, a arrays de dos elementos que contienen el inicio y
+el final como strings separados.
 
-## The task
+## La tarea
 
-Our ((robot)) will be moving around the village. There are parcels
-in various places, each addressed to some other place. The robot picks
-up parcels when it comes to them and delivers them when it arrives at
-their destinations.
+Nuestro ((robot)) se moverá por el pueblo. Hay paquetes
+en varios lugares, cada uno dirigido a otro lugar. El robot tomara
+paquetes cuando los encuentre y los entregara cuando llegue a
+sus destinos.
 
-The automaton must decide, at each point, where to go next. It has
-finished its task when all parcels have been delivered.
+El autómata debe decidir, en cada punto, a dónde ir después. Ha
+finalizado su tarea cuando se han entregado todos los paquetes.
 
 {{index simulation, "virtual world"}}
 
-To be able to simulate this process, we must define a virtual world
-that can describe it. This model tells us where the robot is and where
-the parcels are. When the robot has decided to move somewhere, we need
-to update the model to reflect the new situation.
+Para poder simular este proceso, debemos definir un mundo virtual que
+pueda describirlo. Este modelo nos dice dónde está el robot y dónde estan
+los paquetes. Cuando el robot ha decidido moverse a alguna parte, necesitamos
+actualizar el modelo para reflejar la nueva situación.
 
-{{index [state, in objects]}}
+Si estás pensando en términos de ((programación orientada a objetos)), tu
+primer impulso podría ser comenzar a definir objetos para los diversos
+elementos en el mundo. Una ((clase)) para el robot, una para un paquete,
+tal vez una para los lugares. Estas podrían tener propiedades que describen
+su ((estado)) actual, como la pila de paquetes en un lugar,
+que podríamos cambiar al actualizar el mundo.
 
-If you're thinking in terms of ((object-oriented programming)), your
-first impulse might be to start defining objects for the various
-elements in the world: a ((class)) for the robot, one for a parcel,
-maybe one for places. These could then hold properties that describe
-their current ((state)), such as the pile of parcels at a location,
-which we could change when updating the world.
+Esto está mal.
 
-This is wrong.
+Al menos, usualmente lo esta. El hecho de que algo suena como un objeto
+no significa automáticamente que debe ser un objeto en tu
+programa. Escribir por reflejo las clases para cada concepto en tu
+aplicación tiende a dejarte con una colección de objetos interconectados
+donde cada uno tiene su propio estado interno y cambiante. Tales
+programas a menudo son difíciles de entender y, por lo tanto, fáciles
+de romper.
 
-At least, it usually is. The fact that something sounds like an object
-does not automatically mean that it should be an object in your
-program. Reflexively writing classes for every concept in your
-application tends to leave you with a collection of interconnected
-objects that each have their own internal, changing state. Such
-programs are often hard to understand and thus easy to break.
-
-{{index [state, in objects]}}
-
-Instead, let's condense the village's state down to the minimal
-set of values that define it. There's the robot's current location and
-the collection of undelivered parcels, each of which has a current
-location and a destination address. That's it.
+En lugar de eso, condensemos el ((estado)) del pueblo hasta el mínimo
+conjunto de valores que lo definan. Está la ubicación actual del robot y
+la colección de paquetes no entregados, cada uno de los cuales tiene una
+ubicación actual y una dirección de destino. Eso es todo.
 
 {{index "VillageState class", "persistent data structure"}}
 
-And while we're at it, let's make it so that we don't _change_ this
-state when the robot moves but rather compute a _new_ state for the
-situation after the move.
+Y mientras estamos en ello, hagámoslo de manera que no _cambiemos_ este
+estado cuándo se mueva el robot, sino calcular un _nuevo_ estado para la
+situación después del movimiento.
 
 ```{includeCode: true}
-class VillageState {
-  constructor(place, parcels) {
-    this.place = place;
-    this.parcels = parcels;
+class EstadoPueblo {
+  constructor(lugar, paquetes) {
+    this.lugar = lugar;
+    this.paquetes = paquetes;
   }
 
-  move(destination) {
-    if (!roadGraph[this.place].includes(destination)) {
+  mover(destino) {
+    if (!grafoCamino[this.lugar].includes(destino)) {
       return this;
     } else {
-      let parcels = this.parcels.map(p => {
-        if (p.place != this.place) return p;
-        return {place: destination, address: p.address};
-      }).filter(p => p.place != p.address);
-      return new VillageState(destination, parcels);
+      let paquetes = this.paquetes.map(p => {
+        if (p.lugar != this.lugar) return p;
+        return {lugar: destino, direccion: p.direccion};
+      }).filter(p => p.lugar != p.direccion);
+      return new EstadoPueblo(destino, paquetes);
     }
   }
 }
 ```
 
-The `move` method is where the action happens. It first checks whether
-there is a road going from the current place to the destination, and
-if not, it returns the old state since this is not a valid move.
+En el método `mover` es donde ocurre la acción. Este primero verifica si
+hay un camino que va del lugar actual al destino, y
+si no, retorna el estado anterior, ya que este no es un movimiento válido.
 
 {{index "map method", "filter method"}}
 
-Then it creates a new state with the destination as the robot's new
-place. But it also needs to create a new set of parcels—parcels that
-the robot is carrying (that are at the robot's current place) need to
-be moved along to the new place. And parcels that are addressed to the
-new place need to be delivered—that is, they need to be removed from
-the set of undelivered parcels. The call to `map` takes care of the
-moving, and the call to `filter` does the delivering.
+Luego crea un nuevo estado con el destino como el nuevo lugar del robot.
+Pero también necesita crear un nuevo conjunto de paquetes—los paquetes que
+el robot esta llevando (que están en el lugar actual del robot) necesitan de
+moverse tambien al nuevo lugar. Y paquetes que están dirigidos al nuevo
+lugar donde deben de ser entregados—es decir, deben de eliminarse del
+conjunto de paquetes no entregados. La llamada a `map` se encarga de mover
+los paquetes, y la llamada a `filter` hace la entrega.
 
-Parcel objects aren't changed when they are moved but re-created. The
-`move` method gives us a new village state but leaves the old one
-entirely intact.
+Los objetos de paquete no se modifican cuando se mueven, sino que se vuelven
+a crear. El método `movee` nos da un nuevo estado de aldea, pero deja el
+viejo completamente intacto
 
 ```
-let first = new VillageState(
-  "Post Office",
-  [{place: "Post Office", address: "Alice's House"}]
+let primero = new EstadoPueblo(
+  "Oficina de Correos",
+  [{lugar: "Oficina de Correos", direccion: "Casa de Alicia"}]
 );
-let next = first.move("Alice's House");
+let siguiente = primero.mover("Casa de Alicia");
 
-console.log(next.place);
-// → Alice's House
-console.log(next.parcels);
+console.log(siguiente.lugar);
+// → Casa de Alicia
+console.log(siguiente.parcels);
 // → []
-console.log(first.place);
-// → Post Office
+console.log(primero.lugar);
+// → Oficina de Correos
 ```
 
-The move causes the parcel to be delivered, and this is reflected in
-the next state. But the initial state still describes the situation
-where the robot is at the post office and the parcel is undelivered.
+Mover hace que se entregue el paquete, y esto se refleja en
+el próximo estado. Pero el estado inicial todavía describe la situación
+donde el robot está en la oficina de correos y el paquete aun no ha
+sido entregado.
 
-## Persistent data
+## Datos persistentes
 
-{{index "persistent data structure", mutability, ["data structure", immutable]}}
+{{index "persistent data structure", mutability, "data structure"}}
 
-Data structures that don't change are called _((immutable))_ or
-_persistent_. They behave a lot like strings and numbers in that they
-are who they are and stay that way, rather than containing different
-things at different times.
+Las estructuras de datos que no cambian se llaman _((inmutables))_ o
+_persistentes_. Se comportan de manera muy similar a los strings y números
+en que son quienes son, y se quedan así, en lugar de contener diferentes
+cosas en diferentes momentos.
 
-In JavaScript, just about everything _can_ be changed, so working with
-values that are supposed to be persistent requires some restraint.
-There is a function called `Object.freeze` that changes an object so
-that writing to its properties is ignored. You could use that to make
-sure your objects aren't changed, if you want to be careful. Freezing
-does require the computer to do some extra work, and having updates
-ignored is just about as likely to confuse someone as having them do
-the wrong thing. So I usually prefer to just tell people that a given
-object shouldn't be messed with and hope they remember it.
+En JavaScript, casi todo _puede_ ser cambiado, así que trabajar con
+valores que se supone que sean persistentes requieren cierta restricción.
+Hay una función llamada `Object.freeze` ("Objeto.congelar") que cambia un objeto
+de manera que escribir en sus propiedades sea ignorado. Podrías usar eso para
+asegurarte de que tus objetos no cambien, si quieres ser cuidadoso. La congelación
+requiere que la computadora haga un trabajo extra e ignorar actualizaciones
+es probable que confunda a alguien tanto como para que hagan
+lo incorrecto. Por lo general, prefiero simplemente decirle a la gente que un
+determinado objeto no debe ser molestado, y espero que lo recuerden.
 
 ```
-let object = Object.freeze({value: 5});
-object.value = 10;
-console.log(object.value);
+let objeto = Object.freeze({valor: 5});
+objeto.valor = 10;
+console.log(objeto.valor);
 // → 5
 ```
 
-Why am I going out of my way to not change objects when the language
-is obviously expecting me to?
+Por qué me salgo de mi camino para no cambiar objetos cuando el lenguaje
+obviamente está esperando que lo haga?
 
-Because it helps me understand my programs. This is about complexity
-management again. When the objects in my system are fixed, stable
-things, I can consider operations on them in isolation—moving to
-Alice's house from a given start state always produces the same new
-state. When objects change over time, that adds a whole new dimension
-of complexity to this kind of reasoning.
+Porque me ayuda a entender mis programas. Esto es acerca de manejar la
+complejidad nuevamente. Cuando los objetos en mi sistema son cosas fijas y
+estables, puedo considerar las operaciones en ellos de forma aislada—moverse
+a la casa de Alicia desde un estado de inicio siempre produce el mismo nuevo
+estado. Cuando los objetos cambian con el tiempo, eso agrega una dimensión
+completamente nueva de complejidad a este tipo de razonamiento.
 
-For a small system like the one we are building in this chapter, we
-could handle that bit of extra complexity. But the most important
-limit on what kind of systems we can build is how much we can
-understand. Anything that makes your code easier to understand makes
-it possible to build a more ambitious system.
+Para un sistema pequeño como el que estamos construyendo en este capítulo,
+podriamos manejar ese poco de complejidad adicional. Pero el límite
+más importante sobre qué tipo de sistemas podemos construir es cuánto podemos
+entender. Cualquier cosa que haga que tu código sea más fácil de entender hace
+que sea posible construir un sistema más ambicioso.
 
-Unfortunately, although understanding a system built on persistent data
-structures is easier, _designing_ one, especially when your
-programming language isn't helping, can be a little harder. We'll
-look for opportunities to use persistent data structures in this
-book, but we'll also be using changeable ones.
+Lamentablemente, aunque entender un sistema basado en estructuras de datos
+persistentes es más fácil, _diseñar_ uno, especialmente cuando tu
+lenguaje de programación no ayuda, puede ser un poco más difícil.
+Buscaremos oportunidades para usar estructuras de datos persistentes en este
+libro, pero también utilizaremos las modificables.
 
-## Simulation
+## Simulación
 
 {{index simulation, "virtual world"}}
 
-A delivery ((robot)) looks at the world and decides in which
-direction it wants to move. As such, we could say that a robot is a
-function that takes a `VillageState` object and returns the name of a
-nearby place.
+Un ((robot)) de entregas mira al mundo y decide en qué
+dirección que quiere moverse. Como tal, podríamos decir que un robot es una
+función que toma un objeto `EstadoPueblo` y retorna el nombre de un
+lugar cercano.
 
 {{index "runRobot function"}}
 
-Because we want robots to be able to remember things, so that they can
-make and execute plans, we also pass them their memory and allow them
-to return a new memory. Thus, the thing a robot returns is an object
-containing both the direction it wants to move in and a memory value
-that will be given back to it the next time it is called.
+Ya que queremos que los robots sean capaces de recordar cosas, para que puedan
+hacer y ejecutar planes, también les pasamos su memoria y les permitimos
+retornar una nueva memoria. Por lo tanto, lo que retorna un robot es un objeto
+que contiene tanto la dirección en la que quiere moverse como un
+valor de memoria que se le sera regresado la próxima vez que se llame.
 
 ```{includeCode: true}
-function runRobot(state, robot, memory) {
-  for (let turn = 0;; turn++) {
-    if (state.parcels.length == 0) {
-      console.log(`Done in ${turn} turns`);
+function correrRobot(estado, robot, memoria) {
+  for (let turno = 0;; turno++) {
+    if (estado.paquetes.length == 0) {
+      console.log(`Listo en ${turno} turnos`);
       break;
     }
-    let action = robot(state, memory);
-    state = state.move(action.direction);
-    memory = action.memory;
-    console.log(`Moved to ${action.direction}`);
+    let accion = robot(estado, memoria);
+    estado = estado.mover(accion.direccion);
+    memoria = accion.memoria;
+    console.log(`Moverse a ${accion.direccion}`);
   }
 }
 ```
 
-Consider what a robot has to do to "solve" a given state. It must pick
-up all parcels by visiting every location that has a parcel and
-deliver them by visiting every location that a parcel is addressed to,
-but only after picking up the parcel.
+Considera lo que un robot tiene que hacer para "resolver" un estado dado. Debe
+recoger todos los paquetes visitando cada ubicación que tenga un paquete, y
+entregarlos visitando cada lugar al que se dirige un paquete,
+pero solo después de recoger el paquete.
 
-What is the dumbest strategy that could possibly work? The robot could
-just walk in a random direction every turn. That means, with
-great likelihood, it will eventually run into all parcels and then
-also at some point reach the place where they should be delivered.
+Cuál es la estrategia más estúpida que podría funcionar? El robot podría
+simplemente caminar hacia una dirección aleatoria en cada vuelta. Eso significa, con
+gran probabilidad, que eventualmente se encontrara con todos los paquetes, y luego
+también en algún momento llegara a todos los lugares donde estos deben
+ser entregados.
 
 {{index "randomPick function", "randomRobot function"}}
 
-Here's what that could look like:
+Aqui esta como se podria ver eso:
 
 ```{includeCode: true}
-function randomPick(array) {
-  let choice = Math.floor(Math.random() * array.length);
-  return array[choice];
+function eleccionAleatoria(array) {
+  let eleccion = Math.floor(Math.random() * array.length);
+  return array[eleccion];
 }
 
-function randomRobot(state) {
-  return {direction: randomPick(roadGraph[state.place])};
+function robotAleatorio(estado) {
+  return {direccion: eleccionAleatoria(grafoCamino[estado.lugar])};
 }
 ```
 
-{{index "Math.random function", "Math.floor function", [array, "random element"]}}
+{{index "Math.random function", "Math.floor function", array}}
 
-Remember that `Math.random()` returns a number between zero and
-one—but always below one. Multiplying such a number by the length of an
-array and then applying `Math.floor` to it gives us a random index for
-the array.
+Recuerda que `Math.random ()` retorna un número entre cero y uno,
+pero siempre debajo de uno. Multiplicar dicho número por la longitud de un
+array y luego aplicarle `Math.floor` nos da un índice aleatorio para
+el array.
 
-Since this robot does not need to remember anything, it ignores its
-second argument (remember that JavaScript functions can be called with
-extra arguments without ill effects) and omits the `memory` property
-in its returned object.
+Como este robot no necesita recordar nada, ignora su
+segundo argumento (recuerda que puedes llamar a las funciones en JavaScript con
+argumentos adicionales sin efectos negativos) y omite la propiedad `memoria`
+en su objeto retornado.
 
-To put this sophisticated robot to work, we'll first need a way to
-create a new state with some parcels. A static method (written here by
-directly adding a property to the constructor) is a good place to put
-that functionality.
+Para poner en funcionamiento este sofisticado robot, primero necesitaremos una
+forma de crear un nuevo estado con algunos paquetes. Un método estático
+(escrito aquí al agregar directamente una propiedad al constructor) es un
+buen lugar para poner esa funcionalidad.
 
 ```{includeCode: true}
-VillageState.random = function(parcelCount = 5) {
-  let parcels = [];
-  for (let i = 0; i < parcelCount; i++) {
-    let address = randomPick(Object.keys(roadGraph));
-    let place;
+EstadoPueblo.aleatorio = function(numeroDePaquetes = 5) {
+  let paquetes = [];
+  for (let i = 0; i < numeroDePaquetes; i++) {
+    let direccion = eleccionAleatoria(Object.keys(grafoCamino));
+    let lugar;
     do {
-      place = randomPick(Object.keys(roadGraph));
-    } while (place == address);
-    parcels.push({place, address});
+      lugar = eleccionAleatoria(Object.keys(grafoCamino));
+    } while (lugar == direccion);
+    paquetes.push({lugar, direccion});
   }
-  return new VillageState("Post Office", parcels);
+  return new EstadoPueblo("Oficina de Correos", paquetes);
 };
 ```
 
 {{index "do loop"}}
 
-We don't want any parcels that are sent from the same place that they
-are addressed to. For this reason, the `do` loop keeps picking new
-places when it gets one that's equal to the address.
+No queremos paquetes que sean enviados desde el mismo lugar al que están
+dirigidos. Por esta razón, el bucle `do` sigue seleccionando nuevos
+lugares cuando obtenga uno que sea igual a la dirección.
 
-Let's start up a virtual world.
+Comencemos un mundo virtual.
 
 ```{test: no}
-runRobot(VillageState.random(), randomRobot);
-// → Moved to Marketplace
-// → Moved to Town Hall
+correrRobot(EstadoPueblo.aleatorio(), robotAleatorio);
+// → Moverse a Mercado
+// → Moverse a Ayuntamiento
 // → …
-// → Done in 63 turns
+// → Listo en 63 turnos
 ```
 
-It takes the robot a lot of turns to deliver the parcels because it
-isn't planning ahead very well. We'll address that soon.
+Le toma muchas vueltas al robot para entregar los paquetes, porque este
+no está planeando muy bien. Nos ocuparemos de eso pronto.
 
 {{if interactive
 
-For a more pleasant perspective on the simulation, you can use the
-`runRobotAnimation` function that's available in [this chapter's
-programming environment](https://eloquentjavascript.net/code/#7).
-This runs the simulation, but instead of outputting text, it shows
-you the robot moving around the village map.
+Para una perspectiva más agradable de la simulación, puedes usar la
+función `runRobotAnimation` que está disponible en el entorno de programación
+de este capítulo. Esta ejecuta la simulación, pero en lugar de
+mostrar texto, muestra al robot moviéndose por el mapa del pueblo.
 
 ```{test: no}
-runRobotAnimation(VillageState.random(), randomRobot);
+runRobotAnimation(EstadoPueblo.aleatorio(), robotAleatorio);
 ```
 
-The way `runRobotAnimation` is implemented will remain a mystery for
-now, but after you've read the [later chapters](dom) of this book,
-which discuss JavaScript integration in web browsers, you'll be able
-to guess how it works.
+La forma en la que `runRobotAnimation` esta implementada seguirá siendo un
+misterio por ahora, pero después de que hayas leído [capítulos mas avanzados](dom)
+de este libro, que discuten la integración de JavaScript en los navegadores web,
+podrás adivinar cómo esta funciona.
 
 if}}
 
-## The mail truck's route
+## La ruta del camión de correos
 
 {{index "mailRoute array"}}
 
-We should be able to do a lot better than the random ((robot)). An
-easy improvement would be to take a hint from the way real-world mail
-delivery works. If we find a route that passes all places in the
-village, the robot could run that route twice, at which point it is
-guaranteed to be done. Here is one such route (starting from the post
-office):
+Deberíamos poder hacer algo mucho mejor que el ((robot)) aleatorio. Una
+mejora fácil sería tomar una pista de la forma en que como funciona la entrega
+de correos en el mundo real. Si encontramos una ruta que pasa por todos los
+lugares en el pueblo, el robot podría ejecutar esa ruta dos veces,
+y en ese punto esta garantizado que ha entregado todos los paquetes.
+Aquí hay una de esas rutas (comenzando desde la Oficina de Correos).
 
 ```{includeCode: true}
-const mailRoute = [
-  "Alice's House", "Cabin", "Alice's House", "Bob's House",
-  "Town Hall", "Daria's House", "Ernie's House",
-  "Grete's House", "Shop", "Grete's House", "Farm",
-  "Marketplace", "Post Office"
+const rutaCorreo = [
+  "Casa de Alicia", "Cabaña", "Casa de Alicia", "Casa de Bob",
+  "Ayuntamiento", "Casa de Daria", "Casa de Ernie",
+  "GCasa de Grete", "Tienda", "Casa de Grete", "Granja",
+  "Mercado", "Oficina de Correos"
 ];
 ```
 
 {{index "routeRobot function"}}
 
-To implement the route-following robot, we'll need to make use of
-robot memory. The robot keeps the rest of its route in its memory and
-drops the first element every turn.
+Para implementar el robot que siga la ruta, necesitaremos hacer uso de la
+memoria del robot. El robot mantiene el resto de su ruta en su memoria y
+deja caer el primer elemento en cada vuelta.
 
 ```{includeCode: true}
-function routeRobot(state, memory) {
-  if (memory.length == 0) {
-    memory = mailRoute;
+function robotRuta(estado, memoria) {
+  if (memoria.length == 0) {
+    memoria = rutaCorreo;
   }
-  return {direction: memory[0], memory: memory.slice(1)};
+  return {direction: memoria[0], memoria: memoria.slice(1)};
 }
 ```
 
-This robot is a lot faster already. It'll take a maximum of 26 turns
-(twice the 13-step route) but usually less.
+Este robot ya es mucho más rápido. Tomará un máximo de 26 turnos
+(dos veces la ruta de 13 pasos), pero generalmente seran menos.
 
 {{if interactive
 
 ```{test: no}
-runRobotAnimation(VillageState.random(), routeRobot, []);
+runRobotAnimation(EstadoPueblo.aleatorio(), robotRuta, []);
 ```
 
 if}}
 
-## Pathfinding
+## Búsqueda de rutas
 
-Still, I wouldn't really call blindly following a fixed route
-intelligent behavior. The ((robot)) could work more efficiently if it
-adjusted its behavior to the actual work that needs to be done.
+Aún así, realmente no llamaría seguir ciegamente una ruta fija
+comportamiento inteligente. El ((robot)) podría funcionar más eficientemente si
+ajustara su comportamiento al trabajo real que necesita hacerse.
 
 {{index pathfinding}}
 
-To do that, it has to be able to deliberately move toward a given
-parcel or toward the location where a parcel has to be delivered.
-Doing that, even when the goal is more than one move away, will
-require some kind of route-finding function.
+Para hacer eso, tiene que ser capaz de avanzar deliberadamente hacia un
+determinado paquete, o hacia la ubicación donde se debe entregar un paquete.
+Al hacer eso, incluso cuando el objetivo esté a más de un movimiento de
+distancia, requiere algún tipo de función de búsqueda de ruta.
 
-The problem of finding a route through a ((graph)) is a typical
-_((search problem))_. We can tell whether a given solution (a route)
-is a valid solution, but we can't directly compute the solution the
-way we could for 2 + 2. Instead, we have to keep creating potential
-solutions until we find one that works.
+El problema de encontrar una ruta a través de un ((grafo)) es un típico
+_((problema de búsqueda))_. Podemos decir si una solución dada (una ruta)
+es una solución válida, pero no podemos calcular directamente la solución de
+la misma manera que podríamos para 2 + 2. En cambio, tenemos que seguir
+creando soluciones potenciales hasta que encontremos una que funcione.
 
-The  number of possible routes through a graph is infinite. But
-when searching for a route from _A_ to _B_, we are interested only in
-the ones that start at _A_. We also don't care about routes that visit
-the same place twice—those are definitely not the most efficient route
-anywhere. So that cuts down on the number of routes that the route
-finder has to consider.
+El número de rutas posibles a través de un grafo es infinito. Pero
+cuando buscamos una ruta de _A_ a _B_, solo estamos interesados ​​en aquellas
+que comienzan en _A_. Tampoco nos importan las rutas que visitan
+el mismo lugar dos veces, definitivamente esa no es la ruta más eficiente
+en cualquier sitio. Entonces eso reduce la cantidad de rutas que el
+buscador de rutas tiene que considerar.
 
-In fact, we are mostly interested in the _shortest_ route. So we want
-to make sure we look at short routes before we look at longer ones. A
-good approach would be to "grow" routes from the starting point,
-exploring every reachable place that hasn't been visited yet, until a
-route reaches the goal. That way, we'll only explore routes that are
-potentially interesting, and we'll find the shortest route (or one of the
-shortest routes, if there are more than one) to the goal.
+De hecho, estamos más interesados ​​en la ruta _mas corta_. Entonces queremos
+asegurarnos de mirar las rutas cortas antes de mirar las más largas. Un
+buen enfoque sería "crecer" las rutas desde el punto de partida,
+explorando cada lugar accesible que aún no ha sido visitado, hasta que
+una ruta alcanze la meta. De esa forma, solo exploraremos las rutas que son
+potencialmente interesantes, y encontremos la ruta más corta (o una de las
+rutas más cortas, si hay más de una) a la meta.
 
 {{index "findRoute function"}}
 
 {{id findRoute}}
 
-Here is a function that does this:
+Aquí hay una función que hace esto:
 
 ```{includeCode: true}
-function findRoute(graph, from, to) {
-  let work = [{at: from, route: []}];
-  for (let i = 0; i < work.length; i++) {
-    let {at, route} = work[i];
-    for (let place of graph[at]) {
-      if (place == to) return route.concat(place);
-      if (!work.some(w => w.at == place)) {
-        work.push({at: place, route: route.concat(place)});
+function encontrarRuta(grafo, desde, hasta) {
+  let trabajo = [{donde: desde, ruta: []}];
+  for (let i = 0; i < trabajo.length; i++) {
+    let {donde, ruta} = trabajo[i];
+    for (let lugar of grafo[donde]) {
+      if (lugar == hasta) return ruta.concat(lugar);
+      if (!trabajo.some(w => w.donde == lugar)) {
+        trabajo.push({donde: lugar, ruta: ruta.concat(lugar)});
       }
     }
   }
 }
 ```
 
-The exploring has to be done in the right order—the places that were
-reached first have to be explored first. We can't immediately explore
-a place as soon as we reach it because that would mean places reached
-_from there_ would also be explored immediately, and so on, even
-though there may be other, shorter paths that haven't yet been
-explored.
+La exploración tiene que hacerse en el orden correcto—los lugares que fueron
+alcanzados primero deben ser explorados primero. No podemos explorar de inmediato
+un lugar apenas lo alcanzamos, porque eso significaría que los lugares alcanzados
+_desde allí_ también se explorarían de inmediato, y así sucesivamente, incluso
+aunque puedan haber otros caminos más cortos que aún no han sido
+explorados.
 
-Therefore, the function keeps a _((work list))_. This is an array of
-places that should be explored next, along with the route that got us
-there. It starts with just the start position and an empty route.
+Por lo tanto, la función mantiene una _((lista de trabajo))_. Esta es un array de
+lugares que deberían explorarse a continuación, junto con la ruta que nos llevó
+ahí. Esta comienza solo con la posición de inicio y una ruta vacía.
 
-The search then operates by taking the next item in the list and
-exploring that, which means all roads going from that place are
-looked at. If one of them is the goal, a finished route can be
-returned. Otherwise, if we haven't looked at this place before, a new
-item is added to the list. If we have looked at it before, since we
-are looking at short routes first, we've found either a longer route
-to that place or one precisely as long as the existing one, and we
-don't need to explore it.
+La búsqueda luego opera tomando el siguiente elemento en la lista y
+explorando eso, lo que significa que todos los caminos que van desde ese lugar
+son mirados. Si uno de ellos es el objetivo, una ruta final puede ser
+retornada. De lo contrario, si no hemos visto este lugar antes, un nuevo
+elemento se agrega a la lista. Si lo hemos visto antes, ya que
+estamos buscando primero rutas cortas, hemos encontrado una ruta más larga
+a ese lugar o una precisamente tan larga como la existente, y
+no necesitamos explorarla.
 
-You can visually imagine this as a web of known routes crawling out
-from the start location, growing evenly on all sides (but never
-tangling back into itself). As soon as the first thread reaches the
-goal location, that thread is traced back to the start, giving us our
-route.
+Puedes imaginar esto visualmente como una red de rutas conocidas que se arrastran
+desde el lugar de inicio, creciendo uniformemente hacia todos los lados (pero nunca
+enredándose de vuelta a si misma). Tan pronto como el primer hilo llegue a
+la ubicación objetivo, ese hilo se remonta al comienzo, dándonos asi nuestra
+ruta.
 
 {{index "connected graph"}}
 
-Our code doesn't handle the situation where there are no more work
-items on the work list because we know that our graph is _connected_,
-meaning that every location can be reached from all other locations.
-We'll always be able to find a route between two points, and the
-search can't fail.
+Nuestro código no maneja la situación donde no hay más elementos de trabajo
+en la lista de trabajo, porque sabemos que nuestro gráfico está
+_conectado_, lo que significa que se puede llegar a todos los lugares
+desde todos los otros lugares. Siempre podremos encontrar una ruta entre
+dos puntos, y la búsqueda no puede fallar.
 
 ```{includeCode: true}
-function goalOrientedRobot({place, parcels}, route) {
-  if (route.length == 0) {
-    let parcel = parcels[0];
-    if (parcel.place != place) {
-      route = findRoute(roadGraph, place, parcel.place);
+function robotOrientadoAMetas({lugar, paquetes}, ruta) {
+  if (ruta.length == 0) {
+    let paquete = paquetes[0];
+    if (paquete.lugar != lugar) {
+      ruta = encontrarRuta(grafoCamino, lugar, paquete.lugar);
     } else {
-      route = findRoute(roadGraph, place, parcel.address);
+      ruta = encontrarRuta(grafoCamino, lugar, paquete.direccion);
     }
   }
-  return {direction: route[0], memory: route.slice(1)};
+  return {direccion: ruta[0], memoria: ruta.slice(1)};
 }
 ```
 
 {{index "goalOrientedRobot function"}}
 
-This robot uses its memory value as a list of directions to move in,
-just like the route-following robot. Whenever that list is empty, it
-has to figure out what to do next. It takes the first undelivered
-parcel in the set and, if that parcel hasn't been picked up yet, plots a
-route toward it. If the parcel _has_ been picked up, it still needs to be
-delivered, so the robot creates a route toward the delivery address instead.
+Este robot usa su valor de memoria como una lista de instrucciones para moverse,
+como el robot que sigue la ruta. Siempre que esa lista esté vacía, este
+tiene que descubrir qué hacer a continuación. Toma el primer paquete no entregado
+en el conjunto y, si ese paquete no se ha recogido aún, traza una
+ruta hacia el. Si el paquete _ha_ sido recogido, todavía debe ser
+entregado, por lo que el robot crea una ruta hacia la dirección de entrega
+en su lugar.
 
 {{if interactive
 
-Let's see how it does.
+Veamos cómo le va.
 
 ```{test: no, startCode: true}
-runRobotAnimation(VillageState.random(),
-                  goalOrientedRobot, []);
+runRobotAnimation(EstadoPueblo.aleatorio(),
+                  robotOrientadoAMetas, []);
 ```
 
 if}}
 
-This robot usually finishes the task of delivering 5 parcels in about
-16 turns. That's slightly better than `routeRobot` but still definitely not optimal.
+Este robot generalmente termina la tarea de entregar 5 paquetes en
+16 turnos aproximadamente. Un poco mejor que `robotRuta`,
+pero definitivamente no es óptimo.
 
-## Exercises
+## Ejercicios
 
-### Measuring a robot
+### Midiendo un robot
 
 {{index "measuring a robot (exercise)", testing, automation, "compareRobots function"}}
 
-It's hard to objectively compare ((robot))s by just letting them solve
-a few scenarios. Maybe one robot just happened to get easier tasks or
-the kind of tasks that it is good at, whereas the other didn't.
+Es difícil comparar objetivamente ((robot))s simplemente dejándolos resolver
+algunos escenarios. Tal vez un robot acaba de conseguir tareas más fáciles, o
+el tipo de tareas en las que es bueno, mientras que el otro no.
 
-Write a function `compareRobots` that takes two robots (and their
-starting memory). It should generate 100 tasks and let each of
-the robots solve each of these tasks. When done, it should output the
-average number of steps each robot took per task.
+Escribe una función `compararRobots` que toma dos robots (y su
+memoria de inicio). Debe generar 100 tareas y dejar que cada uno de
+los robots resuelvan cada una de estas tareas. Cuando terminen,
+debería generar el promedio de pasos que cada robot tomó por tarea.
 
-For the sake of fairness, make sure you give each task to both
-robots, rather than generating different tasks per robot.
+En favor de lo que es justo, asegúrate de la misma tarea a ambos
+robots, en lugar de generar diferentes tareas por robot.
 
 {{if interactive
 
 ```{test: no}
-function compareRobots(robot1, memory1, robot2, memory2) {
-  // Your code here
+function compararRobots(robot1, memoria1, robot2, memoria2) {
+  // Tu código aqui
 }
 
-compareRobots(routeRobot, [], goalOrientedRobot, []);
+compararRobots(robotRuta, [], robotOrientadoAMetas, []);
 ```
 if}}
 
@@ -572,35 +573,35 @@ if}}
 
 {{index "measuring a robot (exercise)", "runRobot function"}}
 
-You'll have to write a variant of the `runRobot` function that,
-instead of logging the events to the console, returns the number of
-steps the robot took to complete the task.
+Tendrás que escribir una variante de la función `correrRobot` que,
+en lugar de registrar los eventos en la consola, retorne el número de
+pasos que le tomó al robot completar la tarea.
 
-Your measurement function can then, in a loop, generate new states and
-count the steps each of the robots takes. When it has generated enough
-measurements, it can use `console.log` to output the average for each
-robot, which is the total number of steps taken divided by the number
-of measurements.
+Tu función de medición puede, en un ciclo, generar nuevos estados y
+contar los pasos que lleva cada uno de los robots. Cuando has generado
+suficientes mediciones, puedes usar `console.log` para mostrar el
+promedio de cada robot, que es la cantidad total de pasos tomados dividido por
+el número de mediciones
 
 hint}}
 
-### Robot efficiency
+### Eficiencia del robot
 
 {{index "robot efficiency (exercise)"}}
 
-Can you write a robot that finishes the delivery task faster than
-`goalOrientedRobot`? If you observe that robot's behavior, what
-obviously stupid things does it do? How could those be improved?
+Puedes escribir un robot que termine la tarea de entrega más rápido que
+`robotOrientadoAMetas`? Si observas el comportamiento de ese robot, qué
+obviamente cosas estúpidas este hace? Cómo podrían mejorarse?
 
-If you solved the previous exercise, you might want to use your
-`compareRobots` function to verify whether you improved the robot.
+Si resolviste el ejercicio anterior, es posible que desees utilizar tu
+función `compararRobots` para verificar si has mejorado al robot.
 
 {{if interactive
 
 ```{test: no}
-// Your code here
+// Tu código aqui
 
-runRobotAnimation(VillageState.random(), yourRobot, memory);
+runRobotAnimation(EstadoPueblo.aleatorio(), tuRobot, memoria);
 ```
 
 if}}
@@ -609,68 +610,65 @@ if}}
 
 {{index "robot efficiency (exercise)"}}
 
-The main limitation of `goalOrientedRobot` is that it considers only
-one parcel at a time. It will often walk back and forth across the
-village because the parcel it happens to be looking at happens to be
-at the other side of the map, even if there are others much closer.
+La principal limitación de `robotOrientadoAMetas` es que solo considera
+un paquete a la vez. A menudo caminará de ida y vuelta por el
+pueblo porque el paquete que resulta estar mirando sucede que esta
+en el otro lado del mapa, incluso si hay otros mucho más cerca.
 
-One possible solution would be to compute routes for all packages and
-then take the shortest one. Even better results can be obtained, if
-there are multiple shortest routes, by preferring the ones that go to
-pick up a package instead of delivering a package.
+Una posible solución sería calcular rutas para todos los paquetes, y
+luego tomar la más corta. Se pueden obtener incluso mejores resultados, si
+hay múltiples rutas más cortas, al ir prefiriendo las que van a
+recoger un paquete en lugar de entregar un paquete.
 
 hint}}
 
-### Persistent group
+### Conjunto persistente
 
 {{index "persistent group (exercise)", "persistent data structure", "Set class", "set (data structure)", "Group class", "PGroup class"}}
 
-Most data structures provided in a standard JavaScript environment
-aren't very well suited for persistent use. Arrays have `slice` and
-`concat` methods, which allow us to easily create new arrays without
-damaging the old one. But `Set`, for example, has no methods for
-creating a new set with an item added or removed.
+La mayoría de las estructuras de datos proporcionadas en un entorno de
+JavaScript estándar no son muy adecuadas para usos persistentes. Los arrays
+tienen los métodos `slice` y `concat`, que nos permiten fácilmente crear nuevos
+arrays sin dañar al anterior. Pero `Set`, por ejemplo, no tiene métodos para
+crear un nuevo conjunto con un elemento agregado o eliminado.
 
-Write a new class `PGroup`, similar to the `Group` class from [Chapter
-?](object#groups), which stores a set of values. Like `Group`, it has
-`add`, `delete`, and `has` methods.
+Escribe una nueva clase `ConjuntoP`, similar a la clase `Conjunto` del [Capitulo 6](objeto#grupos), que almacena un conjunto de valores. Como `Grupo`, tiene
+métodos `añadir`, `eliminar`, y `tiene`.
 
-Its `add` method, however, should return a _new_ `PGroup` instance
-with the given member added and leave the old one unchanged.
-Similarly, `delete` creates a new instance without a given member.
+Su método `añadir`, sin embargo, debería retornar una _nueva_ instancia de
+`ConjuntoP` con el miembro dado agregado, y dejar la instancia anterior sin cambios.
+Del mismo modo, `eliminar` crea una nueva instancia sin un miembro dado.
 
-The class should work for values of any type, not just strings. It
-does _not_ have to be efficient when used with large amounts of
-values.
+La clase debería funcionar para valores de cualquier tipo, no solo strings. Esta
+_no_ tiene que ser eficiente cuando se usa con grandes cantidades de
+valores.
 
-{{index [interface, object]}}
-
-The ((constructor)) shouldn't be part of the class's interface
-(though you'll definitely want to use it internally). Instead, there
-is an empty instance, `PGroup.empty`, that can be used as a starting
-value.
+El ((constructor)) no deberia ser parte de la interfaz de la clase
+(aunque definitivamente querrás usarlo internamente). En cambio, allí
+hay una instancia vacía, `ConjuntoP.vacio`, que se puede usar como un valor
+de inicio.
 
 {{index singleton}}
 
-Why do you need only one `PGroup.empty` value, rather than having a
-function that creates a new, empty map every time?
+Por qué solo necesitas un valor `ConjuntoP.vacio`, en lugar de tener una
+función que crea un nuevo mapa vacío cada vez?
 
 {{if interactive
 
 ```{test: no}
-class PGroup {
-  // Your code here
+class ConjuntoP {
+  // Tu código aqui
 }
 
-let a = PGroup.empty.add("a");
-let ab = a.add("b");
-let b = ab.delete("a");
+let a = ConjuntoP.vacio.añadir("a");
+let ab = a.añadir("b");
+let b = ab.eliminar("a");
 
-console.log(b.has("b"));
+console.log(b.tiene("b"));
 // → true
-console.log(a.has("b"));
+console.log(a.tiene("b"));
 // → false
-console.log(b.has("a"));
+console.log(b.tiene("a"));
 // → false
 ```
 
@@ -678,29 +676,29 @@ if}}
 
 {{hint
 
-{{index "persistent map (exercise)", "Set class", [array, creation], "PGroup class"}}
+{{index "persistent map (exercise)", "Set class", array, "PGroup class"}}
 
-The most convenient way to represent the set of member values
-is still as an array since arrays are easy to copy.
+La forma más conveniente de representar el conjunto de valores de miembro
+sigue siendo un array, ya que son fáciles de copiar.
 
 {{index "concat method", "filter method"}}
 
-When a value is added to the group, you can create a new group with a
-copy of the original array that has the value added (for example, using
-`concat`). When a value is deleted, you filter it from the array.
+Cuando se agrega un valor al grupo, puedes crear un nuevo grupo con una
+copia del array original que tiene el valor agregado (por ejemplo, usando
+`concat`). Cuando se borra un valor, lo filtra afuera del array.
 
-The class's ((constructor)) can take such an array as argument and
-store it as the instance's (only) property. This array is never
-updated.
+El ((constructor)) de la clase puede tomar un array como argumento, y
+almacenarlo como la (única) propiedad de la instancia. Este array nunca es
+actualizado.
 
 {{index "static method"}}
 
-To add a property (`empty`) to a constructor that is not a method, you
-have to add it to the constructor after the class definition, as a
-regular property.
+Para agregar una propiedad (`vacio`) a un constructor que no sea un método,
+tienes que agregarlo al constructor después de la definición de la clase, como
+una propiedad regular.
 
-You need only one `empty` instance because all empty groups are the
-same and instances of the class don't change. You can create many
-different groups from that single empty group without affecting it.
+Solo necesita una instancia `vacio` porque todos los conjuntos vacíos son
+iguales y las instancias de la clase no cambian. Puedes crear muchos
+conjuntos diferentes de ese único conjunto vacío sin afectarlo.
 
 hint}}
