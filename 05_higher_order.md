@@ -612,8 +612,8 @@ En el [Capítulo 1](valores) mencioné que los ((strings)) de JavaScript estan
 codificados como una secuencia de números de 16 bits. Estos se llaman
 _((unidades de código))_. Inicialmente se suponía que un código de ((carácter))
 ((Unicode)) encajara dentro de esa unidad (lo que da un poco más de 65,000
-caracteres). Cuando quedó claro que esto no seria suficiente, muchas
-las personas se resistieron a la necesidad de usar más memoria por carácter.
+caracteres). Cuando quedó claro que esto no seria suficiente, muchas 
+personas se resistieron a la necesidad de usar más memoria por carácter.
 Para apaciguar estas preocupaciones, ((UTF-16)), el formato utilizado por los
 strings de JavaScript, fue inventado. Este describe la mayoría de los caracteres
 mas comunes usando una sola unidad de código de 16 bits, pero usa un par de
