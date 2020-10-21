@@ -6,10 +6,11 @@ Por favor revisa las instrucciones para contribuir y las guías de contribución
 ## Instrucciones para contribuir
 
 1. Has un fork de este repositorio
-2. Revisa los **Issues** para que veas que capítulos están en progreso. Lo más recomendables es tomar un capítulo que nadie esté trabajando
+2. Revisa los **Issues** para que veas que capítulos están en progreso. Lo más recomendable es tomar un capítulo que nadie esté trabajando
 3. Pon como un Issue que capítulo vas a traducir
-4. Cuando lleves un porcentaje considerable del capítulo, has un PR para integrarlo y crear nuevas versiones de los libros
-5. Un revisor verificará el texto y hará comentarios o aprobará el PR
+4. La fuente en idioma original está en la carpeta [eng_chapters](https://github.com/Eloquent-JavaScript-Espanol/Eloquent-JavaScript-ES/tree/master/eng_chapters)
+5. Cuando lleves un porcentaje considerable del capítulo, has un PR para integrarlo y crear nuevas versiones de los libros
+6. Un revisor verificará el texto y hará comentarios o aprobará el PR
 
 ## Guía de contribución
 
