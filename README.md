@@ -1,7 +1,7 @@
 # Traducción al español de Eloquent JavaScript
 
 En este repositorio haremos la traducción del libro Eloquent JavaScript en español.
-Por favor revisa las instrucciones para contribuir y las guías de contribución y las 
+Por favor revisa las instrucciones para contribuir y las guías de contribución.
 
 ## Instrucciones para contribuir
 
