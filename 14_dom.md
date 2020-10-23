@@ -1,4 +1,4 @@
-# The Document Object Model
+# El Modelo de Objeto del Documento
 
 {{quote {author: "Friedrich Nietzsche", title: "Beyond Good and Evil", chapter: true}
 
@@ -27,7 +27,7 @@ JavaScript tiene disponible en su ((caja de arena)). Es una ((estructura de
 datos)) que puedes leer o modificar. Esta actúa como una estructura en _tiempo real_: cuando es modificada, la página en la pantalla es actualizada para
 reflejar los cambios.
 
-## Document structure
+## La estructura del documento
 
 {{index [HTML, structure]}}
 
@@ -71,7 +71,7 @@ propiedad `documentElement` hace referencia al objeto que está representando
 a la etiqueta `<html>`. Dado que cada documento HTML tiene una cabecera y un
 cuerpo, también tiene propiedades `head` y `body`, apuntando a esos elementos.
 
-## Trees
+## Árboles
 
 {{index [nesting, "of objects"]}}
 
@@ -131,7 +131,7 @@ padre-hijo entre los nodos.
 
 {{id standard}}
 
-## The standard
+## El estándar
 
 {{index "programming language", [interface, design], [DOM, interface]}}
 
@@ -179,7 +179,7 @@ mejoradas para expresar las operaciones que estás realizando. Muchas
 bibliotecas destinadas a la programación del navegador vienen con
 esas herramientas.
 
-## Moving through the tree
+## Moviéndose a traves del árbol
 
 {{index pointer}}
 
@@ -254,7 +254,7 @@ del índice usando un `for` regular o usando `Array.from`.
 La propiedad `nodeValue` de un nodo de texto almacena la cadena de
 texto que representa.
 
-## Finding elements
+## Buscar elementos
 
 {{index [DOM, querying], "body property", "hard-coding", [whitespace, "in HTML"]}}
 
@@ -310,7 +310,7 @@ manera similar a `getElementsByTagName` busca a través de los
 contenidos de un nodo elemento y obtiene todos los elementos que
 tienen una cadena dada en su attributo `class`.
 
-## Changing the document
+## Actualizar el documento
 
 {{index "side effect", "removeChild method", "appendChild method", "insertBefore method", [DOM, construction], [DOM, modification]}}
 
