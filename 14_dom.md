@@ -2,9 +2,10 @@
 
 {{quote {author: "Friedrich Nietzsche", title: "Beyond Good and Evil", chapter: true}
 
-Too bad! Same old story! Once you've finished building your house you
-notice you've accidentally learned something that you really should
-have known—before you started.
+¡Tanto peor! ¡Otra vez la vieja historia! Cuando uno ha acabado de
+construir su casa advierte que, mientras la construía, ha aprendido, sin darse
+cuenta, algo que tendría que haber sabido absolutamente antes de comenzar
+a construir.
 
 quote}}
 
@@ -12,119 +13,121 @@ quote}}
 
 {{index drawing, parsing}}
 
-When you open a web page in your browser, the browser retrieves the
-page's ((HTML)) text and parses it, much like the way our parser from
-[Chapter ?](language#parsing) parsed programs. The browser builds up a
-model of the document's ((structure)) and uses this model to draw the
-page on the screen.
+Cuando abres una página web en tu navegador, el navegador obtiene el texto de
+la página ((HTML)) y lo analiza, de una manera bastante similar a la manera en
+que nuestro analizador del [Capítulo ?](language#parsing) analizaba los programas.
+El navegador construye un modelo de la ((estructura)) del documento y utiliza
+este modelo para dibujar la página en la pantalla.
+
 
 {{index "live data structure"}}
 
-This representation of the ((document)) is one of the toys that a
-JavaScript program has available in its ((sandbox)). It is a ((data
-structure)) that you can read or modify. It acts as a _live_ data
-structure: when it's modified, the page on the screen is updated to
-reflect the changes.
+Esta representación del ((documento)) es uno de los juguetes que un programa de
+JavaScript tiene disponible en su ((caja de arena)). Es una ((estructura de
+datos)) que puedes leer o modificar. Esta actua como una estructura en _tiempo real_: cuando es modificada, la página en la pantalla es actualizada para
+reflejar los cambios.
 
 ## Document structure
 
 {{index [HTML, structure]}}
 
-You can imagine an HTML document as a nested set of ((box))es.
-Tags such as `<body>` and `</body>` enclose other ((tag))s, which in
-turn contain other tags or ((text)). Here's the example document from
-the [previous chapter](browser):
+Te puedes imaginar a un documento HTML como un conjunto anidado de ((caja))s.
+Las etiquetas como `<body>` y `</body>` encierran otras ((caja))s, que a su vez,
+contienen otras etiquetas o ((texto)). Este es el documento del ejemplo del
+[capítulo anterior](browser):
+
 
 ```{lang: "text/html", sandbox: "homepage"}
 <!doctype html>
 <html>
   <head>
-    <title>My home page</title>
+    <title>Mi página de inicio</title>
   </head>
   <body>
-    <h1>My home page</h1>
-    <p>Hello, I am Marijn and this is my home page.</p>
-    <p>I also wrote a book! Read it
-      <a href="http://eloquentjavascript.net">here</a>.</p>
+    <h1>Mi página de inicio</h1>
+    <p>Hola, Mi nombre es Marijn y esta es mi página de inicio.</p>
+    <p>También escribí un libro! Léelo
+      <a href="http://eloquentjavascript.net">aquí</a>.</p>
   </body>
 </html>
 ```
 
-This page has the following structure:
+Esta página tiene la siguiente estructura:
 
 {{figure {url: "img/html-boxes.svg", alt: "HTML document as nested boxes", width: "7cm"}}}
 
 {{indexsee "Document Object Model", DOM}}
 
-The data structure the browser uses to represent the document follows
-this shape. For each box, there is an object, which we can
-interact with to find out things such as what HTML tag it represents
-and which boxes and text it contains. This representation is called
-the _Document Object Model_, or ((DOM)) for short.
+La estructura de datos que el navegador utiliza para representar el documento
+sigue esta figura. Para cada caja, hay un objeto, con el que podemos
+interactuar para descubrir cosas como que etiqueta de HTML lo representa y
+que cajas y texto contiene. Esta representación es llamada _Modelo de Objeto de
+Documento_ o ((DOM)) _(por sus siglas en ingles "Document Object Model")_.
 
 {{index "documentElement property", "head property", "body property", "html (HTML tag)", "body (HTML tag)", "head (HTML tag)"}}
 
-The global binding `document` gives us access to these objects. Its
-`documentElement` property refers to the object representing the
-`<html>` tag. Since every HTML document has a head and a body, it also
-has `head` and `body` properties, pointing at those elements.
+El documento de enlace global `document` nos da acceso a esos objetos. Su
+propiedad `documentElement` hace referencia al objeto que esta representando
+a la etiqueta `<html>`. Dado que cada documento HTML tiene una cabecera y un
+cuerpo, también tiene propiedades `head` y `body`, apuntando a esos elementos.
 
 ## Trees
 
 {{index [nesting, "of objects"]}}
 
-Think back to the ((syntax tree))s from [Chapter ?](language#parsing)
-for a moment. Their structures are strikingly similar to the structure
-of a browser's document. Each _((node))_ may refer to other nodes,
-_children_, which in turn may have their own children. This shape is
-typical of nested structures where elements can contain subelements
-that are similar to themselves.
+Piensa en los ((árbol))es ((sintáctico))s del [Capítulo ?](language#parsing)
+por un momento. Sus estructuras son sorprendentemente similares a la estructura
+de un documento del navegador. Cada _((nodo))_ puede referirse a otros nodos
+_hijos_, que a su vez pueden tener sus propios hijos. Esta forma es típica de
+las estructuras anidadas donde los elementos pueden contener subelementos que
+son similares a ellos mismos.
 
 {{index "documentElement property", [DOM, tree]}}
 
-We call a data structure a _((tree))_ when it has a branching
-structure, has no ((cycle))s (a node may not contain itself, directly
-or indirectly), and has a single, well-defined _((root))_. In the case
-of the DOM, `document.documentElement` serves as the root.
+Le damos el nombre de _((árbol))_ a una estructura cuando tiene una estructura
+de ramificación, no tiene ((ciclo))s (un nodo puede no contenerse a sí mismo,
+directa o indirectamente), y tiene una única _((raíz))_ bien definida. En el
+caso del _DOM_, `document.documentElement` hace la función de raíz.
 
 {{index sorting, ["data structure", "tree"], "syntax tree"}}
 
-Trees come up a lot in computer science. In addition to representing
-recursive structures such as HTML documents or programs, they are
-often used to maintain sorted ((set))s of data because elements can
-usually be found or inserted more efficiently in a tree than in a flat
-array.
+Los árboles aparecen constantemente en las Ciencias de la computación.
+Además de representar estructuras recursivas como los documentos o
+programas HTML, también son comunmente usados para mantener ((conjunto))s
+ordenados de datos debido a que los elementos generalmente pueden ser
+encontrados o agregados mas eficientemente en un árbol que en un
+arreglo plano.
 
 {{index "leaf node", "Egg language"}}
 
-A typical tree has different kinds of ((node))s. The syntax tree for
-[the Egg language](language) had identifiers, values, and application
-nodes. Application nodes may have children, whereas identifiers and
-values are _leaves_, or nodes without children.
+Un árbol tipico tiene diferentes tipos de ((nodo))s. El árbol sintáctico
+del [lenguaje _Egg_](language) tenía indentificadores, valores y nodos de
+aplicación. Los nodos de aplicación pueden tener hijos, mientras que los
+identificadores y valores son _hojas_, o nodos sin hijos.
 
 {{index "body property", [HTML, structure]}}
 
-The same goes for the DOM. Nodes for _((element))s_, which represent
-HTML tags, determine the structure of the document. These can have
-((child node))s. An example of such a node is `document.body`. Some of
-these children can be ((leaf node))s, such as pieces of ((text)) or
-((comment)) nodes.
+Lo mismo sucede para el DOM, Los nodos para los ((elemento))s, que
+representan etiquetas HTML, determinan la estructura del documento.
+Estos pueden tener ((nodos hijo)). Un ejemplo de estos nodos es
+`document.body`. Algunos de estos hijos pueden ser ((nodos hoja)), como
+los fragmentos de ((texto)) o los nodos ((comentario)).
 
 {{index "text node", element, "ELEMENT_NODE code", "COMMENT_NODE code", "TEXT_NODE code", "nodeType property"}}
 
-Each DOM node object has a `nodeType` property, which contains a code
-(number) that identifies the type of node. Elements have code 1, which
-is also defined as the constant property `Node.ELEMENT_NODE`. Text
-nodes, representing a section of text in the document, get code 3
-(`Node.TEXT_NODE`). Comments have code 8
-(`Node.COMMENT_NODE`).
+Cada nodo DOM tiene una propiedad `nodeType`, la cual contiene un
+código numerico que identifica el tipo de nodo. Los _Elementos_ tienen
+el código 1, que también es definido como la propiedad constante
+`Node.ELEMENT_NODE`. Los nodos de texto representan una sección de
+texto en el documento y obtienen el código 3 (`Node.TEXT_NODE`). Los
+comentarios obtienen el código 8 (`Node.COMMENT_NODE`).
 
-Another way to visualize our document ((tree)) is as follows:
+Otra forma de visualizar nuestro ((árbol)) de documento es la siguiente:
 
 {{figure {url: "img/html-tree.svg", alt: "HTML document as a tree",width: "8cm"}}}
 
-The leaves are text nodes, and the arrows indicate parent-child
-relationships between nodes.
+Las hojas son nodos de texto, y las flechas nos indican las relaciones
+padre-hijo entre los nodos.
 
 {{id standard}}
 
@@ -132,142 +135,146 @@ relationships between nodes.
 
 {{index "programming language", [interface, design], [DOM, interface]}}
 
-Using cryptic numeric codes to represent node types is not a very
-JavaScript-like thing to do. Later in this chapter, we'll see that
-other parts of the DOM interface also feel cumbersome and alien.
-The reason for this is that the DOM wasn't designed for just
-JavaScript. Rather, it tries to be a language-neutral interface
-that can be used in other systems as well—not just for HTML but also
-for ((XML)), which is a generic ((data format)) with an HTML-like
-syntax.
+Usar códigos numéricos cripticos para representar a los tipos de
+nodos no es algo que se parezca al estilo de JavaScript para hacer
+las cosas. Más adelante en este capítulo, veremos como otras partes
+de la intefaz de DOM también se sienten engorrosas y alienigenas.
+La razón de esto es que DOM no fue diseñado solamente para
+JavaScript. Más bien, intenta ser una interfaz _independiente del
+lenguaje_ que puede ser usado en otros sistemas también, no
+solamente para HTML pero también para ((XML)), que es un ((formato
+de datos)) genérico con una sintaxis similar a la de HTML.
 
 {{index consistency, integration}}
 
-This is unfortunate. Standards are often useful. But in this case, the
-advantage (cross-language consistency) isn't all that compelling.
-Having an interface that is properly integrated with the language you
-are using will save you more time than having a familiar interface
-across languages.
+Esto es desaforunado. Usualmente los estándares son bastante útiles.
+Pero en este caso, la ventaja (consistencia entre lenguajes) no es tan
+conveniente. Tener una interfaz que esta propiamente integrada con el
+lenguaje que estas utilizando te ahorrará más tiempo que tener una
+interfaz familiar en distintos lenguajes.
 
 {{index "array-like object", "NodeList type"}}
 
-As an example of this poor integration, consider the `childNodes`
-property that element nodes in the DOM have. This property holds an
-array-like object, with a `length` property and properties labeled by
-numbers to access the child nodes. But it is an instance of the
-`NodeList` type, not a real array, so it does not have methods such as
-`slice` and `map`.
+A manera de ejemplo de esta pobre integración, considera la propiedad
+`childNodes` que los nodos elemento en el DOM tienen. Esta propiedad
+almacena un objeto parecido a un arreglo, con una propiedad `length`
+y propiedades etiquetadas por numeros para acceder a los nodos hijo.
+Pero es una instancia de tipo `NodeList`, no es un arreglo real, por
+lo que no tiene metodos como `slice` o `map`.
 
 {{index [interface, design], [DOM, construction], "side effect"}}
 
-Then there are issues that are simply poor design. For example, there
-is no way to create a new node and immediately add children or
-((attribute))s to it. Instead, you have to first create it and then add
-the children and attributes one by one, using side effects. Code that
-interacts heavily with the DOM tends to get long, repetitive, and
-ugly.
+Luego, hay problemas que son simplemente un pobre diseño. Por ejemplo,
+no hay una manera de crear un nuevo nodo e inmediatamente agregarle
+hijos o ((attributo))s. En vez de eso, tienes que crearlo primero
+y luego agregar los hijos y atributos uno por uno, usando efectos
+secundarios. El código que interactua mucho con el DOM tiende a ser
+largo, repetitivo y feo.
 
 {{index library}}
 
-But these flaws aren't fatal. Since JavaScript allows us to create our
-own ((abstraction))s, it is possible to design improved ways to
-express the operations you are performing. Many libraries intended for
-browser programming come with such tools.
+Pero estos defectos no son fatales. Dado que JavaScript nos permite
+crear nuestra propias ((abstraccion))es, es posible diseñar formas
+mejoradas para expresar las operaciones que estas realizando. Muchas
+bibliotecas destinadas a la programación del navegador vienen con
+esas herramientas.
 
 ## Moving through the tree
 
 {{index pointer}}
 
-DOM nodes contain a wealth of ((link))s to other nearby nodes. The
-following diagram illustrates these:
+Los nodos del DOM contienen una amplia cantidad de ((enlace))s a
+otros nodos cercanos. El siguiente diagrama los ilustra:
 
 {{figure {url: "img/html-links.svg", alt: "Links between DOM nodes",width: "6cm"}}}
 
 {{index "child node", "parentNode property", "childNodes property"}}
 
-Although the diagram shows only one link of each type, every node has
-a `parentNode` property that points to the node it is part of, if any.
-Likewise, every element node (node type 1) has a `childNodes` property
-that points to an ((array-like object)) holding its children.
+A pesar de que el diagrama muestra solo un enlace por tipo, cada nodo
+tien una propiedad `parentNode` que apunta al nodo al que pertenece, si
+es que hay alguno. Igualmente, cada elemento nodo (nodo tipo 1) tiene
+una propiedad `childNodes` que apunta a un objeto similar a un arreglo
+que almacena a sus hijos.
 
 {{index "firstChild property", "lastChild property", "previousSibling property", "nextSibling property"}}
 
-In theory, you could move anywhere in the tree using just these parent
-and child links. But JavaScript also gives you access to a number of
-additional convenience links. The `firstChild` and `lastChild`
-properties point to the first and last child elements or have the
-value `null` for nodes without children. Similarly, `previousSibling`
-and `nextSibling` point to adjacent nodes, which are nodes with the
-same parent that appear immediately before or after the node itself.
-For a first child, `previousSibling` will be null, and for a last
-child, `nextSibling` will be null.
+En teoria, te deberias poder mover donde quieras en el árbol
+utilizando únicamente estos enlaces entre padre e hijo. Pero JavaScript
+también te otorga acceso a un numero de enlaces adicionales convenientes.
+Las propiedades `firstChild` y `lastChild` apuntan al primer y último
+elementos hijo, o tiene el valor `null` para nodos sin hijos. De
+manera similar, las propiedades `previousSibling` y `nextSibling` apuntan
+a los nodos adyacentes, los cuales, son nodos con el mismo padre que
+aparecen inmediatamente antes o después del nodo. Para el primer hijo
+`previousSibling` sera `null` y para el último hijo, `nextSibling`
+sera `null`.
 
 {{index "children property", "text node", element}}
 
-There's also the `children` property, which is like `childNodes` but
-contains only element (type 1) children, not other types of
-child nodes. This can be useful when you aren't interested in text
-nodes.
+También existe una propiedad `children`, que es parecida a `childNodes`
+pero contiene únicamente hijos de tipo elemento (tipo 1), excluyendo
+otros tipos de nodos. Esto puede ser útil cuando no estas interesando
+en nodos de tipo texto.
 
 {{index "talksAbout function", recursion, [nesting, "of objects"]}}
 
-When dealing with a nested data structure like this one, recursive
-functions are often useful. The following function scans a document
-for ((text node))s containing a given string and returns `true` when
-it has found one:
+Cuando estas tratando con estructuras de datos anidadas como esta,
+las funciones recursivas son regularmente útiles. La siguiente
+función escanea un documento por ((nodos de texto)) que contengan
+una cadena dada y regresan `true` en caso de que encuentren una:
 
 {{id talksAbout}}
 
 ```{sandbox: "homepage"}
-function talksAbout(node, string) {
-  if (node.nodeType == Node.ELEMENT_NODE) {
-    for (let i = 0; i < node.childNodes.length; i++) {
-      if (talksAbout(node.childNodes[i], string)) {
+function hablaSobre(nodo, cadena) {
+  if (nodo.nodeType == Node.ELEMENT_NODE) {
+    for (let i = 0; i < nodo.childNodes.length; i++) {
+      if (hablaSobre(nodo.childNodes[i], cadena)) {
         return true;
       }
     }
     return false;
-  } else if (node.nodeType == Node.TEXT_NODE) {
-    return node.nodeValue.indexOf(string) > -1;
+  } else if (nodo.nodeType == Node.TEXT_NODE) {
+    return nodo.nodeValue.indexOf(cadena) > -1;
   }
 }
 
-console.log(talksAbout(document.body, "book"));
+console.log(hablaSobre(document.body, "libro"));
 // → true
 ```
 
 {{index "childNodes property", "array-like object", "Array.from function"}}
 
-Because `childNodes` is not a real array, we cannot loop over it with
-`for`/`of` and have to run over the index range using a regular `for`
-loop or use `Array.from`.
+Debido a que `childNodes` no es un arreglo real, no podemos iterar
+sobre el usando `for`/`of` por lo que tenemos que iterar sobre el rango
+del índice usando un `for` regular o usando `Array.from`.
 
 {{index "nodeValue property"}}
 
-The `nodeValue` property of a text node holds the string of text that
-it represents.
+La propiedad `nodeValue` de un nodo de texto almacena la cadena de
+texto que representa.
 
 ## Finding elements
 
 {{index [DOM, querying], "body property", "hard-coding", [whitespace, "in HTML"]}}
 
-Navigating these ((link))s among parents, children, and siblings is
-often useful. But if we want to find a specific node in the document,
-reaching it by starting at `document.body` and following a fixed path
-of properties is a bad idea. Doing so bakes assumptions into our
-program about the precise structure of the document—a structure you
-might want to change later. Another complicating factor is that text
-nodes are created even for the whitespace between nodes. The
-example document's `<body>` tag does not have just three children (`<h1>`
-and two `<p>` elements) but actually has seven: those three, plus the
-spaces before, after, and between them.
+Navegar por estos ((enlace))s entre padres, hijos y hermanos suele
+ser util. Pero si queremos encontrar un nodo específico en el documento,
+alcanzarlo comenzando en `document.body` y siguiendo un camino fijo de
+propiedades es una mala idea. Hacerlo genera suposiciones en nuestro
+programa sobre la estructura precisa del documento que tal vez quieras
+cambiar después. Otro factor complicado es que los nodos de texto son
+creados incluso para los espacios en blanco entre nodos. La etiqueta
+`<body>` en el documento de ejemplo no tiene solamente tres hijos
+(`<h1>` y dos elementos `<p>`), en realidad tiene siete: esos tres,
+más los espacios posteriores y anteriores entre ellos.
 
 {{index "search problem", "href attribute", "getElementsByTagName method"}}
 
-So if we want to get the `href` attribute of the link in that
-document, we don't want to say something like "Get the second child of
-the sixth child of the document body". It'd be better if we could say
-"Get the first link in the document". And we can.
+Por lo que si queremos obtener el atributo `href` del enlace en ese
+documento, no queremos decir algo como "Obten el segundo hijo del
+sexto hijo del elemento _body_ del documento". Seria mejor si pudieramos
+decir "Obten el primer enlace en el documento". Y de hecho podemos.
 
 ```{sandbox: "homepage"}
 let link = document.body.getElementsByTagName("a")[0];
@@ -276,32 +283,35 @@ console.log(link.href);
 
 {{index "child node"}}
 
-All element nodes have a `getElementsByTagName` method, which collects
-all elements with the given tag name that are descendants (direct or
-indirect children) of that node and returns them as an ((array-like
-object)).
+Todos los nodos que tienen un método `getElementsByTagName`, el cual
+recolecta a todos los elementos con un nombre de etiqueta dado que
+son decendientes (hijos directos o indirectos) de ese nodo y los
+regresa como un objeto parecido a un arreglo.
 
 {{index "id attribute", "getElementById method"}}
 
+Para encontrar un nodo específico, puedes otorgarle un atributo `id`
+y usar `document.getElementById` .
+
 To find a specific _single_ node, you can give it an `id` attribute
-and use `document.getElementById` instead.
+and use `document.getElementById` en su lugar.
 
 ```{lang: "text/html"}
-<p>My ostrich Gertrude:</p>
-<p><img id="gertrude" src="img/ostrich.png"></p>
+<p>Mi avestruz Gertrudiz:</p>
+<p><img id="gertrudiz" src="img/avestruz.png"></p>
 
 <script>
-  let ostrich = document.getElementById("gertrude");
-  console.log(ostrich.src);
+  let avestruz = document.getElementById("gertrudiz");
+  console.log(avestruz.src);
 </script>
 ```
 
 {{index "getElementsByClassName method", "class attribute"}}
 
-A third, similar method is `getElementsByClassName`, which, like
-`getElementsByTagName`, searches through the contents of an element
-node and retrieves all elements that have the given string in their
-`class` attribute.
+Un tercer método similar es `getElementsByClassName`, el cual, de
+manera similar a `getElementsByTagName` busca a través de los
+contenidos de un nodo elemento y obtiene todos los elementos que
+tienen una cadena dada en su attributo `class`.
 
 ## Changing the document
 
