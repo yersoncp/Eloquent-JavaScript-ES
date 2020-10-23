@@ -50,16 +50,15 @@ con la figura en una nueva posición.
 
 ## SVG
 
-This book will not go into ((SVG)) in detail, but I will briefly
-explain how it works. At the [end of the
-chapter](canvas#graphics_tradeoffs), I'll come back to the trade-offs
-that you must consider when deciding which ((drawing)) mechanism is
-appropriate for a given application.
+Este libro no hablará de ((SVG)) a detalle, pero explicaré
+de forma breve como funciona. Al final de [final del capítulo](canvas#graphics_tradeoffs), regresaré a estos temas
+que debes considerar cuando debas decidir cuál mecanismo de ((dibujo)) sea
+apropiado dada una aplicación.
 
-This is an HTML document with a simple SVG ((picture)) in it:
+Este es un documento HTML con una ((imagen)) SVG simple:
 
 ```{lang: "text/html", sandbox: "svg"}
-<p>Normal HTML here.</p>
+<p>HTML normal aquí.</p>
 <svg xmlns="http://www.w3.org/2000/svg">
   <circle r="50" cx="50" cy="50" fill="red"/>
   <rect x="120" y="5" width="90" height="90"
@@ -69,33 +68,33 @@ This is an HTML document with a simple SVG ((picture)) in it:
 
 {{index "circle (SVG tag)", "rect (SVG tag)", "XML namespace", XML, "xmlns attribute"}}
 
-The `xmlns` attribute changes an element (and its children) to a
-different _XML namespace_. This namespace, identified by a ((URL)),
-specifies the dialect that we are currently speaking. The `<circle>`
-and `<rect>` tags, which do not exist in HTML, do have a meaning in
-SVG—they draw shapes using the style and position specified by their
-attributes.
+El atributo `xmlns` cambia un elemento (y sus hijos) a un
+_XML namespace_ diferente. Este _namespace_, identificado por una ((URL)),
+especifica el dialecto que estamos usando. las etiquetas 
+`<circle>` y `<rect>`, —que no existen en HTML, pero tienen un significado en
+SVG— dibujan formas usando el estilo y posición especificados por sus
+atributos.
 
 {{if book
 
-The document is displayed like this:
+El documento muestra algo así:
 
-{{figure {url: "img/svg-demo.png", alt: "An embedded SVG image",width: "4.5cm"}}}
+{{figure {url: "img/svg-demo.png", alt: "Una imagen SVG embebida",width: "4.5cm"}}}
 
 if}}
 
 {{index [DOM, graphics]}}
 
-These tags create DOM elements, just like HTML tags, that
-scripts can interact with. For example, this changes the `<circle>`
-element to be ((color))ed cyan instead:
+Estas etiquetas crean elementos en el DOM, como etiquetas de HTML, con las 
+que los scripts pueden interactuar. Por ejemplo, el siguiente código cambia el elemento `<circle>`
+para que sea ((color))eado de cyan:
 
 ```{sandbox: "svg"}
-let circle = document.querySelector("circle");
-circle.setAttribute("fill", "cyan");
+let circulo = document.querySelector("circle");
+circulo.setAttribute("fill", "cyan");
 ```
 
-## The canvas element
+## El elemento canvas
 
 {{index [canvas, size], "canvas (HTML tag)"}}
 
