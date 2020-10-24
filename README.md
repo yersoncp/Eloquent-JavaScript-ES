@@ -8,7 +8,7 @@ Por favor revisa las instrucciones para contribuir y las guías de contribución
 1. Has un fork de este repositorio
 2. Revisa los **Issues** para que veas que capítulos están en progreso. Lo más recomendable es tomar un capítulo que nadie esté trabajando
 3. Pon como un Issue que capítulo vas a traducir
-4. La fuente en idioma original está en la carpeta [eng_chapters](https://github.com/Eloquent-JavaScript-Espanol/Eloquent-JavaScript-ES/tree/master/eng_chapters)
+4. La fuente en idioma original está en la carpeta [eng_chapters](https://github.com/Eloquent-JavaScript-Espanol/Eloquent-JavaScript-ES/tree/master/eng_chapters), pon un archivo con tu traducción y el mismo nombre en la raíz del proyecto
 5. Cuando lleves un porcentaje considerable del capítulo, has un PR para integrarlo y crear nuevas versiones de los libros
 6. Un revisor verificará el texto y hará comentarios o aprobará el PR
 
