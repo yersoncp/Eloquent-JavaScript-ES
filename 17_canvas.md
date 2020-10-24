@@ -98,72 +98,72 @@ circulo.setAttribute("fill", "cyan");
 
 {{index [canvas, size], "canvas (HTML tag)"}}
 
-Canvas ((graphics)) can be drawn onto a `<canvas>` element. You can
-give such an element `width` and `height` attributes to determine its
-size in ((pixel))s.
+Los ((gráficos)) canvas pueden ser dibujados en un elemento `<canvas>`. Puedes
+agregarle los atributos `width` y `height` para determinar su
+tamaño en ((pixel))es.
 
-A new canvas is empty, meaning it is entirely ((transparent)) and thus
-shows up as empty space in the document.
+Un nuevo canvas se encuentra vacío, lo que significa que es completamente ((transparente)) y
+se muestra como un espacio vacío en el documento.
 
 {{index "2d (canvas context)", "webgl (canvas context)", OpenGL, [canvas, context], dimensions, [interface, canvas]}}
 
-The `<canvas>` tag is intended to allow different styles of
-((drawing)). To get access to an actual drawing interface, we
-first need to create a _((context))_, an object whose methods provide
-the drawing interface. There are currently two widely supported
-drawing styles: `"2d"` for two-dimensional graphics and `"webgl"` for
-three-dimensional graphics through the OpenGL interface.
+La etiqueta `<canvas>` esta diseñada para permtir diferentes estilos de
+((dibujo)). Para tener acceso a una verdadera interfaz de dibujo,
+primero neceistamos crear un _((context))_, un objeto cuyos métodos proveen
+la interfaz de dibujo. Actualmente hay 2  estilos de dibujo ampliamente soportados
+: `"2d"` para gráficos en dos dimensiones y `"webgl"` para
+gráficos de tres dimensiones mediante la intefaz de OpenGL.
 
 {{index rendering, graphics, efficiency}}
 
-This book won't discuss WebGL—we'll stick to two dimensions. But if
-you are interested in three-dimensional graphics, I do encourage you
-to look into WebGL. It provides a direct interface to graphics
-hardware and allows you to render even complicated scenes efficiently,
-using JavaScript.
+Este libro no abordará WebGL —nos limitaremos a dos dimensiones—. Pero si
+de verdad te interesan los gráficos tridimensionales, te recomiendo que
+investigues sobre WebGL. Provee una interfaz directa hacia hardware de
+gráficos y te permite renderizar escenarios complicados de forma eficiente
+usando JavaScript.
 
 {{index "getContext method", [canvas, context]}}
 
-You create a ((context)) with the `getContext` method on the
-`<canvas>` DOM element.
+Crea un ((contexto)) con el método `getContext` en el
+elemento `<canvas>` del DOM.
 
 ```{lang: "text/html"}
-<p>Before canvas.</p>
+<p>Antes del canvas.</p>
 <canvas width="120" height="60"></canvas>
-<p>After canvas.</p>
+<p>Después del canvas.</p>
 <script>
   let canvas = document.querySelector("canvas");
-  let context = canvas.getContext("2d");
-  context.fillStyle = "red";
-  context.fillRect(10, 10, 100, 50);
+  let contexto = canvas.getContext("2d");
+  contexto.fillStyle = "red";
+  contexto.fillRect(10, 10, 100, 50);
 </script>
 ```
 
-After creating the context object, the example draws a red
-((rectangle)) 100 ((pixel))s wide and 50 pixels high, with its top-left
-corner at coordinates (10,10).
+Después de crear el objeto contexto, el ejemplo dibuja un
+((rectangulo)) rojo de 100 ((pixel))es de ancho y 50 pixeles de alto con su esquina superior izquierda
+en las coordenadas (10,10).
 
 {{if book
 
-{{figure {url: "img/canvas_fill.png", alt: "A canvas with a rectangle",width: "2.5cm"}}}
+{{figure {url: "img/canvas_fill.png", alt: "Un canvas con un rectangulo",width: "2.5cm"}}}
 
 if}}
 
 {{index SVG, coordinates}}
 
-Just like in HTML (and SVG), the coordinate system that the canvas
-uses puts (0,0) at the top-left corner, and the positive y-((axis))
-goes down from there. So (10,10) is 10 pixels below and to the right
-of the top-left corner.
+Al igual que en HTML (y SVG), el sistema de coordenadas que usa el canvas
+coloca (0,0) en la esquina superior izquierda y el ((eje)) positivo y
+baja a partir de ahí. Así que (10,10) significa 10 pixeles debajo y a la derecha de
+la esquina superior izquierda.
 
 {{id fill_stroke}}
 
-## Lines and surfaces
+## Líneas y superficies
 
 {{index filling, stroking, drawing, SVG}}
 
-In the ((canvas)) interface, a shape can be _filled_, meaning its area
-is given a certain color or pattern, or it can be _stroked_, which
+En la interfaz del ((canvas)), una figura puede ser _rellenada_ dado
+un cierto color o diseño, or it can be _stroked_, which
 means a ((line)) is drawn along its edge. The same terminology is used
 by SVG.
 
