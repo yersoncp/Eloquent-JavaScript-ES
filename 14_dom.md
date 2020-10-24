@@ -709,7 +709,7 @@ podemos escribir para cambiar un aspecto en particular del estilo del
 elemento.
 
 ```{lang: "text/html"}
-<p id="para" style="color: purple">
+<p id="parrafo" style="color: purple">
   Texto mejorado
 </p>
 
