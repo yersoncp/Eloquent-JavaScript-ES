@@ -305,7 +305,7 @@ atributo `id` y usar `document.getElementById`.
 
 ```{lang: "text/html"}
 <p>Mi avestruz Gertrudiz:</p>
-<p><img id="gertrudiz" src="img/avestruz.png"></p>
+<p><img id="gertrudiz" src="img/ostrich.png"></p>
 
 <script>
   let avestruz = document.getElementById("gertrudiz");
@@ -417,7 +417,7 @@ tiempo real, puedes convertir la colección a un arreglo real llamando
 `Array.from`.
 
 ```
-let casi_arreglo = {0: "one", 1: "two", length: 2};
+let casi_arreglo = {0: "uno", 1: "dos", length: 2};
 let arreglo = Array.from(casi_arreglo);
 console.log(arreglo.map(s => s.toUpperCase()));
 // → ["UNO", "DOS"]
@@ -495,10 +495,10 @@ nodo del elemento. En vez de eso, tendrás que utilizar los métodos
 <p data-classified="no-classificado">Yo tengo dos pies.</p>
 
 <script>
-  let paras = document.body.getElementsByTagName("p");
-  for (let para of Array.from(paras)) {
-    if (para.getAttribute("data-classified") == "secreto") {
-      para.remove();
+  let parrafos = document.body.getElementsByTagName("p");
+  for (let parrafo of Array.from(parrafos)) {
+    if (parrafo.getAttribute("data-classified") == "secreto") {
+      parrafo.remove();
     }
   }
 </script>
@@ -557,9 +557,9 @@ del espacio _dentro_ del elemento, ignorando la anchura del borde.
 </p>
 
 <script>
-  let para = document.body.getElementsByTagName("p")[0];
-  console.log("clientHeight:", para.clientHeight);
-  console.log("offsetHeight:", para.offsetHeight);
+  let parrafo = document.body.getElementsByTagName("p")[0];
+  console.log("clientHeight:", parrafo.clientHeight);
+  console.log("offsetHeight:", parrafo.offsetHeight);
 </script>
 ```
 
