@@ -48,7 +48,7 @@ Este es el documento de ejemplo del
   </head>
   <body>
     <h1>Mi página de inicio</h1>
-    <p>Hola, Mi nombre es Marijn y esta es mi página de inicio.</p>
+    <p>¡Hola! Mi nombre es Marijn y esta es mi página de inicio.</p>
     <p>También escribí un libro! Léelo
       <a href="http://eloquentjavascript.net">aquí</a>.</p>
   </body>
@@ -113,8 +113,6 @@ de aplicación. Los nodos de aplicación pueden tener hijos, mientras
 que los identificadores y valores son _hojas_, o nodos sin hijos.
 
 {{index "body property", [HTML, structure]}}
-
-
 
 Lo mismo sucede para el DOM, los nodos para los _((elemento))s_,
 los cuales representan etiquetas HTML, determinan la estructura del
