@@ -909,8 +909,8 @@ de una ((elipse)):
     if (ultimoTiempo != null) {
       angulo += (tiempo - ultimoTiempo) * 0.001;
     }
-    cat.style.top = (Math.sin(angulo) * 20) + "px";
-    cat.style.left = (Math.cos(angulo) * 200) + "px";
+    gato.style.top = (Math.sin(angulo) * 20) + "px";
+    gato.style.left = (Math.cos(angulo) * 200) + "px";
     requestAnimationFrame(nuevoTiempo => animar(nuevoTiempo, tiempo));
   }
   requestAnimationFrame(animar);
