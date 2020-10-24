@@ -13,19 +13,21 @@ quote}}
 
 {{index drawing, parsing}}
 
-Cuando abres una página web en tu navegador, el navegador obtiene el texto de
-la página ((HTML)) y lo analiza, de una manera bastante similar a la manera en
-que nuestro analizador del [Capítulo ?](language#parsing) analizaba los programas.
-El navegador construye un modelo de la ((estructura)) del documento y utiliza
-este modelo para dibujar la página en la pantalla.
+Cuando abres una página web en tu navegador, el navegador obtiene el
+texto de la página ((HTML)) y lo analiza, de una manera bastante
+similar a la manera en que nuestro analizador del [Capítulo ?](language#parsing)
+analizaba los programas. El navegador construye un modelo de la
+((estructura)) del documento y utiliza este modelo para dibujar la
+página en la pantalla.
 
 
 {{index "live data structure"}}
 
-Esta representación del ((documento)) es uno de los juguetes que un programa de
-JavaScript tiene disponible en su ((caja de arena)). Es una ((estructura de
-datos)) que puedes leer o modificar. Y actúa como una estructura en _tiempo real_: cuando se modifica, la página en la pantalla es actualizada para
-reflejar los cambios.
+Esta representación del ((documento)) es uno de los juguetes que un
+programa de JavaScript tiene disponible en su ((caja de arena)). Es
+una ((estructura de datos)) que puedes leer o modificar. Y actúa como
+una estructura en _tiempo real_: cuando se modifica, la página en la
+pantalla es actualizada para reflejar los cambios.
 
 ## La estructura del documento
 
@@ -59,55 +61,60 @@ Esta página tiene la siguiente estructura:
 
 {{indexsee "Document Object Model", DOM}}
 
-La estructura de datos que el navegador utiliza para representar el documento
-sigue esta figura. Para cada caja, hay un objeto, con el que podemos
-interactuar para descubrir cosas como que etiqueta de HTML representa y
-que cajas y texto contiene. Esta representación es llamada _Modelo de Objeto del
-Documento_ o ((DOM)) _(por sus siglas en inglés "Document Object Model")_.
+La estructura de datos que el navegador utiliza para representar el
+documento sigue esta figura. Para cada caja, hay un objeto, con el que
+podemos interactuar para descubrir cosas como que etiqueta de HTML
+representa y que cajas y texto contiene. Esta representación es llamada
+_Modelo de Objeto del Documento_ o ((DOM)) _(por sus siglas en inglés
+"Document Object Model")_.
 
 {{index "documentElement property", "head property", "body property", "html (HTML tag)", "body (HTML tag)", "head (HTML tag)"}}
 
 El objeto de enlace global `document` nos da acceso a esos objetos. Su
 propiedad `documentElement` hace referencia al objeto que representa
-a la etiqueta `<html>`. Dado que cada documento HTML tiene una cabecera y un
-cuerpo, también tiene propiedades `head` y `body` que apuntan a esos elementos.
+a la etiqueta `<html>`. Dado que cada documento HTML tiene una cabecera
+y un cuerpo, también tiene propiedades `head` y `body` que apuntan a
+esos elementos.
 
 ## Árboles
 
 {{index [nesting, "of objects"]}}
 
 Pensemos en los ((árbol))es ((sintáctico))s del [Capítulo ?](language#parsing)
-por un momento. Sus estructuras son sorprendentemente similares a la estructura
-de un documento del navegador. Cada _((nodo))_ puede referirse a otros nodos
-_hijos_ que, a su vez, pueden tener hijos propios. Esta forma es típica de
-las estructuras anidadas donde los elementos pueden contener sub elementos que
-son similares a ellos mismos.
+por un momento. Sus estructuras son sorprendentemente similares a la
+estructura de un documento del navegador. Cada _((nodo))_ puede
+referirse a otros nodos _hijos_ que, a su vez, pueden tener hijos
+propios. Esta forma es típica de las estructuras anidadas donde los
+elementos pueden contener sub elementos que son similares a ellos
+mismos.
 
 {{index "documentElement property", [DOM, tree]}}
 
-Le damos el nombre de _((árbol))_ a una estructura de datos
-cuando tiene una estructura de ramificación, no tiene ((ciclo))s
-(un nodo no puede contenerse a sí mismo, directa o indirectamente) y
-tiene una única _((raíz))_ bien definida. En el caso del _DOM_,
+Le damos el nombre de _((árbol))_ a una estructura de datos cuando
+tiene una estructura de ramificación, no tiene ((ciclo))s (un nodo
+no puede contenerse a sí mismo, directa o indirectamente) y tiene
+una única _((raíz))_ bien definida. En el caso del _DOM_,
 `document.documentElement` hace la función de raíz.
 
 {{index sorting, ["data structure", "tree"], "syntax tree"}}
 
-Los árboles aparecen constantemente en las ciencias de la computación _(computer sience)_.
-Además de representar estructuras recursivas como los documentos HTML o
-programas, también son comúnmente usados para mantener ((conjunto))s
-ordenados de datos debido a que los elementos generalmente pueden ser
-encontrados o agregados más eficientemente en un árbol que en un
-arreglo plano.
+Los árboles aparecen constantemente en las ciencias de la computación
+_(computer sience)_. Además de representar estructuras recursivas como
+los documentos HTML o programas, también son comúnmente usados para
+mantener ((conjunto))s ordenados de datos debido a que los elementos
+generalmente pueden ser encontrados o agregados más eficientemente en
+un árbol que en un arreglo plano.
 
 {{index "leaf node", "Egg language"}}
 
 Un árbol típico tiene diferentes tipos de ((nodo))s. El árbol sintáctico
-del [lenguaje _Egg_](language) tenía identificadores, valores y nodos de
-aplicación. Los nodos de aplicación pueden tener hijos, mientras que los
-identificadores y valores son _hojas_, o nodos sin hijos.
+del [lenguaje _Egg_](language) tenía identificadores, valores y nodos
+de aplicación. Los nodos de aplicación pueden tener hijos, mientras
+que los identificadores y valores son _hojas_, o nodos sin hijos.
 
 {{index "body property", [HTML, structure]}}
+
+
 
 Lo mismo sucede para el DOM, los nodos para los _((elemento))s_,
 los cuales representan etiquetas HTML, determinan la estructura del
@@ -118,14 +125,16 @@ nodos es `document.body`. Algunos de estos hijos pueden ser
 
 {{index "text node", element, "ELEMENT_NODE code", "COMMENT_NODE code", "TEXT_NODE code", "nodeType property"}}
 
-Cada objeto _nodo DOM_ tiene una propiedad `nodeType`, la cual contiene un
-código (numérico) que identifica el tipo de nodo. Los _Elementos_ tienen
-el código 1, que también es definido por la propiedad constante
-`Node.ELEMENT_NODE`. Los nodos de texto, representando una sección de
-texto en el documento, obtienen el código 3 (`Node.TEXT_NODE`). Los
-comentarios obtienen el código 8 (`Node.COMMENT_NODE`).
+Cada objeto _nodo DOM_ tiene una propiedad `nodeType`, la cual
+contiene un código (numérico) que identifica el tipo de nodo. Los
+_Elementos_ tienen el código 1, que también es definido por la
+propiedad constante `Node.ELEMENT_NODE`. Los nodos de texto, representando
+una sección de texto en el documento, obtienen el código 3
+(`Node.TEXT_NODE`). Los comentarios obtienen el código 8
+(`Node.COMMENT_NODE`).
 
-Otra forma de visualizar nuestro ((árbol)) de documento es la siguiente:
+Otra forma de visualizar nuestro ((árbol)) de documento es la
+siguiente:
 
 {{figure {url: "img/html-tree.svg", alt: "HTML document as a tree",width: "8cm"}}}
 
@@ -142,11 +151,11 @@ Usar códigos numéricos crípticos para representar a los tipos de
 nodos no es algo que se parezca al estilo de JavaScript para hacer
 las cosas. Más adelante en este capítulo, veremos cómo otras partes
 de la interfaz DOM también se sienten engorrosas y alienígenas.
-La razón de esto es que DOM no fue diseñado solamente para
-JavaScript. Más bien, intenta ser una interfaz _independiente del
-lenguaje_ que puede ser usada en otros sistemas, no
-solamente para HTML pero también para ((XML)), que es un ((formato
-de datos)) genérico con una sintaxis similar a la de HTML.
+La razón de esto es que DOM no fue diseñado solamente para JavaScript.
+Más bien, intenta ser una interfaz _independiente del lenguaje_ que
+puede ser usada en otros sistemas, no solamente para HTML pero
+también para ((XML)), que es un ((formato de datos)) genérico con
+una sintaxis similar a la de HTML.
 
 {{index consistency, integration}}
 
@@ -193,11 +202,11 @@ otros nodos cercanos. El siguiente diagrama los ilustra:
 
 {{index "child node", "parentNode property", "childNodes property"}}
 
-A pesar de que el diagrama muestra un solo enlace por cada tipo, cada nodo
-tiene una propiedad `parentNode` que apunta al nodo al que pertenece, si
-es que hay alguno. Igualmente, cada nodo _elemento_ (nodo tipo 1) tiene
-una propiedad `childNodes` que apunta a un objeto similar a un arreglo
-que almacena a sus hijos.
+A pesar de que el diagrama muestra un solo enlace por cada tipo, cada
+nodo tiene una propiedad `parentNode` que apunta al nodo al que
+pertenece, si es que hay alguno. Igualmente, cada nodo _elemento_
+(nodo tipo 1) tiene una propiedad `childNodes` que apunta a un objeto
+similar a un arreglo que almacena a sus hijos.
 
 {{index "firstChild property", "lastChild property", "previousSibling property", "nextSibling property"}}
 
@@ -206,11 +215,11 @@ utilizando únicamente estos enlaces entre padre e hijo. Pero JavaScript
 también te otorga acceso a un número de enlaces adicionales convenientes.
 Las propiedades `firstChild` y `lastChild` apuntan al primer y último
 elementos hijo, o tiene el valor `null` para nodos sin hijos. De
-manera similar, las propiedades `previousSibling` y `nextSibling` apuntan
-a los nodos adyacentes, los cuales, son nodos con el mismo padre que
-aparecen inmediatamente antes o después del nodo. Para el primer hijo
-`previousSibling` será `null` y para el último hijo, `nextSibling`
-será `null`.
+manera similar, las propiedades `previousSibling` y `nextSibling`
+apuntan a los nodos adyacentes, los cuales, son nodos con el mismo
+padre que aparecen inmediatamente antes o después del nodo. Para el
+primer hijo `previousSibling` será `null` y para el último hijo,
+`nextSibling` será `null`.
 
 {{index "children property", "text node", element}}
 
@@ -222,9 +231,9 @@ en nodos de tipo texto.
 {{index "talksAbout function", recursion, [nesting, "of objects"]}}
 
 Cuando estás tratando con estructuras de datos anidadas como esta,
-las funciones recursivas son generalmente útiles. La siguiente
-función escanea un documento por ((nodos de texto)) que contengan
-una cadena dada y regresan `true` en caso de que encuentren una:
+las funciones recursivas son generalmente útiles. La siguiente función
+escanea un documento por ((nodos de texto)) que contengan una cadena
+dada y regresan `true` en caso de que encuentren una:
 
 {{id talksAbout}}
 
@@ -286,15 +295,15 @@ console.log(link.href);
 
 {{index "child node"}}
 
-Todos los nodos _elemento_ tienen un método `getElementsByTagName`, el cual
-recolecta a todos los elementos con un nombre de etiqueta dado que
+Todos los nodos _elemento_ tienen un método `getElementsByTagName`, el
+cual recolecta a todos los elementos con un nombre de etiqueta dado que
 son descendientes (hijos directos o indirectos) de ese nodo y los
 regresa como un objeto parecido a un arreglo.
 
 {{index "id attribute", "getElementById method"}}
 
-Para encontrar un _único_ nodo en específico, puedes otorgarle un atributo `id`
-y usar `document.getElementById`.
+Para encontrar un _único_ nodo en específico, puedes otorgarle un
+atributo `id` y usar `document.getElementById`.
 
 ```{lang: "text/html"}
 <p>Mi avestruz Gertrudiz:</p>
