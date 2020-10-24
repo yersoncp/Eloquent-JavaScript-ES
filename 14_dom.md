@@ -324,7 +324,7 @@ tienen una cadena dada en su attributo `class`.
 
 {{index "side effect", "removeChild method", "appendChild method", "insertBefore method", [DOM, construction], [DOM, modification]}}
 
-Practicamente todo sobre la estructura de datos DOM puede ser cambiado.
+Prácticamente todo sobre la estructura de datos DOM puede ser cambiado.
 La forma del árbol de documento puede ser modificada cambiando las
 relaciones padre-hijo. Los nodos tienen un método `remove` para ser
 removidos de su nodo padre actual. Para agregar un nodo hijo a un
@@ -344,11 +344,11 @@ primer argumento antes del nodo dado como segundo argumento.
 ```
 
 Un nodo puede existir en el documento solamente en un lugar. En
-consecuencia, insertar el parráfo _Tres_ enfrente del parráfo _Uno_
+consecuencia, insertar el párrafo _Tres_ enfrente del párrafo _Uno_
 primero lo removerá del final del documento y luego lo insertará
-en el frente, resuntando en _Tres_/_Uno_/_Dos_. Todas las operaciones
+en el frente, resultando en _Tres_/_Uno_/_Dos_. Todas las operaciones
 que insertan un nodo en alguna parte causarán, a modo de
-((effecto secundario)), que el nodo sea removido de su posición actual
+((efecto secundario)), que el nodo sea removido de su posición actual
 (si es que tiene una).
 
 {{index "insertBefore method", "replaceChild method"}}
@@ -356,7 +356,7 @@ que insertan un nodo en alguna parte causarán, a modo de
 El método `replaceChild` es usado para reemplazar a un nodo hijo con
 otro. Toma dos nodos como argumentos: un nuevo nodo y el nodo que será
 reemplazado. El nodo reemplazado debe ser un nodo hijo del elemento
-desde donde se esta llamando el método. Notese que tanto `replaceChild`
+desde donde se está llamando el método. Nótese que tanto `replaceChild`
 como `insertBefore` esperan que el _nuevo_ nodo sea el primer argumento.
 
 ## Creando nodos
@@ -370,7 +370,7 @@ textual alternativa de la imagen.
 
 {{index "createTextNode method"}}
 
-Esto no solamente involucra remover las images, si no que también
+Esto no solamente involucra remover las imágenes, si no que también
 involucra agregar un nuevo nodo texto que lo reemplace. Los nodos texto
 son creados con el método `document.createTextNode`.
 
@@ -401,18 +401,18 @@ insertar en el documento para hacer que aparezca en la pantalla.
 
 {{index "live data structure", "getElementsByTagName method", "childNodes property"}}
 
-El ciclo que recorre las imagenes empieza al final de la lista. Esto es
-necesario dado que la lista de nodos regresada por un metodo como
+El ciclo que recorre las imágenes empieza al final de la lista. Esto es
+necesario dado que la lista de nodos regresada por un método como
 `getElementsByTagName` (o una propiedad como `childNodes`) se actualiza
 en tiempo real. Esto es, que se actualiza conforme el documento cambia.
-Si empezaramos desde el frente, removiendo la primer imagen causaria que
+Si empezáramos desde el frente, removiendo la primer imagen causaría que
 la lista que perdiera su primer elemento de tal manera que la segunda
-ocacion que el ciclo se repitiera, donde `i` es 1, se detendría dado que
-la longitud de la collecion ahora es también 1.
+ocasión que el ciclo se repitiera, donde `i` es 1, se detendría dado que
+la longitud de la colección ahora es también 1.
 
 {{index "slice method"}}
 
-Si quieres una colección de nodos _solida_, a diferencia de una en
+Si quieres una colección de nodos _sólida_, a diferencia de una en
 tiempo real, puedes convertir la colección a un arreglo real llamando
 `Array.from`.
 
@@ -427,7 +427,7 @@ console.log(arreglo.map(s => s.toUpperCase()));
 
 Para crear nodos ((elemento)), puedes utilizar el método
 `document.createElement`. Este método toma un nombre de etiqueta y
-regresa un nuevo nodo vacio del nodo dado.
+regresa un nuevo nodo vacío del nodo dado.
 
 {{index "Popper, Karl", [DOM, construction], "elt function"}}
 
@@ -435,14 +435,14 @@ regresa un nuevo nodo vacio del nodo dado.
 
 El siguiente ejemplo define una utilidad `elt`, la cual crea un
 elemento nodo y trata el resto de sus argumentos como hijos de ese
-nodo. Luego entonces, esta funcion es utilizada para agregar una
+nodo. Luego entonces, esta función es utilizada para agregar una
 atribución a una cita.
 
 ```{lang: "text/html"}
 <blockquote id="cita">
   Ningún libro puede terminarse jamás. Mientras se trabaja en
   el aprendemos solo lo suficiente para encontrar inmaduro
-  el momento en el que nos alejemos de el.
+  el momento en el que nos alejamos de él.
 </blockquote>
 
 <script>
@@ -458,7 +458,7 @@ atribución a una cita.
   document.getElementById("cita").appendChild(
     elt("footer", "—",
         elt("strong", "Karl Popper"),
-        ", prefacio de la segunda edicion de ",
+        ", prefacio de la segunda edición de ",
         elt("em", "La sociedad abierta y sus enemigos"),
         ", 1950"));
 </script>
@@ -466,7 +466,7 @@ atribución a una cita.
 
 {{if book
 
-Asi es como se ve el documento resultante:
+Así es como se ve el documento resultante:
 
 {{figure {url: "img/blockquote.png", alt: "A blockquote with attribution",width: "8cm"}}}
 
@@ -476,18 +476,18 @@ if}}
 
 {{index "href attribute", [DOM, attributes]}}
 
-Los ((attributo))s de algunos elementos, como `href` par los enlaces
-pueden ser accedidos a traves de una propiedad con el mismo nombre en
+Los ((atributo))s de algunos elementos, como `href` par los enlaces
+pueden ser accedidos a través de una propiedad con el mismo nombre en
 el objeto ((DOM)) del elemento. Este es el caso para los atributos
-estandar más comunmente utilizados.
+estándar más comúnmente utilizados.
 
 {{index "data attribute", "getAttribute method", "setAttribute method", attribute}}
 
 Pero HTML te permite establecer cualquier atributo que quieras en los
-nodos. Esto puede ser util debido a que te permite almacenar información
+nodos. Esto puede ser útil debido a que te permite almacenar información
 extra en un documento. Sin embargo, si creas tus propios nombres de
 atributo, dichos atributos no estarán presentes como propiedades en el
-nodo del elemento. En vez de eso, tendras que utilizar los métodos
+nodo del elemento. En vez de eso, tendrás que utilizar los métodos
 `getAttribute` y `setAttribute` para trabajar con ellos.
 
 ```{lang: "text/html"}
@@ -505,30 +505,30 @@ nodo del elemento. En vez de eso, tendras que utilizar los métodos
 ```
 
 Se recomienda anteponer los nombres de dichos atributos inventados con
-`data-` para asegurarse de que no conflictuan con ningun otro atributo.
+`data-` para asegurarse de que no conflictúan con ningún otro atributo.
 
 {{index "getAttribute method", "setAttribute method", "className property", "class attribute"}}
 
-Existe un atributo comunmente usado, `class`, que es una ((palabra clave))
-en el lenguaje JavaScript. Por motivos historicos, algunas
-implementaciones antiguas de JavaScript podrian no manejar nombres de
+Existe un atributo comúnmente usado, `class`, que es una ((palabra clave))
+en el lenguaje JavaScript. Por motivos históricos, algunas
+implementaciones antiguas de JavaScript podrían no manejar nombres de
 propiedades que coincidan con las palabras clave-la propiedad utilizada
-para acceder a este atributo tiene por nombre `className`. Tambien
-puedes acceder a el bajo su nombre real, `"class"`, utilizando los
-metodos `getAttribute` and `setAttribute`.
+para acceder a este atributo tiene por nombre `className`. También
+puedes acceder a él bajo su nombre real, `"class"`, utilizando los
+métodos `getAttribute` y `setAttribute`.
 
 ## Layout
 
 {{index layout, "block element", "inline element", "p (HTML tag)", "h1 (HTML tag)", "a (HTML tag)", "strong (HTML tag)"}}
 
 Tal vez hayas notado que diferentes tipos de elementos se exponen
-de manera distinta. Algunos, como en el caso de los parrafos
+de manera distinta. Algunos, como en el caso de los párrafos
 (`<p>`) o encabezados (`<h1>`), ocupan todo el ancho del documento
-y se renderizan en lineas separadas. A estos se les conoce como
+y se renderizan en líneas separadas. A estos se les conoce como
 elementos _block_ (bloque). Otros, como los enlaces (`<a>`) o el
-elemento `<strong>`, se renderizan en la misma linea con su texto
+elemento `<strong>`, se renderizan en la misma línea con su texto
 circundante. Dichos elementos se les conoce como elementos
-_inline_ (en la misma linea).
+_inline_ (en la misma línea).
 
 {{index drawing}}
 
@@ -541,11 +541,11 @@ utiliza para trazar el documento.
 
 Se puede acceder al tamaño y la posición de un elemento pueden desde
 JavaScript. Las propiedades `offsetWidth` y `offsetHeight` te dan el
-espacio que el elemento ocupa en ((pixel))es. Un pixel es la unidad
-basica de las medidas del navegador. Tradicionalmente correspondia al
+espacio que el elemento ocupa en ((pixel))es. Un píxel es la unidad
+básica de las medidas del navegador. Tradicionalmente correspondía al
 punto más pequeño que la pantalla podía trazar, pero en los monitores
 modernos, que pueden trazar puntos _muy_ pequeños, este puede no ser
-más el caso, por lo que un pixel del navegado puede abarcar varios
+más el caso, por lo que un píxel del navegador puede abarcar varios
 puntos en la pantalla.
 
 De manera parecida, `clientWidth` y `clientHeight` te dan el tamaño
@@ -578,9 +578,9 @@ if}}
 La manera más efectiva de encontrar la posición precisa de un elemento
 en la pantalla es el método `getBoundingClientRect`. Este devuelve un
 objeto con las propiedades `top`, `bottom`, `left`, y `right`, indicando
-las posiciones de pixeles de los lados el elemento en relacion con la
+las posiciones de pixeles de los lados el elemento en relación con la
 parte superior izquierda de la pantalla. Si los quieres relativos a
-todo el documento, deberas agregar la posición actual del scroll, la
+todo el documento, deberás agregar la posición actual del scroll, la
 cual puedes obtener en los _bindings_ `pageXOffset` y `pageYOffset`.
 
 {{index "offsetHeight property", "getBoundingClientRect method", drawing, laziness, performance, efficiency}}
@@ -590,19 +590,19 @@ intereses de velocidad, los motores de los navegadores no
 reestructuran inmediatamente un documento cada vez que lo cambias,
 en cambio, se espera lo más que se pueda. Cuando un programa de
 JavaScript que modifica el documento termina de ejecutarse, el
-navegador tendra que calcular una nueva estructura para trazar el
+navegador tendrá que calcular una nueva estructura para trazar el
 documento actualizado en la pantalla. Cuando un programa _solicita_
 la posición o el tamaño de algo, leyendo propiedades como `offsetHeight`
-o llamando a `getBoundingClientRect`, proveer la informacion correcta
+o llamando a `getBoundingClientRect`, proveer la información correcta
 también requiere que se calcule una nueva estructura.
 
 {{index "side effect", optimization, benchmark}}
 
-A un programa que repeditamente alterna entre leer la información de la
-estructura DOM y cambiar el DOM fuerza a que hayan bastantes calculos
-de estructura, y por consecuencia se ejecutara lentamente. El siguiente
-codigo es un ejemplo de esto. Contiene dos programas diferentes que
-construyen una linea de _X_ caracteres con 2,000 pixeles de ancho y
+A un programa que repetidamente alterna entre leer la información de la
+estructura DOM y cambiar el DOM fuerza a que haya bastantes cálculos
+de estructura, y por consecuencia se ejecutará lentamente. El siguiente
+código es un ejemplo de esto. Contiene dos programas diferentes que
+construyen una línea de _X_ caracteres con 2,000 pixeles de ancho y
 que mide el tiempo que toma cada uno.
 
 ```{lang: "text/html", test: nonumbers}
