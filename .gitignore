@@ -30,3 +30,8 @@
 /epub/toc.xhtml
 /book.epub
 /book.mobi
+
+# Archivos temporales creados por emacs
+*~
+\#*
+*#*
