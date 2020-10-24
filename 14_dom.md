@@ -476,78 +476,84 @@ if}}
 
 {{index "href attribute", [DOM, attributes]}}
 
-Some element ((attribute))s, such as `href` for links, can be accessed
-through a property of the same name on the element's ((DOM))
-object. This is the case for most commonly used standard attributes.
+Los ((attributo))s de algunos elementos, como `href` par los enlaces
+pueden ser accedidos a traves de una propiedad con el mismo nombre en
+el objeto ((DOM)) del elemento. Este es el caso para los atributos
+estandar más comunmente utilizados.
 
 {{index "data attribute", "getAttribute method", "setAttribute method", attribute}}
 
-But HTML allows you to set any attribute you want on nodes. This can
-be useful because it allows you to store extra information in a
-document. If you make up your own attribute names, though, such
-attributes will not be present as properties on the element's node.
-Instead, you have to use the `getAttribute` and `setAttribute` methods
-to work with them.
+Pero HTML te permite establecer cualquier atributo que quieras en los
+nodos. Esto puede ser util debido a que te permite almacenar información
+extra en un documento. Sin embargo, si creas tus propios nombres de
+atributo, dichos atributos no estarán presentes como propiedades en el
+nodo del elemento. En vez de eso, tendras que utilizar los métodos
+`getAttribute` y `setAttribute` para trabajar con ellos.
 
 ```{lang: "text/html"}
-<p data-classified="secret">The launch code is 00000000.</p>
-<p data-classified="unclassified">I have two feet.</p>
+<p data-classified="secreto">El código de lanzamiento es: 00000000.</p>
+<p data-classified="no-classificado">Yo tengo dos pies.</p>
 
 <script>
   let paras = document.body.getElementsByTagName("p");
   for (let para of Array.from(paras)) {
-    if (para.getAttribute("data-classified") == "secret") {
+    if (para.getAttribute("data-classified") == "secreto") {
       para.remove();
     }
   }
 </script>
 ```
 
-It is recommended to prefix the names of such made-up attributes with
-`data-` to ensure they do not conflict with any other attributes.
+Se recomienda anteponer los nombres de dichos atributos inventados con
+`data-` para asegurarse de que no conflictuan con ningun otro atributo.
 
 {{index "getAttribute method", "setAttribute method", "className property", "class attribute"}}
 
-There is a commonly used attribute, `class`, which is a ((keyword)) in
-the JavaScript language. For historical reasons—some old JavaScript
-implementations could not handle property names that matched
-keywords—the property used to access this attribute is called
-`className`. You can also access it under its real name, `"class"`, by
-using the `getAttribute` and `setAttribute` methods.
+Existe un atributo comunmente usado, `class`, que es una ((palabra clave))
+en el lenguaje JavaScript. Por motivos historicos, algunas
+implementaciones antiguas de JavaScript podrian no manejar nombres de
+propiedades que coincidan con las palabras clave-la propiedad utilizada
+para acceder a este atributo tiene por nombre `className`. Tambien
+puedes acceder a el bajo su nombre real, `"class"`, utilizando los
+metodos `getAttribute` and `setAttribute`.
 
 ## Layout
 
 {{index layout, "block element", "inline element", "p (HTML tag)", "h1 (HTML tag)", "a (HTML tag)", "strong (HTML tag)"}}
 
-You may have noticed that different types of elements are laid out
-differently. Some, such as paragraphs (`<p>`) or headings (`<h1>`),
-take up the whole width of the document and are rendered on separate
-lines. These are called _block_ elements. Others, such as links
-(`<a>`) or the `<strong>` element, are rendered on the same line with
-their surrounding text. Such elements are called _inline_ elements.
+Tal vez hayas notado que diferentes tipos de elementos se exponen
+de manera distinta. Algunos, como en el caso de los parrafos
+(`<p>`) o encabezados (`<h1>`), ocupan todo el ancho del documento
+y se renderizan en lineas separadas. A estos se les conoce como
+elementos _block_ (bloque). Otros, como los enlaces (`<a>`) o el
+elemento `<strong>`, se renderizan en la misma linea con su texto
+circundante. Dichos elementos se les conoce como elementos
+_inline_ (en la misma linea).
 
 {{index drawing}}
 
-For any given document, browsers are able to compute a layout, which
-gives each element a size and position based on its type and content.
-This layout is then used to actually draw the document.
+Para cualquier documento dado, los navegadores son capaces de calcular
+una estructura _(layout)_, que le da a cada elemento un tamaño y una
+posición basada en el tipo y el contenido. Luego, esta estructura se
+utiliza para trazar el documento.
 
 {{index "border (CSS)", "offsetWidth property", "offsetHeight property", "clientWidth property", "clientHeight property", dimensions}}
 
-The size and position of an element can be accessed from JavaScript.
-The `offsetWidth` and `offsetHeight` properties give you the space the
-element takes up in _((pixel))s_. A pixel is the basic unit of
-measurement in the browser. It traditionally corresponds to the
-smallest dot that the screen can draw, but on modern displays, which
-can draw _very_ small dots, that may no longer be the case, and a
-browser pixel may span multiple display dots.
+Se puede acceder al tamaño y la posición de un elemento pueden desde
+JavaScript. Las propiedades `offsetWidth` y `offsetHeight` te dan el
+espacio que el elemento ocupa en ((pixel))es. Un pixel es la unidad
+basica de las medidas del navegador. Tradicionalmente correspondia al
+punto más pequeño que la pantalla podía trazar, pero en los monitores
+modernos, que pueden trazar puntos _muy_ pequeños, este puede no ser
+más el caso, por lo que un pixel del navegado puede abarcar varios
+puntos en la pantalla.
 
-Similarly, `clientWidth` and `clientHeight` give you the size of the
-space _inside_ the element, ignoring border width.
+De manera parecida, `clientWidth` y `clientHeight` te dan el tamaño
+del espacio _dentro_ del elemento, ignorando la anchura del borde.
 
 ```{lang: "text/html"}
 <p style="border: 3px solid red">
-  I'm boxed in
+  Estoy dentro de una caja
 </p>
 
 <script>
@@ -559,7 +565,7 @@ space _inside_ the element, ignoring border width.
 
 {{if book
 
-Giving a paragraph a border causes a rectangle to be drawn around it.
+Darle un borde a un párrafo hace que se dibuje un rectángulo a su alrededor.
 
 {{figure {url: "img/boxed-in.png", alt: "A paragraph with a border",width: "8cm"}}}
 
@@ -569,61 +575,62 @@ if}}
 
 {{id boundingRect}}
 
-The most effective way to find the precise position of an element on
-the screen is the `getBoundingClientRect` method. It returns an object
-with `top`, `bottom`, `left`, and `right` properties, indicating the
-pixel positions of the sides of the element relative to the top left
-of the screen. If you want them relative to the whole document, you
-must add the current scroll position, which you can find in the
-`pageXOffset` and `pageYOffset` bindings.
+La manera más efectiva de encontrar la posición precisa de un elemento
+en la pantalla es el método `getBoundingClientRect`. Este devuelve un
+objeto con las propiedades `top`, `bottom`, `left`, y `right`, indicando
+las posiciones de pixeles de los lados el elemento en relacion con la
+parte superior izquierda de la pantalla. Si los quieres relativos a
+todo el documento, deberas agregar la posición actual del scroll, la
+cual puedes obtener en los _bindings_ `pageXOffset` y `pageYOffset`.
 
 {{index "offsetHeight property", "getBoundingClientRect method", drawing, laziness, performance, efficiency}}
 
-Laying out a document can be quite a lot of work. In the interest of
-speed, browser engines do not immediately re-layout a document every
-time you change it but wait as long as they can. When a JavaScript
-program that changed the document finishes running, the browser will
-have to compute a new layout to draw the changed document to
-the screen. When a program _asks_ for the position or size of
-something by reading properties such as `offsetHeight` or calling
-`getBoundingClientRect`, providing correct information also requires
-computing a ((layout)).
+Estructurar un documento puede requerir mucho trabajo. En los
+intereses de velocidad, los motores de los navegadores no
+reestructuran inmediatamente un documento cada vez que lo cambias,
+en cambio, se espera lo más que se pueda. Cuando un programa de
+JavaScript que modifica el documento termina de ejecutarse, el
+navegador tendra que calcular una nueva estructura para trazar el
+documento actualizado en la pantalla. Cuando un programa _solicita_
+la posición o el tamaño de algo, leyendo propiedades como `offsetHeight`
+o llamando a `getBoundingClientRect`, proveer la informacion correcta
+también requiere que se calcule una nueva estructura.
 
 {{index "side effect", optimization, benchmark}}
 
-A program that repeatedly alternates between reading DOM layout
-information and changing the DOM forces a lot of layout computations
-to happen and will consequently run very slowly. The following code is
-an example of this. It contains two different programs that build up a
-line of _X_ characters 2,000 pixels wide and measures the time each
-one takes.
+A un programa que repeditamente alterna entre leer la información de la
+estructura DOM y cambiar el DOM fuerza a que hayan bastantes calculos
+de estructura, y por consecuencia se ejecutara lentamente. El siguiente
+codigo es un ejemplo de esto. Contiene dos programas diferentes que
+construyen una linea de _X_ caracteres con 2,000 pixeles de ancho y
+que mide el tiempo que toma cada uno.
 
 ```{lang: "text/html", test: nonumbers}
-<p><span id="one"></span></p>
-<p><span id="two"></span></p>
+<p><span id="uno"></span></p>
+<p><span id="dos"></span></p>
 
 <script>
-  function time(name, action) {
-    let start = Date.now(); // Current time in milliseconds
-    action();
-    console.log(name, "took", Date.now() - start, "ms");
+  function tiempo(nombre, accion) {
+    let inicio = Date.now(); // Current time in milliseconds
+    accion();
+    console.log(nombre, "utilizo", Date.now() - inicio, "ms");
   }
 
-  time("naive", () => {
-    let target = document.getElementById("one");
-    while (target.offsetWidth < 2000) {
-      target.appendChild(document.createTextNode("X"));
+  tiempo("inocente", () => {
+    let objetivo = document.getElementById("uno");
+    while (objetivo.offsetWidth < 2000) {
+      objetivo.appendChild(document.createTextNode("X"));
     }
   });
-  // → naive took 32 ms
+  // → inocente utilizo 32 ms
 
-  time("clever", function() {
-    let target = document.getElementById("two");
-    target.appendChild(document.createTextNode("XXXXX"));
-    let total = Math.ceil(2000 / (target.offsetWidth / 5));
-    target.firstChild.nodeValue = "X".repeat(total);
+  tiempo("ingenioso", function() {
+    let objetivo = document.getElementById("dos");
+    objetivo.appendChild(document.createTextNode("XXXXX"));
+    let total = Math.ceil(2000 / (objetivo.offsetWidth / 5));
+    objetivo.firstChild.nodeValue = "X".repeat(total);
   });
-  // → clever took 1 ms
+  // → ingenioso utilizo 1 ms
 </script>
 ```
 
