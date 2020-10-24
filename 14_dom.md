@@ -48,7 +48,7 @@ Este es el documento de ejemplo del
   </head>
   <body>
     <h1>Mi página de inicio</h1>
-    <p>¡Hola! Mi nombre es Marijn y esta es mi página de inicio.</p>
+    <p>Hola, mi nombre es Marijn y esta es mi página de inicio.</p>
     <p>También escribí un libro! Léelo
       <a href="http://eloquentjavascript.net">aquí</a>.</p>
   </body>
@@ -324,68 +324,70 @@ tienen una cadena dada en su attributo `class`.
 
 {{index "side effect", "removeChild method", "appendChild method", "insertBefore method", [DOM, construction], [DOM, modification]}}
 
-Almost everything about the DOM data structure can be changed. The
-shape of the document tree can be modified by changing parent-child
-relationships. Nodes have a `remove` method to remove them from their
-current parent node. To add a child node to an element node, we can
-use `appendChild`, which puts it at the end of the list of children,
-or `insertBefore`, which inserts the node given as the first argument
-before the node given as the second argument.
+Practicamente todo sobre la estructura de datos DOM puede ser cambiado.
+La forma del árbol de documento puede ser modificada cambiando las
+relaciones padre-hijo. Los nodos tienen un método `remove` para ser
+removidos de su nodo padre actual. Para agregar un nodo hijo a un
+nodo elemento, podemos usar `appendChild`, que lo pondrá al final de
+la lista de hijos, o `insertBefore`, que insertará el nodo dado como
+primer argumento antes del nodo dado como segundo argumento.
 
 ```{lang: "text/html"}
-<p>One</p>
-<p>Two</p>
-<p>Three</p>
+<p>Uno</p>
+<p>Dos</p>
+<p>Tres</p>
 
 <script>
-  let paragraphs = document.body.getElementsByTagName("p");
-  document.body.insertBefore(paragraphs[2], paragraphs[0]);
+  let parrafos = document.body.getElementsByTagName("p");
+  document.body.insertBefore(parrafos[2], parrafos[0]);
 </script>
 ```
 
-A node can exist in the document in only one place. Thus, inserting
-paragraph _Three_ in front of paragraph _One_ will first remove it
-from the end of the document and then insert it at the front,
-resulting in _Three_/_One_/_Two_. All operations that insert a node
-somewhere will, as a ((side effect)), cause it to be removed from its
-current position (if it has one).
+Un nodo puede existir en el documento solamente en un lugar. En
+consecuencia, insertar el parráfo _Tres_ enfrente del parráfo _Uno_
+primero lo removerá del final del documento y luego lo insertará
+en el frente, resuntando en _Tres_/_Uno_/_Dos_. Todas las operaciones
+que insertan un nodo en alguna parte causarán, a modo de
+((effecto secundario)), que el nodo sea removido de su posición actual
+(si es que tiene una).
 
 {{index "insertBefore method", "replaceChild method"}}
 
-The `replaceChild` method is used to replace a child node with another
-one. It takes as arguments two nodes: a new node and the node to be
-replaced. The replaced node must be a child of the element the method
-is called on. Note that both `replaceChild` and `insertBefore` expect
-the _new_ node as their first argument.
+El método `replaceChild` es usado para reemplazar a un nodo hijo con
+otro. Toma dos nodos como argumentos: un nuevo nodo y el nodo que será
+reemplazado. El nodo reemplazado debe ser un nodo hijo del elemento
+desde donde se esta llamando el método. Notese que tanto `replaceChild`
+como `insertBefore` esperan que el _nuevo_ nodo sea el primer argumento.
 
-## Creating nodes
+## Creando nodos
 
 {{index "alt attribute", "img (HTML tag)"}}
 
-Say we want to write a script that replaces all ((image))s (`<img>`
-tags) in the document with the text held in their `alt` attributes,
-which specifies an alternative textual representation of the image.
+Digamos que queremos escribir un _script_ que reemplace todas las
+((imagen))es (etiquetas `<img>`) en el documento con el texto contenido
+en sus atributos `alt`, los cuales especifican una representación
+textual alternativa de la imagen.
 
 {{index "createTextNode method"}}
 
-This involves not only removing the images but adding a new text node
-to replace them. Text nodes are created with the
-`document.createTextNode` method.
+Esto no solamente involucra remover las images, si no que también
+involucra agregar un nuevo nodo texto que lo reemplace. Los nodos texto
+son creados con el método `document.createTextNode`.
 
 ```{lang: "text/html"}
-<p>The <img src="img/cat.png" alt="Cat"> in the
-  <img src="img/hat.png" alt="Hat">.</p>
+<p>El <img src="img/cat.png" alt="Gato"> en el
+  <img src="img/hat.png" alt="Sombrero">.</p>
 
-<p><button onclick="replaceImages()">Replace</button></p>
+<p><button onclick="sustituirImagenes()">Sustituir</button></p>
 
 <script>
-  function replaceImages() {
-    let images = document.body.getElementsByTagName("img");
-    for (let i = images.length - 1; i >= 0; i--) {
-      let image = images[i];
-      if (image.alt) {
-        let text = document.createTextNode(image.alt);
-        image.parentNode.replaceChild(text, image);
+  function sustituirImagenes() {
+    let imagenes = document.body.getElementsByTagName("img");
+    for (let i = imagenes.length - 1; i >= 0; i--) {
+      let imagen = imagenes[i];
+      if (imagen.alt) {
+        let texto = document.createTextNode(imagen.alt);
+        imagen.parentNode.replaceChild(texto, imagen);
       }
     }
   }
@@ -394,81 +396,83 @@ to replace them. Text nodes are created with the
 
 {{index "text node"}}
 
-Given a string, `createTextNode` gives us a text node that we can
-insert into the document to make it show up on the screen.
+Dada una cadena, `createTextNode` nos da un nodo texto que podemos
+insertar en el documento para hacer que aparezca en la pantalla.
 
 {{index "live data structure", "getElementsByTagName method", "childNodes property"}}
 
-The loop that goes over the images starts at the end of the list. This
-is necessary because the node list returned by a method like
-`getElementsByTagName` (or a property like `childNodes`) is _live_.
-That is, it is updated as the document changes. If we started from the
-front, removing the first image would cause the list to lose its first
-element so that the second time the loop repeats, where `i` is 1, it
-would stop because the length of the collection is now also 1.
+El ciclo que recorre las imagenes empieza al final de la lista. Esto es
+necesario dado que la lista de nodos regresada por un metodo como
+`getElementsByTagName` (o una propiedad como `childNodes`) se actualiza
+en tiempo real. Esto es, que se actualiza conforme el documento cambia.
+Si empezaramos desde el frente, removiendo la primer imagen causaria que
+la lista que perdiera su primer elemento de tal manera que la segunda
+ocacion que el ciclo se repitiera, donde `i` es 1, se detendría dado que
+la longitud de la collecion ahora es también 1.
 
 {{index "slice method"}}
 
-If you want a _solid_ collection of nodes, as opposed to a live one,
-you can convert the collection to a real array by calling
+Si quieres una colección de nodos _solida_, a diferencia de una en
+tiempo real, puedes convertir la colección a un arreglo real llamando
 `Array.from`.
 
 ```
-let arrayish = {0: "one", 1: "two", length: 2};
-let array = Array.from(arrayish);
-console.log(array.map(s => s.toUpperCase()));
-// → ["ONE", "TWO"]
+let casi_arreglo = {0: "one", 1: "two", length: 2};
+let arreglo = Array.from(casi_arreglo);
+console.log(arreglo.map(s => s.toUpperCase()));
+// → ["UNO", "DOS"]
 ```
 
 {{index "createElement method"}}
 
-To create ((element)) nodes, you can use the `document.createElement`
-method. This method takes a tag name and returns a new empty node of
-the given type.
+Para crear nodos ((elemento)), puedes utilizar el método
+`document.createElement`. Este método toma un nombre de etiqueta y
+regresa un nuevo nodo vacio del nodo dado.
 
 {{index "Popper, Karl", [DOM, construction], "elt function"}}
 
 {{id elt}}
 
-The following example defines a utility `elt`, which creates an
-element node and treats the rest of its arguments as children to that
-node. This function is then used to add an attribution to a quote.
+El siguiente ejemplo define una utilidad `elt`, la cual crea un
+elemento nodo y trata el resto de sus argumentos como hijos de ese
+nodo. Luego entonces, esta funcion es utilizada para agregar una
+atribución a una cita.
 
 ```{lang: "text/html"}
-<blockquote id="quote">
-  No book can ever be finished. While working on it we learn
-  just enough to find it immature the moment we turn away
-  from it.
+<blockquote id="cita">
+  Ningún libro puede terminarse jamás. Mientras se trabaja en
+  el aprendemos solo lo suficiente para encontrar inmaduro
+  el momento en el que nos alejemos de el.
 </blockquote>
 
 <script>
-  function elt(type, ...children) {
-    let node = document.createElement(type);
-    for (let child of children) {
-      if (typeof child != "string") node.appendChild(child);
-      else node.appendChild(document.createTextNode(child));
+  function elt(tipo, ...hijos) {
+    let nodo = document.createElement(tipo);
+    for (let hijo of hijos) {
+      if (typeof hijo != "string") nodo.appendChild(hijo);
+      else nodo.appendChild(document.createTextNode(hijo));
     }
-    return node;
+    return nodo;
   }
 
-  document.getElementById("quote").appendChild(
+  document.getElementById("cita").appendChild(
     elt("footer", "—",
         elt("strong", "Karl Popper"),
-        ", preface to the second edition of ",
-        elt("em", "The Open Society and Its Enemies"),
+        ", prefacio de la segunda edicion de ",
+        elt("em", "La sociedad abierta y sus enemigos"),
         ", 1950"));
 </script>
 ```
 
 {{if book
 
-This is what the resulting document looks like:
+Asi es como se ve el documento resultante:
 
 {{figure {url: "img/blockquote.png", alt: "A blockquote with attribution",width: "8cm"}}}
 
 if}}
 
-## Attributes
+## Atributos
 
 {{index "href attribute", [DOM, attributes]}}
 
