@@ -33,7 +33,7 @@ tontas y pedantes, la programación es fundamentalmente tediosa y frustrante.
 Afortunadamente, si puedes superar eso, y tal vez incluso disfrutar el rigor
 de pensar en términos que las máquinas tontas puedan manejar, la programación
 puede ser muy gratificante. Te permite hacer en segundos cosas que
-tardarían _para siempre_ a mano. Es una forma de hacer que tu herramienta
+tardarían _por siempre_ a mano. Es una forma de hacer que tu herramienta
 computadora haga cosas que antes no podía. Ademas proporciona de un maravilloso
 ejercicio en pensamiento abstracto.
 
@@ -71,7 +71,7 @@ poder hacer cosas útiles y divertidas con él.
 {{index [programming, "difficulty of"]}}
 
 Además de explicar JavaScript, también introduciré los principios básicos
-de la programación. La programación, resulta, es difícil. Las
+de la programación. La programación, en realidad, es difícil. Las
 reglas fundamentales son típicamente simples y claras, pero los programas
 construidos en base a estas reglas tienden a ser lo suficientemente
 complejas como para introducir sus propias reglas y complejidad.
@@ -87,7 +87,7 @@ requerirán que hagas conexiones adicionales.
 
 Depende de ti hacer el esfuerzo necesario. Cuando estés luchando
 para seguir el libro, no saltes a ninguna conclusión acerca de tus propias
-capacidades. Estás bien—solo tienes que seguir intentando.
+capacidades. Estás bien, sólo tienes que seguir intentando.
 Tomate un descanso, vuelve a leer algún material, y asegúrate de leer
 y comprender los programas de ejemplo y ((ejercicios)). Aprender es un
 trabajo duro, pero todo lo que aprendes se convertirá en tuyo, y
@@ -109,8 +109,8 @@ es la fuerza directriz que hace que la computadora haga lo que hace,
 son datos en la memoria de la computadora, y sin embargo controla las acciones
 realizadas en esta misma memoria. Las analogías que intentan comparar programas
 a objetos con los que estamos familiarizados tienden a fallar. Una analogía
-que es superficialmente adecuada es el de una máquina—muchas partes
-separadas tienden a estar involucradas, y para hacer que todo funcione,
+que es superficialmente adecuada es el de una máquina —muchas partes
+separadas tienden a estar involucradas—, y para hacer que todo funcione,
 tenemos que considerar la formas en las que estas partes se interconectan y
 contribuyen a la operación de un todo.
 
@@ -124,7 +124,7 @@ para realizar cosas bastante complicadas.
 {{index [programming, "joy of"]}}
 
 Un programa es un edificio de pensamiento. No cuesta nada construirlo, no pesa
-nada, y crece fácilmente bajo nuestras manos que teclean.
+nada, y crece fácilmente bajo el tecleado de nuestras manos.
 
 Pero sin ningún cuidado, el tamaño de un programa y su ((complejidad))
 crecerán sin control, confundiendo incluso a la persona que lo creó.
@@ -148,8 +148,8 @@ a menudo requieren soluciones nuevas. El campo de la programación es joven y
 todavía se esta desarrollando rápidamente, y es lo suficientemente variado
 como para tener espacio para aproximaciones salvajemente diferentes.
 Hay muchos errores terribles que hacer en el diseño de programas, así que
-ve adelante y cometelos para que los entiendas mejor. La idea de cómo se ve
-un buen programa se desarrolla con la practica, no se aprende de una lista
+ve adelante y comételos para que los entiendas mejor. La idea de cómo se ve
+un buen programa se desarrolla con la práctica, no se aprende de una lista
 de reglas.
 
 ## Por qué el lenguaje importa
@@ -436,7 +436,7 @@ if}}
 Si deseas ejecutar los programas definidos en este libro fuera de
 la caja de arena del libro, se requiere cierto cuidado. Muchos ejemplos
 se mantienen por si mismos y deberían de funcionar en cualquier entorno de
-JavaScript. Pero código en capítulos mas avanzados a menudo se escribe para
+JavaScript. Pero código en capítulos más avanzados a menudo se escribe para
 un entorno específico (el navegador o Node.js) y solo puede ser ejecutado allí.
 Además, muchos capítulos definen programas más grandes, y las piezas de código
 que aparecen en ellos dependen de otras piezas o de archivos externos. La
