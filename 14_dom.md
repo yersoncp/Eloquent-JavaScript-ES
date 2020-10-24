@@ -189,7 +189,7 @@ mejoradas para expresar las operaciones que estás realizando. Muchas
 bibliotecas destinadas a la programación del navegador vienen con
 esas herramientas.
 
-## Moviéndose a traves del árbol
+## Moviéndose a través del árbol
 
 {{index pointer}}
 
@@ -359,7 +359,7 @@ reemplazado. El nodo reemplazado debe ser un nodo hijo del elemento
 desde donde se está llamando el método. Nótese que tanto `replaceChild`
 como `insertBefore` esperan que el _nuevo_ nodo sea el primer argumento.
 
-## Creando nodos
+## Crear nodos
 
 {{index "alt attribute", "img (HTML tag)"}}
 
@@ -639,17 +639,16 @@ que mide el tiempo que toma cada uno.
 {{index "block element", "inline element", style, "strong (HTML tag)", "a (HTML tag)", underline}}
 
 Hemos visto que diferentes elementos HTML se trazan de manera diferente.
-Algunos son desplegados como bloques, otros en linea. Algunos agregan
-estilos, por ejemplo `<strong>` hace que su contenido este en
+Algunos son desplegados como bloques, otros en línea. Algunos agregan
+estilos, por ejemplo `<strong>` hace que su contenido esté en
 ((negritas)) y `<a>` lo hace azul y lo subraya.
 
 {{index "img (HTML tag)", "default behavior", "style attribute"}}
 
-
 La forma en la que una etiqueta `<img>` muestra una imágen o una
 etiqueta `<a>` hace que un enlace sea seguido cuando se hace click en
-el esta fuertemente atado al tipo de elemento. Pero podemos cambiar el
-estilo asociado a un elemento, talez como el color o si esta subrayado.
+el está fuertemente atado al tipo de elemento. Pero podemos cambiar el
+estilo asociado a un elemento, tales como el color o si está subrayado.
 Este es un ejemplo que utiliza la propiedad `style`:
 
 ```{lang: "text/html"}
@@ -667,27 +666,27 @@ if}}
 
 {{index "border (CSS)", "color (CSS)", CSS, "colon character"}}
 
-Un attributo _style_ puede contener una o más declaraciones, que consisten
+Un atributo _style_ puede contener una o más declaraciones, que consisten
 en una propiedad (como `color`) seguido del símbolo de dos puntos y un
-valor (como `green`). Cuando hay más de una declaracion, estas deben ser
+valor (como `green`). Cuando hay más de una declaración, estas deben ser
 separadas por ((comas)), como en `"color: red; border: none"`.
 
 {{index "display (CSS)", layout}}
 
 Muchos de los aspectos del documento pueden ser influenciados por la
 estilización. Por ejemplo, la propiedad `display` controla si un
-elemento desplegado como un bloque o como un elemento en linea.
+elemento desplegado como un bloque o como un elemento en línea.
 
 ```{lang: "text/html"}
-El texto es desplegado <strong>en linea</strong>,
+El texto es desplegado <strong>en línea</strong>,
 <strong style="display: block">como bloque</strong>, y
 <strong style="display: none">no se despliega</strong>.
 ```
 
 {{index "hidden element"}}
 
-La etiqueta `block` terminará en su propia linea dado que los elementos
-_((bloque))_ no son desplegados en linea con el texto que los rodea.
+La etiqueta `block` terminará en su propia línea dado que los elementos
+_((bloque))_ no son desplegados en línea con el texto que los rodea.
 La última etiqueta no se despliega, `display: none` previene que el
 elemento sea mostrado en la pantalla. Esta es una manera de ocultar
 elementos. A menudo es preferido a removerlos completamente del documento
@@ -702,8 +701,8 @@ if}}
 {{index "color (CSS)", "style attribute"}}
 
 El código de JavaScript puede manipular directamente el estilo de un
-elemento a travez de la propiedad `style` del elemento. Esta propiedad
-almacena un objeto que tiene propiedades por tdas las posibles
+elemento a través de la propiedad `style` del elemento. Esta propiedad
+almacena un objeto que tiene propiedades por todas las posibles
 propiedades de estilo. Los valores de esas propiedades son cadenas, que
 podemos escribir para cambiar un aspecto en particular del estilo del
 elemento.
@@ -724,10 +723,10 @@ elemento.
 
 Algunos nombres de las propiedades de estilo pueden contener guiones,
 como es el caso de `font-family`. Dado que estos nombres de propiedades
-son incomodos para trabajar con ellos en JavaScript (tendrias
+son incómodos para trabajar con ellos en JavaScript (tendrías
 que decir `style["font-family"]`), los nombres de propiedades en el
-objeto `style` para tales propiedades no tendran guiones y las letra
-despues del guion estará en mayusculas (`style.fontFamily`).
+objeto `style` para tales propiedades no tendrán guiones y las letra
+después del guion estará en mayúsculas (`style.fontFamily`).
 
 ## Estilos en Cascada
 
@@ -738,7 +737,7 @@ despues del guion estará en mayusculas (`style.fontFamily`).
 
 El sistema de estilos para HTML es llamado ((CSS)) por sus siglas en
 ingles _Cascading Style Sheets_ (Hojas de estilo en cascada). Una
-_hoja de estilos_ es un conjunto de reglas sobre como estilizar
+_hoja de estilos_ es un conjunto de reglas sobre cómo estilizar
 a los elementos en un documento. Puede estar declarado dentro de
 una etiqueta `<style>`.
 
@@ -754,7 +753,7 @@ una etiqueta `<style>`.
 
 {{index "rule (CSS)", "font-weight (CSS)", overlay}}
 
-La seccion _cascada_ en el nombre se refiere al hecho de que varias
+La sección _cascada_ en el nombre se refiere al hecho de que varias
 reglas son combinadas para producir el estilo final para un elemento.
 En el ejemplo, el estilo por defecto para las etiquetas `<strong>`, que
 les da `font-weight: bold`, es sobreescrito por la regla en la etiqueta
@@ -766,7 +765,7 @@ Cuando varias reglas definen un valor para una misma propiedad, la
 regla agregada más recientemente obtiene una mayor ((precedencia))
 y gana. Por lo que si la regla en la etiqueta `<style>` incluyera
 `font-weight: normal`, contradiciendo la regla por defecto
-`font-weight`, el texto seria normal, _no_ en negritas. Los estilos
+`font-weight`, el texto sería normal, _no_ en negritas. Los estilos
 en un atributo `style` aplicados directamente al nodo tienen la
 mayor precedencia y siempre ganan.
 
@@ -775,8 +774,8 @@ mayor precedencia y siempre ganan.
 Es posible apuntar a otras cosas que no sean nombres de ((etiqueta))
 en las reglas CSS. Una regla para `.abc` aplicar a todos los elementos
 con `"abc"` en su atributo `class`. Una regla para `#xyz` aplica a
-todos los elementos con un atributo `id` con valor `"xyz"` (que deberia
-ser unico en el documento).
+todos los elementos con un atributo `id` con valor `"xyz"` (que debería
+ser único en el documento).
 
 
 ```{lang: "text/css"}
@@ -799,11 +798,11 @@ p#principal.a.b {
 La regla de precedencia que favorece a las reglas más recientemente
 añadidas aplican solamente cuando las reglas tienen la misma
 ((especificidad)). La especificidad de una regla es una medida de que
-tan precisamente describe a la conicidencia de los elementos,
-determinado por el numero y tipo (etiqueta, classe o ID) de los
+tan precisamente describe a la coincidencia de los elementos,
+determinado por el número y tipo (etiqueta, clase o ID) de los
 aspectos del elemento que requiera. Por ejemplo, una regla que apunta
-a `p.a` es más especifica que las reglas que apuntan a `p` o solamente
-a `.a` y tendra precedencia sobre ellas.
+a `p.a` es más específica que las reglas que apuntan a `p` o solamente
+a `.a` y tendrá precedencia sobre ellas.
 
 {{index "direct child node"}}
 
@@ -817,12 +816,12 @@ sin importar que sean hijas directas o indirectas.
 {{index complexity, CSS}}
 
 No utilizaremos mucho las hojas de estilo en este libro. Entenderlas
-es util cuando se programa en el navegador, pero son lo suficientemente
+es útil cuando se programa en el navegador, pero son lo suficientemente
 complicadas para justificar un libro por separado.
 
 {{index "domain-specific language", [DOM, querying]}}
 
-La principal rason por la que introdujé la sintaxis de ((seleccion))—la
+La principal razón por la que introduje la sintaxis de ((selección))—la
 notación usada en las hojas de estilo para determinar a cuales elementos
 aplicar un conjunto de estilos—es que podemos utilizar el mismo
 mini-lenguaje como una manera efectiva de encontrar elementos DOM.
@@ -832,7 +831,7 @@ mini-lenguaje como una manera efectiva de encontrar elementos DOM.
 El método `querySelectorAll`, que se encuentra definido tanto en el
 objeto `document` como en los nodos elemento, toma la cadena de un
 selector y regresa una `NodeList` que contiene todos los elementos
-que coinciden con el.
+que coinciden con él.
 
 ```{lang: "text/html"}
 <p>And if you go chasing
@@ -867,9 +866,9 @@ aún necesitas llamar a `Array.from` si lo quieres tratar como uno real.
 {{index "querySelector method"}}
 
 El método `querySelector` (sin la parte de `All`) trabaja en una manera
-similar. Este es util si quieres un único elemento especifico. Regresará
-unicamente el primer elemento que coincida o _null_ en el caso que
-ningun elemento coincida.
+similar. Este es útil si quieres un único elemento específico. Regresará
+únicamente el primer elemento que coincida o _null_ en el caso que
+ningún elemento coincida.
 
 {{id animation}}
 
@@ -880,15 +879,15 @@ ningun elemento coincida.
 La propiedad de estilo `position` influye de manera poderosa sobre
 la estructura. Por defecto, tiene el valor de `static`, eso significa
 que los elementos se colocan en su lugar normal en el documento. Cuando
-se establece como `relative`, el elemeto sigue utilizando espacio en el
-documentom pero ahora las propiedades `top` y `left` pueden ser
+se establece como `relative`, el elemento sigue utilizando espacio en el
+documento pero ahora las propiedades `top` y `left` pueden ser
 utilizadas para moverlo relativamente a ese espacio normal. Cuando
 `position` se establece como `absolute`, el elemento es removido del
 flujo normal del documento—esto es, deja de tomar espacio y puede
 encimarse con otros elementos. Además, sus propiedades `top` y `left`
 pueden ser utilizadas para posicionarlo absolutamente con relación a
 la esquina superior izquierda del elemento envolvente cuya propiedad
-`position` no sea `static`, o con relacion al documento si dicho
+`position` no sea `static`, o con relación al documento si dicho
 elemento envolvente no existe.
 
 {{index [animation, "spinning cat"]}}
@@ -926,7 +925,7 @@ if}}
 
 {{index "top (CSS)", "left (CSS)", centering, "relative positioning"}}
 
-Nuestra imagen se centra en la pagina y se le da un valor para `position`
+Nuestra imagen se centra en la página y se le da un valor para `position`
 de `relative`. Actualizaremos repetidamente los estilos `top` y `left`
 de la imagen para moverla.
 
@@ -934,75 +933,75 @@ de la imagen para moverla.
 
 {{id animationFrame}}
 
-El script utiliza `requestAnimationFrame` para programar la funcion
-`animar` para ejecutarse en el momento en el que el navegador esta
+El script utiliza `requestAnimationFrame` para programar la función
+`animar` para ejecutarse en el momento en el que el navegador está
 listo para volver a pintar la pantalla. La misma función `animar`
 llama a `requestAnimationFrame` otra vez para programar la siguiente
-actualización. Cuando la ventana del navegador (o pestaña) esta activa,
-esto causara que sucedan actualizaciones a un rango de aproximadamente
+actualización. Cuando la ventana del navegador (o pestaña) está activa,
+esto causará que sucedan actualizaciones a un rango de aproximadamente
 60 actualizaciones por segundo, lo que tiende a producir una animación
 agradable a la vista.
 
 {{index timeline, blocking}}
 
-Si unicamente actualizaramos el DOM en un ciclo, la pagina se
-congelaria, y no se mostraria nada en la pantalla. Los navegadores
-no actualizan su pantalla mientra que un programa de JavaScript se
+Si únicamente actualizamos el DOM en un ciclo, la página se
+congelaría, y no se mostraría nada en la pantalla. Los navegadores
+no actualizan su pantalla mientras que un programa de JavaScript se
 encuentre en ejecución, tampoco permiten ninguna interacción con la
-pagina. Es por esto que necesitamos a `requestAnimationFrame`—le
+página. Es por esto que necesitamos a `requestAnimationFrame`—le
 permite al navegador saber que hemos terminado por el momento, y puede
-empezar a hacer las cosas que le navegador hacer, como actualizar
-la pantalla y responder a las accciones del usuario.
+empezar a hacer las cosas que le navegador hacer, cómo actualizar
+la pantalla y responder a las acciones del usuario.
 
 {{index "smooth animation"}}
 
-La funcion de animación es pasada como el ((tiempo)) actual como un
+La función de animación es pasada como el ((tiempo)) actual como un
 argumento. Para asegurarse de que el movimiento del gato por milisegundo
 es estable, basa la velocidad a la que cambia el ángulo en la
 diferencia entre el tiempo actual y la última vez que la función
-se ejecutó. Si solamente movieramos el angunlo una cierta cantidad
+se ejecutó. Si solamente movieramos el ángulo una cierta cantidad
 por paso, la animación tartamudearía si, por ejemplo, otra tarea
-pesada se encuentra ejecutandose en la misma computadora que
-prevendria que la funcion se ejecutara por una fraccion de segundo.
+pesada se encuentra ejecutándose en la misma computadora que
+prevendria que la función se ejecutará por una fracción de segundo.
 
 {{index "Math.cos function", "Math.sin function", cosine, sine, trigonometry}}
 
 {{id sin_cos}}
 
-Moverse en circulos se logra atraves de las funciones `Math.cos` y
-`Math.sin`. Para aquellos que no esten familiarizados con estas,
-las introducire brevemente dado que las usaremos de manera ocasional en
+Moverse en círculos se logra a través de las funciones `Math.cos` y
+`Math.sin`. Para aquellos que no estén familiarizados con estas,
+las introduciré brevemente dado que las usaremos de manera ocasional en
 este libro.
 
 {{index coordinates, pi}}
 
-Las funciones `Math.cos` y `Math.sin` son utiles para encontrar puntos
-que recaen en un circulo al rededor del punto (0,0) con un radio de
+Las funciones `Math.cos` y `Math.sin` son útiles para encontrar puntos
+que recaen en un círculo alrededor del punto (0,0) con un radio de
 uno. Ambas funciones interpretan sus argumentos como las posiciones
-en el circulo, con cero denotando el punto en la parte más alejada
-del lado derecho del circulo, en el sentido de las manecillas del
+en el círculo, con cero denotando el punto en la parte más alejada
+del lado derecho del círculo, en el sentido de las manecillas del
 reloj hasta que 2π (cerca de 6.28) nos ha tomado alrededor de todo el
-circulo. `Math.cos` incida la coordenada x del punto que corresponde
-con la posicion dada, y `Math.sin` indica la coordenada y. Las
-posiciones (o angulos) mayores que 2π o menores que 0 son validas—la
-rotación se repite por lo que _a_+2π se refiere al mismo ((angulo))
+círculo. `Math.cos` indica la coordenada x del punto que corresponde
+con la posición dada, y `Math.sin` indica la coordenada y. Las
+posiciones (o ángulos) mayores que 2π o menores que 0 son válidas—la
+rotación se repite por lo que _a_+2π se refiere al mismo ((ángulo))
 que _a_.
 
 {{index "PI constant"}}
 
-Esta unidad para medir angulos se conoce como ((radian))es-un circulo
+Esta unidad para medir ángulos se conoce como ((radian))es-un círculo
 completo mide 2π radianes, de manera similar a 360 grados cuando se
-utilizan grados. La constante π esta disponible como `Math.PI` en
+utilizan grados. La constante π está disponible como `Math.PI` en
 JavaScript.
 
 {{figure {url: "img/cos_sin.svg", alt: "Using cosine and sine to compute coordinates",width: "6cm"}}}
 
 {{index "counter variable", "Math.sin function", "top (CSS)", "Math.cos function", "left (CSS)", ellipse}}
 
-El codigo de animiacion del gato mantiene un contador, `angulo`,
-para el angulo actual de la animacion y lo incrementa cada vez que la
-funcion `aminar` es llamada. Luego, se puede utilizar este angulo para
-calcular la posicion actual del elemento imagen. El estilo `top` es
+El código de animación del gato mantiene un contador, `ángulo`,
+para el ángulo actual de la animación y lo incrementa cada vez que la
+función `animar` es llamada. Luego, se puede utilizar este ángulo para
+calcular la posición actual del elemento imagen. El estilo `top` es
 calculado con `Math.sin` y multiplicado por 20, que es el radio
 vertical de nuestra elipse. El estilo `left` se basa en `Math.cos`
 multiplicado por 200 por lo que la elipse es mucho más ancha que su
@@ -1010,34 +1009,34 @@ altura.
 
 {{index "unit (CSS)"}}
 
-Notese que los estilos usualmente necesitan _unidades_. En este caso,
-tuvimos que agregar `"px"` al numero para informarle al navegador que
-estabamos contando en ((pixel))es (al contrario de centimetros, "ems",
-u otras unidades). Esto es sencillo de olvidar. Usar numeros sin
-unidades resultará en estilos que son ignorados—a menos que el numero
+Nótese que los estilos usualmente necesitan _unidades_. En este caso,
+tuvimos que agregar `"px"` al número para informarle al navegador que
+estábamos contando en ((pixel))es (al contrario de centímetros, "ems",
+u otras unidades). Esto es sencillo de olvidar. Usar números sin
+unidades resultará en estilos que son ignorados—a menos que el número
 sea 0, que siempre indica la misma cosa, independientemente de su
 unidad.
 
 ## Resumen
 
 Los programas de JavaScript pueden inspeccionar e interferir con el
-documento que el navegador esta desplegando a trave de una estructura
-de datos llamada DOM. Esta estructura de datos representa le modelo
+documento que el navegador está desplegando a través de una estructura
+de datos llamada DOM. Esta estructura de datos representa el modelo
 del navegador del documento, y un programa de JavaScript puede
 modificarlo para cambiar el documento visible.
 
-El DOM esta organizado como un arbol, en el cual los elementos estan
-ordenados herarquicamente de acuerdo a la estructura del documento.
+El DOM está organizado como un árbol, en el cual los elementos están
+ordenados jerárquicamente de acuerdo a la estructura del documento.
 Estos objetos que representan a los elementos tienen propiedades como
 `parentNode` y `childNodes`, que pueden ser usadas para navegar
-atraves de este arbol.
+a través de este árbol.
 
 La forma en que un documento es desplegado puede ser influenciada por
-la _estilizacion_, tanto agregando estilos directamente a los nodos
-como definiendo reglas que conicidan con ciertos nodos. Hay muchas
+la _estilización_, tanto agregando estilos directamente a los nodos
+cómo definiendo reglas que coincidan con ciertos nodos. Hay muchas
 propiedades de estilo diferentes, tales como `color` o `display`. El
-codigo de JavaScript puede manipular el estilo de un elemento
-directamente atraves de su propiedade `style`.
+código de JavaScript puede manipular el estilo de un elemento
+directamente a través de su propiedad de `style`.
 
 ## Ejercicios
 
@@ -1072,11 +1071,11 @@ ya sean celdas cabecera (`<th>`) o celdas regulares (`<td>`).
 
 Dado un conjunto de datos de montañas, un arreglo de objetos con
 propiedades `nombre`, `altura` y `lugar`, genera la estructura DOM
-para una tabla que enliste esos objetos. Debera tener una columna
-por llave y una por objeto, ademas de una fila cabecera con elementos
+para una tabla que enlista esos objetos. Deberá tener una columna
+por llave y una por objeto, además de una fila cabecera con elementos
 `<th>` en la parte superior, listando los nombres de las columnas.
 
-Escribe esto de manera que las columnas se deriven automaticamente de
+Escribe esto de manera que las columnas se deriven automáticamente de
 los objetos, tomando los nombres de propiedad del primer objeto en los
 datos.
 
@@ -1086,8 +1085,8 @@ de manera que se vuelva visible en el documento.
 {{index "right-aligning", "text-align (CSS)"}}
 
 Una vez que lo tengas funcionando, alinea a la derecha las celdas que
-contienen valores numericos, estableciendo su propiedad `style.textAlign`
-como `"right"`.
+contienen valores numéricos, estableciendo su propiedad `style.textAlign`
+cómo `"right"`.
 
 {{if interactive
 
@@ -1141,17 +1140,17 @@ hint}}
 
 {{index "getElementsByTagName method", recursion}}
 
-El metodo `document.getElementsByTagName` regresa todos los elementos
-hijo con un nombre de etiqueta dado. Implementa tu propia version de
-esto como una funcion que toma un nodo y una cadena (el nombre de la
+El método `document.getElementsByTagName` regresa todos los elementos
+hijo con un nombre de etiqueta dado. Implementa tu propia versión de
+esto como una función que toma un nodo y una cadena (el nombre de la
 etiqueta) como argumentos y regresa un arreglo que contiene todos los
 nodos elemento descendientes con el nombre del tag dado.
 
 {{index "nodeName property", capitalization, "toLowerCase method", "toUpperCase method"}}
 
-Para encontar el nombre del tag de un elemento, utiliza su propiedad
+Para encontrar el nombre del tag de un elemento, utiliza su propiedad
 `nodeName`. Pero considera que esto regresará el nombre de la etiqueta
-todo en mayusculas. Utiliza las funciones de las cadenas (`string`),
+todo en mayúsculas. Utiliza las funciones de las cadenas (`string`),
 `toLowerCase` o `toUpperCase` para compensar esta situación.
 
 {{if interactive
@@ -1181,23 +1180,23 @@ if}}
 
 {{index "getElementsByTagName method", recursion}}
 
-La solucion es expresada de manera más sencilla con una funcion
-recursiva similar a la [funcion `hablaSobre`](dom#talksAbout) definida
-anteriormente en este capitulo.
+La solución es expresada de manera más sencilla con una función
+recursiva similar a la [función `hablaSobre`](dom#talksAbout) definida
+anteriormente en este capítulo.
 
 {{index concatenation, "concat method", closure}}
 
-Puedes llamar a `byTagname` recursivamente, concantendo los arreglos
-resultantes para producir la salida. O puedes crear una funcion
-interna que se llama a si misma recursivamente y que tiene acceso a
-un arreglo de union definido en la funcion exterior, a la cual se
-puede agregar los elementos que conicidentes que encuentre. No
-olvides llamar a la ((funcion interior)) una vez desde la funcion
+Puedes llamar a `byTagname` recursivamente, concatenando los arreglos
+resultantes para producir la salida. O puedes crear una función
+interna que se llama a sí misma recursivamente y que tiene acceso a
+un arreglo de unión definido en la función exterior, a la cual se
+puede agregar los elementos que coincidentes que encuentre. No
+olvides llamar a la ((función interior)) una vez desde la función
 exterior para iniciar el proceso.
 
 {{index "nodeType property", "ELEMENT_NODE code"}}
 
-La funcion recursiva debe revisar el tipo de nodo. En este caso
+La función recursiva debe revisar el tipo de nodo. En este caso
 solamente estamos interesados por los nodos de tipo 1
 (`Node.ELEMENT_NODE`). Para tales nodos, debemos de iterar sobre
 sus hijos y, para cada hijo, observar si los hijos coinciden la
@@ -1210,21 +1209,21 @@ hint}}
 
 {{index "cat's hat (exercise)", [animation, "spinning cat"]}}
 
-Extiende la animacion del gato definida [anteriormente](dom#animation)
+Extiende la animación del gato definida [anteriormente](dom#animation)
 de manera de que tanto el gato como su sombrero (`<img src="img/hat.png">`)
-orbiten en lados opuestos de la elispe.
+orbiten en lados opuestos de la elipse.
 
-O haz que el sombrero circule al rededor del gato. O altera la
-animacion en alguna otra forma interesante.
+O haz que el sombrero circule alrededor del gato. O altera la
+animación en alguna otra forma interesante.
 
 {{index "absolute positioning", "top (CSS)", "left (CSS)", "position (CSS)"}}
 
-Para hacer el posicionamiento de multiples objetos sencillo,
-probablemente es buena idea intercambiar a posicionamiento absoluto.
-Esto significa que `top` y `left` sera contandos con relacion a la
+Para hacer el posicionamiento de múltiples objetos sencillo,
+probablemente es buena idea intercambiar a un posicionamiento absoluto.
+Esto significa que `top` y `left` serán contados con relación a la
 parte superior izquierda del documento. Para evitar usar coordenadas
-negativas, que pueden causar que la imagen se mueva fuera de la pagina
-visible, puedes agregar un numero fijo de pixeles a los valores de las
+negativas, que pueden causar que la imagen se mueva fuera de la página
+visible, puedes agregar un número fijo de pixeles a los valores de las
 posiciones.
 
 {{if interactive
@@ -1258,9 +1257,9 @@ if}}
 
 {{hint
 
-Las funciones `Math.cos` y `Math.sin` miden los angulos en radianes,
-donde un circulo completo es 2π. Para un angulo dado, puedes obtener
-el angulo inverso agregando la mitad de esto, que es `Math.PI`. Esto
-puede ser util para coloar el sombrero en el lado opuesto de la orbita.
+Las funciones `Math.cos` y `Math.sin` miden los ángulos en radianes,
+donde un círculo completo es 2π. Para un ángulo dado, puedes obtener
+el ángulo inverso agregando la mitad de esto, que es `Math.PI`. Esto
+puede ser útil para colocar el sombrero en el lado opuesto de la órbita.
 
 hint}}
