@@ -87,7 +87,7 @@ requerirán que hagas conexiones adicionales.
 
 Depende de ti hacer el esfuerzo necesario. Cuando estés luchando
 para seguir el libro, no saltes a ninguna conclusión acerca de tus propias
-capacidades. Estás bien —sólo tienes que seguir intentando.
+capacidades. Estás bien, sólo tienes que seguir intentando.
 Tomate un descanso, vuelve a leer algún material, y asegúrate de leer
 y comprender los programas de ejemplo y ((ejercicios)). Aprender es un
 trabajo duro, pero todo lo que aprendes se convertirá en tuyo, y
