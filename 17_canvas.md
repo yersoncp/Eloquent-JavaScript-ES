@@ -163,35 +163,35 @@ la esquina superior izquierda.
 {{index filling, stroking, drawing, SVG}}
 
 En la interfaz del ((canvas)), una figura puede ser _rellenada_ dado
-un cierto color o diseño, or it can be _stroked_, which
-means a ((line)) is drawn along its edge. The same terminology is used
-by SVG.
+un cierto color o diseño, o puede ser _delimtada_, que
+significa una ((linea)) dibujada en los bordes. La misma terminología aplica
+para SVG.
 
 {{index "fillRect method", "strokeRect method"}}
 
-The `fillRect` method fills a ((rectangle)). It takes first the x- and
-y-((coordinates)) of the rectangle's top-left corner, then its width,
-and then its height. A similar method, `strokeRect`, draws the
-((outline)) of a rectangle.
+El método `fillRect` rellena un ((rectángulo)). Usa primero las ((coordenadas)) `x` e
+`y` desde la esquina superior izquierda del rectángulo, después su dimensiones de ancho
+y alto. Un método parecido `strokeRect`, dibuja los
+((bordes)) del rectángulo.
 
 {{index [state, "of canvas"]}}
 
-Neither method takes any further parameters. The color of the fill,
-thickness of the stroke, and so on, are not determined by an argument
-to the method (as you might reasonably expect) but rather by
-properties of the context object.
+Ningún método toma parámetros adicionales. Tanto el color de relleno
+como el grueso del orden, no son determinados por el argumento
+del método (como podría esperarse normalmente) sino por las
+propiedades del contexto del objeto.
 
 {{index filling, "fillStyle property"}}
 
-The `fillStyle` property controls the way shapes are filled. It can be
-set to a string that specifies a ((color)), using the color notation
-used by ((CSS)).
+La propiedad `fillStyle` controla La manera que se rellenan las figuras. Puede ser 
+estableciendo una cadena que especifique un ((color)), usando la misma notación
+que en ((CSS)).
 
 {{index stroking, "line width", "strokeStyle property", "lineWidth property", canvas}}
 
-The `strokeStyle` property works similarly but determines the color
-used for a stroked line. The width of that line is determined by the
-`lineWidth` property, which may contain any positive number.
+La propiedad `strokeStyle` funciona de forma similar, pero determinando el color
+usado por la línea. El ancho de dicha línea es determinado por la
+propiedad `lineWidth`, que puede ser cualquier número positivo.
 
 ```{lang: "text/html"}
 <canvas></canvas>
@@ -206,18 +206,17 @@ used for a stroked line. The width of that line is determined by the
 
 {{if book
 
-This code draws two blue squares, using a thicker line for the second
-one.
+Este código dibuja dos cuadrados azules, usando un borde más delgado para el segundo.
 
-{{figure {url: "img/canvas_stroke.png", alt: "Two stroked squares",width: "5cm"}}}
+{{figure {url: "img/canvas_stroke.png", alt: "Dos cuadrados con borde",width: "5cm"}}}
 
 if}}
 
 {{index "default value", [canvas, size]}}
 
-When no `width` or `height` attribute is specified, as in the example,
-a canvas element gets a default width of 300 pixels and height of 150
-pixels.
+Cuando no se especifican atributos `width` or `height` como en el ejemplo,
+el canvas asigna un valor por defecto de 300 pixeles de ancho y 150
+pixeles de alto.
 
 ## Paths
 
