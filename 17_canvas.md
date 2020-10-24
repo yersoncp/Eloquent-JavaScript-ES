@@ -218,15 +218,15 @@ Cuando no se especifican atributos `width` or `height` como en el ejemplo,
 el canvas asigna un valor por defecto de 300 pixeles de ancho y 150
 pixeles de alto.
 
-## Paths
+## Rutas
 
 {{index [path, canvas], [interface, design], [canvas, path]}}
 
-A path is a sequence of ((line))s. The 2D canvas interface takes a
-peculiar approach to describing such a path. It is done entirely
-through ((side effect))s. Paths are not values that can be stored and
-passed around. Instead, if you want to do something with a path, you
-make a sequence of method calls to describe its shape.
+Una ruta es una secuencia de ((linea))s. La interfaz del canvas 2D 
+usa una forma particular para describir dicha ruta. Usualmente se infieren.
+Las rutas no son valores que se puedan almacenar y usar.
+En su lugar, si quieres hacer algo con una ruta, debes
+hacer llamar a una secuencia de métodos para describir su figura.
 
 ```{lang: "text/html"}
 <canvas></canvas>
@@ -243,29 +243,28 @@ make a sequence of method calls to describe its shape.
 
 {{index canvas, "stroke method", "lineTo method", "moveTo method", shape}}
 
-This example creates a path with a number of horizontal ((line))
-segments and then strokes it using the `stroke` method. Each segment
-created with `lineTo` starts at the path's _current_ position. That
-position is usually the end of the last segment, unless `moveTo` was
-called. In that case, the next segment would start at the position
+Este ejemplo crea una ruta con un número de segmentos de ((líneas))
+horizontales y las une usando el método `stroke`. Cada segmento
+creado con `lineTo` empieza en la posición _actual_ de la ruta. Esa
+posición suele ser la última del segmento anterior, a menos que `moveTo` fuera
+llamada. En ese caso, the next segment would start at the position
 passed to `moveTo`.
 
 {{if book
 
-The path described by the previous program looks like this:
+La ruta descrita por el programa anterior se ve así:
 
-{{figure {url: "img/canvas_path.png", alt: "Stroking a number of lines",width: "2.1cm"}}}
+{{figure {url: "img/canvas_path.png", alt: "Uniendo un número de líneas",width: "2.1cm"}}}
 
 if}}
 
 {{index [path, canvas], filling, [path, closing], "fill method"}}
 
-When filling a path (using the `fill` method), each ((shape)) is
-filled separately. A path can contain multiple shapes—each `moveTo`
-motion starts a new one. But the path needs to be _closed_ (meaning
-its start and end are in the same position) before it can be filled.
-If the path is not already closed, a line is added from its end to its
-start, and the shape enclosed by the completed path is filled.
+Cuando se llena una ruta (usando el método`fill`), cada ((figura)) es
+rellenada de forma separada. Una ruta puede contener múltiples figuras —cada movimiento `moveTo`
+comienza una nueva—. Pero la ruta debe _cerrarse_ (es decir, que empieza y termina en el mismo punto) antes de ser rellenada.
+Si la ruta no se ha cerrado, se agrega una linea desde el final hasta el 
+principio, y la figura definida por la ruta será rellenada.
 
 ```{lang: "text/html"}
 <canvas></canvas>
@@ -279,22 +278,22 @@ start, and the shape enclosed by the completed path is filled.
 </script>
 ```
 
-This example draws a filled triangle. Note that only two of the
-triangle's sides are explicitly drawn. The third, from the
-bottom-right corner back to the top, is implied and wouldn't be there
-when you stroke the path.
+Este ejemplo dibuja y rellena un triangulo. Nota que sólo dos de
+sus lados estan explícitamente dibujados. El tercero,
+de la esquina inferior derecha al vértice superior, está inferido y no debería estar ahí
+cuando definas la ruta.
 
 {{if book
 
-{{figure {url: "img/canvas_triangle.png", alt: "Filling a path",width: "2.2cm"}}}
+{{figure {url: "img/canvas_triangle.png", alt: "Rellenando una ruta",width: "2.2cm"}}}
 
 if}}
 
 {{index "stroke method", "closePath method", [path, closing], canvas}}
 
-You could also use the `closePath` method to explicitly close a path
-by adding an actual ((line)) segment back to the path's start. This
-segment _is_ drawn when stroking the path.
+También podrías usar el método `closePath` para cerrar una ruta de
+forma explícita agregando un segmento de ((linea)) de vuelta al inicio de la ruta.
+Este segmento _es_ dibujado cuando delineas la ruta.
 
 ## Curves
 
