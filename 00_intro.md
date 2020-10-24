@@ -33,7 +33,7 @@ tontas y pedantes, la programación es fundamentalmente tediosa y frustrante.
 Afortunadamente, si puedes superar eso, y tal vez incluso disfrutar el rigor
 de pensar en términos que las máquinas tontas puedan manejar, la programación
 puede ser muy gratificante. Te permite hacer en segundos cosas que
-tardarían _por siempre_ a mano. Es una forma de hacer que tu herramienta
+tardarían _siglos_ a mano. Es una forma de hacer que tu herramienta
 computadora haga cosas que antes no podía. Ademas proporciona de un maravilloso
 ejercicio en pensamiento abstracto.
 
@@ -124,7 +124,7 @@ para realizar cosas bastante complicadas.
 {{index [programming, "joy of"]}}
 
 Un programa es un edificio de pensamiento. No cuesta nada construirlo, no pesa
-nada, y crece fácilmente bajo el tecleado de nuestras manos.
+nada, y crece fácilmente bajo el teclear de nuestras manos.
 
 Pero sin ningún cuidado, el tamaño de un programa y su ((complejidad))
 crecerán sin control, confundiendo incluso a la persona que lo creó.
