@@ -48,7 +48,7 @@ Este es el documento de ejemplo del
   </head>
   <body>
     <h1>Mi página de inicio</h1>
-    <p>¡Hola! Mi nombre es Marijn y esta es mi página de inicio.</p>
+    <p>Hola, mi nombre es Marijn y esta es mi página de inicio.</p>
     <p>También escribí un libro! Léelo
       <a href="http://eloquentjavascript.net">aquí</a>.</p>
   </body>
@@ -189,7 +189,7 @@ mejoradas para expresar las operaciones que estás realizando. Muchas
 bibliotecas destinadas a la programación del navegador vienen con
 esas herramientas.
 
-## Moviéndose a traves del árbol
+## Moviéndose a través del árbol
 
 {{index pointer}}
 
@@ -305,7 +305,7 @@ atributo `id` y usar `document.getElementById`.
 
 ```{lang: "text/html"}
 <p>Mi avestruz Gertrudiz:</p>
-<p><img id="gertrudiz" src="img/avestruz.png"></p>
+<p><img id="gertrudiz" src="img/ostrich.png"></p>
 
 <script>
   let avestruz = document.getElementById("gertrudiz");
@@ -324,68 +324,70 @@ tienen una cadena dada en su attributo `class`.
 
 {{index "side effect", "removeChild method", "appendChild method", "insertBefore method", [DOM, construction], [DOM, modification]}}
 
-Almost everything about the DOM data structure can be changed. The
-shape of the document tree can be modified by changing parent-child
-relationships. Nodes have a `remove` method to remove them from their
-current parent node. To add a child node to an element node, we can
-use `appendChild`, which puts it at the end of the list of children,
-or `insertBefore`, which inserts the node given as the first argument
-before the node given as the second argument.
+Prácticamente todo sobre la estructura de datos DOM puede ser cambiado.
+La forma del árbol de documento puede ser modificada cambiando las
+relaciones padre-hijo. Los nodos tienen un método `remove` para ser
+removidos de su nodo padre actual. Para agregar un nodo hijo a un
+nodo elemento, podemos usar `appendChild`, que lo pondrá al final de
+la lista de hijos, o `insertBefore`, que insertará el nodo en el
+primer argumento antes del nodo en el segundo argumento.
 
 ```{lang: "text/html"}
-<p>One</p>
-<p>Two</p>
-<p>Three</p>
+<p>Uno</p>
+<p>Dos</p>
+<p>Tres</p>
 
 <script>
-  let paragraphs = document.body.getElementsByTagName("p");
-  document.body.insertBefore(paragraphs[2], paragraphs[0]);
+  let parrafos = document.body.getElementsByTagName("p");
+  document.body.insertBefore(parrafos[2], parrafos[0]);
 </script>
 ```
 
-A node can exist in the document in only one place. Thus, inserting
-paragraph _Three_ in front of paragraph _One_ will first remove it
-from the end of the document and then insert it at the front,
-resulting in _Three_/_One_/_Two_. All operations that insert a node
-somewhere will, as a ((side effect)), cause it to be removed from its
-current position (if it has one).
+Un nodo puede existir en el documento solamente en un lugar. En
+consecuencia, insertar el párrafo _Tres_ enfrente del párrafo _Uno_
+primero lo removerá del final del documento y luego lo insertará
+en la parte delantera, resultando en _Tres_/_Uno_/_Dos_. Todas las operaciones
+que insertan un nodo en alguna parte causarán, a modo de
+((efecto secundario)), que el nodo sea removido de su posición actual
+(si es que tiene una).
 
 {{index "insertBefore method", "replaceChild method"}}
 
-The `replaceChild` method is used to replace a child node with another
-one. It takes as arguments two nodes: a new node and the node to be
-replaced. The replaced node must be a child of the element the method
-is called on. Note that both `replaceChild` and `insertBefore` expect
-the _new_ node as their first argument.
+El método `replaceChild` es usado para reemplazar a un nodo hijo con
+otro. Toma dos nodos como argumentos: un nuevo nodo y el nodo que será
+reemplazado. El nodo reemplazado debe ser un nodo hijo del elemento
+desde donde se está llamando el método. Nótese que tanto `replaceChild`
+como `insertBefore` esperan que el _nuevo_ nodo sea el primer argumento.
 
-## Creating nodes
+## Crear nodos
 
 {{index "alt attribute", "img (HTML tag)"}}
 
-Say we want to write a script that replaces all ((image))s (`<img>`
-tags) in the document with the text held in their `alt` attributes,
-which specifies an alternative textual representation of the image.
+Digamos que queremos escribir un _script_ que reemplace todas las
+((imagen))es (etiquetas `<img>`) en el documento con el texto contenido
+en sus atributos `alt`, los cuales especifican una representación
+textual alternativa de la imagen.
 
 {{index "createTextNode method"}}
 
-This involves not only removing the images but adding a new text node
-to replace them. Text nodes are created with the
-`document.createTextNode` method.
+Esto no solamente involucra remover las imágenes, si no que también
+involucra agregar un nuevo nodo texto que las reemplace. Los nodos texto
+son creados con el método `document.createTextNode`.
 
 ```{lang: "text/html"}
-<p>The <img src="img/cat.png" alt="Cat"> in the
-  <img src="img/hat.png" alt="Hat">.</p>
+<p>El <img src="img/cat.png" alt="Gato"> en el
+  <img src="img/hat.png" alt="Sombrero">.</p>
 
-<p><button onclick="replaceImages()">Replace</button></p>
+<p><button onclick="sustituirImagenes()">Sustituir</button></p>
 
 <script>
-  function replaceImages() {
-    let images = document.body.getElementsByTagName("img");
-    for (let i = images.length - 1; i >= 0; i--) {
-      let image = images[i];
-      if (image.alt) {
-        let text = document.createTextNode(image.alt);
-        image.parentNode.replaceChild(text, image);
+  function sustituirImagenes() {
+    let imagenes = document.body.getElementsByTagName("img");
+    for (let i = imagenes.length - 1; i >= 0; i--) {
+      let imagen = imagenes[i];
+      if (imagen.alt) {
+        let texto = document.createTextNode(imagen.alt);
+        imagen.parentNode.replaceChild(texto, imagen);
       }
     }
   }
@@ -394,168 +396,176 @@ to replace them. Text nodes are created with the
 
 {{index "text node"}}
 
-Given a string, `createTextNode` gives us a text node that we can
-insert into the document to make it show up on the screen.
+Dada una cadena, `createTextNode` nos da un nodo texto que podemos
+insertar en el documento para hacer que aparezca en la pantalla.
 
 {{index "live data structure", "getElementsByTagName method", "childNodes property"}}
 
-The loop that goes over the images starts at the end of the list. This
-is necessary because the node list returned by a method like
-`getElementsByTagName` (or a property like `childNodes`) is _live_.
-That is, it is updated as the document changes. If we started from the
-front, removing the first image would cause the list to lose its first
-element so that the second time the loop repeats, where `i` is 1, it
-would stop because the length of the collection is now also 1.
+El ciclo que recorre las imágenes empieza al final de la lista. Esto es
+necesario dado que la lista de nodos regresada por un método como
+`getElementsByTagName` (o una propiedad como `childNodes`) se actualiza
+en tiempo real. Esto es, que se actualiza conforme el documento cambia.
+Si empezáramos desde el frente, remover la primer imagen causaría que
+la lista perdiera su primer elemento de tal manera que la segunda
+ocasión que el ciclo se repitiera, donde `i` es 1, se detendría dado que
+la longitud de la colección ahora es también 1.
 
 {{index "slice method"}}
 
-If you want a _solid_ collection of nodes, as opposed to a live one,
-you can convert the collection to a real array by calling
+Si quieres una colección de nodos _sólida_, a diferencia de una en
+tiempo real, puedes convertir la colección a un arreglo real llamando
 `Array.from`.
 
 ```
-let arrayish = {0: "one", 1: "two", length: 2};
-let array = Array.from(arrayish);
-console.log(array.map(s => s.toUpperCase()));
-// → ["ONE", "TWO"]
+let casi_arreglo = {0: "uno", 1: "dos", length: 2};
+let arreglo = Array.from(casi_arreglo);
+console.log(arreglo.map(s => s.toUpperCase()));
+// → ["UNO", "DOS"]
 ```
 
 {{index "createElement method"}}
 
-To create ((element)) nodes, you can use the `document.createElement`
-method. This method takes a tag name and returns a new empty node of
-the given type.
+Para crear nodos ((elemento)), puedes utilizar el método
+`document.createElement`. Este método toma un nombre de etiqueta y
+regresa un nuevo nodo vacío del tipo dado.
 
 {{index "Popper, Karl", [DOM, construction], "elt function"}}
 
 {{id elt}}
 
-The following example defines a utility `elt`, which creates an
-element node and treats the rest of its arguments as children to that
-node. This function is then used to add an attribution to a quote.
+El siguiente ejemplo define una utilidad `elt`, la cual crea un
+elemento nodo y trata el resto de sus argumentos como hijos de ese
+nodo. Luego, esta función es utilizada para agregar una atribución
+a una cita.
 
 ```{lang: "text/html"}
-<blockquote id="quote">
-  No book can ever be finished. While working on it we learn
-  just enough to find it immature the moment we turn away
-  from it.
+<blockquote id="cita">
+  Ningún libro puede terminarse jamás. Mientras se trabaja en
+  él aprendemos solo lo suficiente para encontrar inmaduro
+  el momento en el que nos alejamos de él.
 </blockquote>
 
 <script>
-  function elt(type, ...children) {
-    let node = document.createElement(type);
-    for (let child of children) {
-      if (typeof child != "string") node.appendChild(child);
-      else node.appendChild(document.createTextNode(child));
+  function elt(tipo, ...hijos) {
+    let nodo = document.createElement(tipo);
+    for (let hijo of hijos) {
+      if (typeof hijo != "string") nodo.appendChild(hijo);
+      else nodo.appendChild(document.createTextNode(hijo));
     }
-    return node;
+    return nodo;
   }
 
-  document.getElementById("quote").appendChild(
+  document.getElementById("cita").appendChild(
     elt("footer", "—",
         elt("strong", "Karl Popper"),
-        ", preface to the second edition of ",
-        elt("em", "The Open Society and Its Enemies"),
+        ", prefacio de la segunda edición de ",
+        elt("em", "La sociedad abierta y sus enemigos"),
         ", 1950"));
 </script>
 ```
 
 {{if book
 
-This is what the resulting document looks like:
+Así es como se ve el documento resultante:
 
 {{figure {url: "img/blockquote.png", alt: "A blockquote with attribution",width: "8cm"}}}
 
 if}}
 
-## Attributes
+## Atributos
 
 {{index "href attribute", [DOM, attributes]}}
 
-Some element ((attribute))s, such as `href` for links, can be accessed
-through a property of the same name on the element's ((DOM))
-object. This is the case for most commonly used standard attributes.
+Los ((atributo))s de algunos elementos, como `href` para los enlaces,
+pueden ser accedidos a través de una propiedad con el mismo nombre en
+el objeto ((DOM)) del elemento. Este es el caso para los atributos
+estándar más comúnmente utilizados.
 
 {{index "data attribute", "getAttribute method", "setAttribute method", attribute}}
 
-But HTML allows you to set any attribute you want on nodes. This can
-be useful because it allows you to store extra information in a
-document. If you make up your own attribute names, though, such
-attributes will not be present as properties on the element's node.
-Instead, you have to use the `getAttribute` and `setAttribute` methods
-to work with them.
+Pero HTML te permite establecer cualquier atributo que quieras en los
+nodos. Esto puede ser útil debido a que te permite almacenar información
+extra en un documento. Sin embargo, si creas tus propios nombres de
+atributo, dichos atributos no estarán presentes como propiedades en el
+nodo del elemento. En vez de eso, tendrás que utilizar los métodos
+`getAttribute` y `setAttribute` para poder trabajar con ellos.
 
 ```{lang: "text/html"}
-<p data-classified="secret">The launch code is 00000000.</p>
-<p data-classified="unclassified">I have two feet.</p>
+<p data-classified="secreto">El código de lanzamiento es: 00000000.</p>
+<p data-classified="no-classificado">Yo tengo dos pies.</p>
 
 <script>
-  let paras = document.body.getElementsByTagName("p");
-  for (let para of Array.from(paras)) {
-    if (para.getAttribute("data-classified") == "secret") {
-      para.remove();
+  let parrafos = document.body.getElementsByTagName("p");
+  for (let parrafo of Array.from(parrafos)) {
+    if (parrafo.getAttribute("data-classified") == "secreto") {
+      parrafo.remove();
     }
   }
 </script>
 ```
 
-It is recommended to prefix the names of such made-up attributes with
-`data-` to ensure they do not conflict with any other attributes.
+Se recomienda anteponer los nombres de dichos atributos inventados con
+`data-` para asegurarse de que no conflictúan con ningún otro atributo.
 
 {{index "getAttribute method", "setAttribute method", "className property", "class attribute"}}
 
-There is a commonly used attribute, `class`, which is a ((keyword)) in
-the JavaScript language. For historical reasons—some old JavaScript
-implementations could not handle property names that matched
-keywords—the property used to access this attribute is called
-`className`. You can also access it under its real name, `"class"`, by
-using the `getAttribute` and `setAttribute` methods.
+Existe un atributo comúnmente usado, `class`, que es una ((palabra clave))
+en el lenguaje JavaScript. Por motivos históricos, algunas
+implementaciones antiguas de JavaScript podrían no manejar nombres de
+propiedades que coincidan con las palabras clave, la propiedad utilizada
+para acceder a este atributo tiene por nombre `className`. También
+puedes acceder a ella bajo su nombre real, `"class"`, utilizando los
+métodos `getAttribute` y `setAttribute`.
 
 ## Layout
 
 {{index layout, "block element", "inline element", "p (HTML tag)", "h1 (HTML tag)", "a (HTML tag)", "strong (HTML tag)"}}
 
-You may have noticed that different types of elements are laid out
-differently. Some, such as paragraphs (`<p>`) or headings (`<h1>`),
-take up the whole width of the document and are rendered on separate
-lines. These are called _block_ elements. Others, such as links
-(`<a>`) or the `<strong>` element, are rendered on the same line with
-their surrounding text. Such elements are called _inline_ elements.
+Tal vez hayas notado que diferentes tipos de elementos se exponen
+de manera distinta. Algunos, como en el caso de los párrafos
+(`<p>`) o encabezados (`<h1>`), ocupan todo el ancho del documento
+y se renderizan en líneas separadas. A estos se les conoce como
+elementos _block_ (o bloque). Otros, como los enlaces (`<a>`) o el
+elemento `<strong>`, se renderizan en la misma línea con su texto
+circundante. Dichos elementos se les conoce como elementos
+_inline_ (o en línea).
 
 {{index drawing}}
 
-For any given document, browsers are able to compute a layout, which
-gives each element a size and position based on its type and content.
-This layout is then used to actually draw the document.
+Para cualquier documento dado, los navegadores son capaces de calcular
+una estructura _(layout)_, que le da a cada elemento un tamaño y una
+posición basada en el tipo y el contenido. Luego, esta estructura se
+utiliza para trazar el documento.
 
 {{index "border (CSS)", "offsetWidth property", "offsetHeight property", "clientWidth property", "clientHeight property", dimensions}}
 
-The size and position of an element can be accessed from JavaScript.
-The `offsetWidth` and `offsetHeight` properties give you the space the
-element takes up in _((pixel))s_. A pixel is the basic unit of
-measurement in the browser. It traditionally corresponds to the
-smallest dot that the screen can draw, but on modern displays, which
-can draw _very_ small dots, that may no longer be the case, and a
-browser pixel may span multiple display dots.
+Se puede acceder al tamaño y la posición de un elemento desde
+JavaScript. Las propiedades `offsetWidth` y `offsetHeight` te dan el
+espacio que el elemento utiliza en ((pixel))es. Un píxel es la unidad
+básica de las medidas del navegador. Tradicionalmente correspondía al
+punto más pequeño que la pantalla podía trazar, pero en los monitores
+modernos, que pueden trazar puntos _muy_ pequeños, este puede no ser
+más el caso, por lo que un píxel del navegador puede abarcar varios
+puntos en la pantalla.
 
-Similarly, `clientWidth` and `clientHeight` give you the size of the
-space _inside_ the element, ignoring border width.
+De manera similar, `clientWidth` y `clientHeight` te dan el tamaño
+del espacio _dentro_ del elemento, ignorando la anchura del borde.
 
 ```{lang: "text/html"}
 <p style="border: 3px solid red">
-  I'm boxed in
+  Estoy dentro de una caja
 </p>
 
 <script>
-  let para = document.body.getElementsByTagName("p")[0];
-  console.log("clientHeight:", para.clientHeight);
-  console.log("offsetHeight:", para.offsetHeight);
+  let parrafo = document.body.getElementsByTagName("p")[0];
+  console.log("clientHeight:", parrafo.clientHeight);
+  console.log("offsetHeight:", parrafo.offsetHeight);
 </script>
 ```
 
 {{if book
 
-Giving a paragraph a border causes a rectangle to be drawn around it.
+Darle un borde a un párrafo hace que se dibuje un rectángulo a su alrededor.
 
 {{figure {url: "img/boxed-in.png", alt: "A paragraph with a border",width: "8cm"}}}
 
@@ -565,88 +575,90 @@ if}}
 
 {{id boundingRect}}
 
-The most effective way to find the precise position of an element on
-the screen is the `getBoundingClientRect` method. It returns an object
-with `top`, `bottom`, `left`, and `right` properties, indicating the
-pixel positions of the sides of the element relative to the top left
-of the screen. If you want them relative to the whole document, you
-must add the current scroll position, which you can find in the
-`pageXOffset` and `pageYOffset` bindings.
+La manera más efectiva de encontrar la posición precisa de un elemento
+en la pantalla es el método `getBoundingClientRect`. Este devuelve un
+objeto con las propiedades `top`, `bottom`, `left`, y `right`, indicando
+las posiciones de pixeles de los lados el elemento en relación con la
+parte superior izquierda de la pantalla. Si los quieres en relación a
+todo el documento, deberás agregar la posición actual del scroll, la
+cual puedes obtener en los _bindings_ `pageXOffset` y `pageYOffset`.
 
 {{index "offsetHeight property", "getBoundingClientRect method", drawing, laziness, performance, efficiency}}
 
-Laying out a document can be quite a lot of work. In the interest of
-speed, browser engines do not immediately re-layout a document every
-time you change it but wait as long as they can. When a JavaScript
-program that changed the document finishes running, the browser will
-have to compute a new layout to draw the changed document to
-the screen. When a program _asks_ for the position or size of
-something by reading properties such as `offsetHeight` or calling
-`getBoundingClientRect`, providing correct information also requires
-computing a ((layout)).
+Estructurar un documento puede requerir mucho trabajo. En los
+intereses de velocidad, los motores de los navegadores no
+reestructuran inmediatamente un documento cada vez que lo cambias,
+en cambio, se espera lo más que se pueda. Cuando un programa de
+JavaScript que modifica el documento termina de ejecutarse, el
+navegador tendrá que calcular una nueva estructura para trazar el
+documento actualizado en la pantalla. Cuando un programa _solicita_
+la posición o el tamaño de algo, leyendo propiedades como `offsetHeight`
+o llamando a `getBoundingClientRect`, proveer la información correcta
+también requiere que se calcule una nueva estructura.
 
 {{index "side effect", optimization, benchmark}}
 
-A program that repeatedly alternates between reading DOM layout
-information and changing the DOM forces a lot of layout computations
-to happen and will consequently run very slowly. The following code is
-an example of this. It contains two different programs that build up a
-line of _X_ characters 2,000 pixels wide and measures the time each
-one takes.
+A un programa que alterna repetidamente entre leer la información de la
+estructura DOM y cambiar el DOM, fuerza a que haya bastantes cálculos
+de estructura, y por consecuencia se ejecutará lentamente. El siguiente
+código es un ejemplo de esto. Contiene dos programas diferentes que
+construyen una línea de _X_ caracteres con 2,000 pixeles de ancho y
+que mide el tiempo que toma cada uno.
 
 ```{lang: "text/html", test: nonumbers}
-<p><span id="one"></span></p>
-<p><span id="two"></span></p>
+<p><span id="uno"></span></p>
+<p><span id="dos"></span></p>
 
 <script>
-  function time(name, action) {
-    let start = Date.now(); // Current time in milliseconds
-    action();
-    console.log(name, "took", Date.now() - start, "ms");
+  function tiempo(nombre, accion) {
+    let inicio = Date.now(); // Tiempo actual en milisegundos
+    accion();
+    console.log(nombre, "utilizo", Date.now() - inicio, "ms");
   }
 
-  time("naive", () => {
-    let target = document.getElementById("one");
-    while (target.offsetWidth < 2000) {
-      target.appendChild(document.createTextNode("X"));
+  tiempo("inocente", () => {
+    let objetivo = document.getElementById("uno");
+    while (objetivo.offsetWidth < 2000) {
+      objetivo.appendChild(document.createTextNode("X"));
     }
   });
-  // → naive took 32 ms
+  // → inocente utilizo 32 ms
 
-  time("clever", function() {
-    let target = document.getElementById("two");
-    target.appendChild(document.createTextNode("XXXXX"));
-    let total = Math.ceil(2000 / (target.offsetWidth / 5));
-    target.firstChild.nodeValue = "X".repeat(total);
+  tiempo("ingenioso", function() {
+    let objetivo = document.getElementById("dos");
+    objetivo.appendChild(document.createTextNode("XXXXX"));
+    let total = Math.ceil(2000 / (objetivo.offsetWidth / 5));
+    objetivo.firstChild.nodeValue = "X".repeat(total);
   });
-  // → clever took 1 ms
+  // → ingenioso utilizo 1 ms
 </script>
 ```
 
-## Styling
+## Estilización
 
 {{index "block element", "inline element", style, "strong (HTML tag)", "a (HTML tag)", underline}}
 
-We have seen that different HTML elements are drawn differently. Some
-are displayed as blocks, others inline. Some add styling—`<strong>`
-makes its content ((bold)), and `<a>` makes it blue and underlines it.
+Hemos visto que diferentes elementos HTML se trazan de manera diferente.
+Algunos son desplegados como bloques, otros en línea. Algunos agregan
+estilos, por ejemplo `<strong>` hace que su contenido esté en
+((negritas)) y `<a>` lo hace azul y lo subraya.
 
 {{index "img (HTML tag)", "default behavior", "style attribute"}}
 
-The way an `<img>` tag shows an image or an `<a>` tag causes a link to
-be followed when it is clicked is strongly tied to the element type.
-But we can change the styling associated with an element, such
-as the text color or underline. Here is an example that uses
-the `style` property:
+La forma en la que una etiqueta `<img>` muestra una imagen o una
+etiqueta `<a>` hace que un enlace sea seguido cuando se hace click en
+el, está fuertemente atado al tipo del elemento. Pero podemos cambiar los
+estilos asociados a un elemento, tales como el color o si está subrayado.
+Este es un ejemplo que utiliza la propiedad `style`:
 
 ```{lang: "text/html"}
-<p><a href=".">Normal link</a></p>
-<p><a href="." style="color: green">Green link</a></p>
+<p><a href=".">Enlace normal</a></p>
+<p><a href="." style="color: green">Enlace verde</a></p>
 ```
 
 {{if book
 
-The second link will be green instead of the default link color.
+El segundo enlace será verde en vez del color por defecto.
 
 {{figure {url: "img/colored-links.png", alt: "A normal and a green link",width: "2.2cm"}}}
 
@@ -654,31 +666,32 @@ if}}
 
 {{index "border (CSS)", "color (CSS)", CSS, "colon character"}}
 
-A style attribute may contain one or more _((declaration))s_, which
-are a property (such as `color`) followed by a colon and a value (such
-as `green`). When there is more than one declaration, they must be
-separated by ((semicolon))s, as in `"color: red; border: none"`.
+Un atributo _style_ puede llegar a contener una o más declaraciones, que
+consisten en una propiedad (como `color`) seguido del símbolo de dos puntos
+y un valor (como `green`). Cuando hay más de una declaración, estas deben
+ser separadas por ((punto y coma)), como en `"color: red; border: none"`.
 
 {{index "display (CSS)", layout}}
 
-A lot of aspects of the document can be influenced by
-styling. For example, the `display` property controls whether an
-element is displayed as a block or an inline element.
+Muchos de los aspectos del documento pueden ser influenciados por la
+estilización. Por ejemplo, la propiedad `display` controla si un
+elemento es desplegado como un bloque o como un elemento en línea.
 
 ```{lang: "text/html"}
-This text is displayed <strong>inline</strong>,
-<strong style="display: block">as a block</strong>, and
-<strong style="display: none">not at all</strong>.
+El texto es desplegado <strong>en línea</strong>,
+<strong style="display: block">como bloque</strong>, y
+<strong style="display: none">no se despliega</strong>.
 ```
 
 {{index "hidden element"}}
 
-The `block` tag will end up on its own line since ((block element))s
-are not displayed inline with the text around them. The last tag is
-not displayed at all—`display: none` prevents an element from showing
-up on the screen. This is a way to hide elements. It is often
-preferable to removing them from the document entirely because it
-makes it easy to reveal them again later.
+La etiqueta `block` terminará en su propia línea dado que los elementos
+_((bloque))_ no son desplegados en línea con el texto que los rodea.
+La última etiqueta no se despliega—`display: none` previene que el
+elemento sea mostrado en la pantalla. Esta es una manera de ocultar
+elementos. A menudo esto es preferido sobre removerlos completamente
+del documento debido a que hace más fácil mostrarlos nuevamente en el
+futuro.
 
 {{if book
 
@@ -688,42 +701,46 @@ if}}
 
 {{index "color (CSS)", "style attribute"}}
 
-JavaScript code can directly manipulate the style of an element
-through the element's `style` property. This property holds an object
-that has properties for all possible style properties. The values of
-these properties are strings, which we can write to in order to change
-a particular aspect of the element's style.
+El código de JavaScript puede manipular directamente el estilo de un
+elemento a través de la propiedad `style` del elemento. Esta propiedad
+almacena un objeto que tiene propiedades por todas las posibles
+propiedades de estilo. Los valores de esas propiedades son cadenas, que
+podemos escribir para cambiar un aspecto en particular del estilo del
+elemento.
 
 ```{lang: "text/html"}
-<p id="para" style="color: purple">
-  Nice text
+<p id="parrafo" style="color: purple">
+  Texto mejorado
 </p>
 
 <script>
-  let para = document.getElementById("para");
-  console.log(para.style.color);
-  para.style.color = "magenta";
+  let parrafo = document.getElementById("parrafo");
+  console.log(parrafo.style.color);
+  parrafo.style.color = "magenta";
 </script>
 ```
 
 {{index "camel case", capitalization, "hyphen character", "font-family (CSS)"}}
 
-Some style property names contain hyphens, such as `font-family`.
-Because such property names are awkward to work with in JavaScript
-(you'd have to say `style["font-family"]`), the property names in the
-`style` object for such properties have their hyphens removed and the
-letters after them capitalized (`style.fontFamily`).
+Algunos nombres de propiedades pueden contener guiones, como es el caso
+de `font-family`. Dado que estos nombres de propiedades son incómodos
+para trabajar con ellos en JavaScript (tendrías que decir
+`style["font-family"]`), los nombres de propiedades en el objeto `style`
+para tales propiedades no tendrán guiones y las letra después del guion
+estará en mayúsculas (`style.fontFamily`).
 
-## Cascading styles
+## Estilos en Cascada
 
 {{index "rule (CSS)", "style (HTML tag)"}}
 
 {{indexsee "Cascading Style Sheets", CSS}}
 {{indexsee "style sheet", CSS}}
 
-The styling system for HTML is called ((CSS)), for _Cascading Style
-Sheets_. A _style sheet_ is a set of rules for how to style
-elements in a document. It can be given inside a `<style>` tag.
+El sistema de estilos para HTML es llamado ((CSS)) por sus siglas en
+ingles _Cascading Style Sheets_ (Hojas de estilo en cascada). Una
+_hoja de estilos_ es un conjunto de reglas sobre cómo estilizar
+a los elementos en un documento. Puede estar declarado dentro de
+una etiqueta `<style>`.
 
 ```{lang: "text/html"}
 <style>
@@ -732,169 +749,177 @@ elements in a document. It can be given inside a `<style>` tag.
     color: gray;
   }
 </style>
-<p>Now <strong>strong text</strong> is italic and gray.</p>
+<p>Ahora <strong>el texto en negritas</strong> esta en italicas y es gris.</p>
 ```
 
 {{index "rule (CSS)", "font-weight (CSS)", overlay}}
 
-The _((cascading))_ in the name refers to the fact that multiple such
-rules are combined to produce the final style for an element. In the
-example, the default styling for `<strong>` tags, which gives them
-`font-weight: bold`, is overlaid by the rule in the `<style>` tag,
-which adds `font-style` and `color`.
+La sección _cascada_ en el nombre se refiere al hecho de que varias
+reglas son combinadas para producir el estilo final para un elemento.
+En el ejemplo, el estilo por defecto para las etiquetas `<strong>`, que
+les da `font-weight: bold`, es superpuesto por la regla en la etiqueta
+`<style>`, que le agrega `font-style` y `color`.
 
 {{index "style (HTML tag)", "style attribute"}}
 
-When multiple rules define a value for the same property, the most
-recently read rule gets a higher ((precedence)) and wins. So if the
-rule in the `<style>` tag included `font-weight: normal`,
-contradicting the default `font-weight` rule, the text would be
-normal, _not_ bold. Styles in a `style` attribute applied directly to
-the node have the highest precedence and always win.
+Cuando varias reglas definen un valor para una misma propiedad, la
+regla leída más recientemente obtiene una mayor ((precedencia))
+y gana. Por lo que si la regla en la etiqueta `<style>` incluyera
+`font-weight: normal`, contradiciendo la regla por defecto de
+`font-weight`, el texto se vería normal, _no_ en negritas. Los estilos
+en un atributo `style` aplicados directamente al nodo tienen la
+mayor precedencia y siempre ganan.
 
 {{index uniqueness, "class attribute", "id attribute"}}
 
-It is possible to target things other than ((tag)) names in CSS rules.
-A rule for `.abc` applies to all elements with `"abc"` in their `class`
-attribute. A rule for `#xyz` applies to the element with an `id`
-attribute of `"xyz"` (which should be unique within the document).
+Es posible apuntar a otras cosas que no sean nombres de ((etiqueta))
+en las reglas CSS. Una regla para `.abc` aplica a todos los elementos
+con `"abc"` en su atributo `class`. Una regla para `#xyz` aplica a
+todos los elementos con un atributo `id` con valor `"xyz"` (que debería
+ser único en el documento).
+
 
 ```{lang: "text/css"}
-.subtle {
+.sutil {
   color: gray;
   font-size: 80%;
 }
-#header {
+#cabecera {
   background: blue;
   color: white;
 }
-/* p elements with id main and with classes a and b */
-p#main.a.b {
+/* Elementos p con un id principal y clases a y b */
+p#principal.a.b {
   margin-bottom: 20px;
 }
 ```
 
 {{index "rule (CSS)"}}
 
-The ((precedence)) rule favoring the most recently defined rule
-applies only when the rules have the same _((specificity))_. A rule's
-specificity is a measure of how precisely it describes matching
-elements, determined by the number and kind (tag, class, or ID) of
-element aspects it requires. For example, a rule that targets `p.a` is
-more specific than rules that target `p` or just `.a` and would thus
-take precedence over them.
+La regla de precedencia que favorece a las reglas más recientemente
+definidas aplican solamente cuando las reglas tienen la misma
+_((especificidad))_. La especificidad de una regla es una medida de que
+tan precisamente describe a los elementos que coinciden con la regla,
+determinado por el número y tipo (etiqueta, clase o ID) de los
+aspectos del elemento que requiera. Por ejemplo, una regla que apunta
+a `p.a` es más específica que las reglas que apuntan a `p` o solamente
+a `.a` y tendrá precedencia sobre ellas.
 
 {{index "direct child node"}}
 
-The notation `p > a {…}` applies the given styles to all `<a>` tags
-that are direct children of `<p>` tags. Similarly, `p a {…}` applies
-to all `<a>` tags inside `<p>` tags, whether they are direct or
-indirect children.
+La notación `p > a {…}` aplica los estilos dados a todas las etiquetas
+`<a>` que son hijas directas de las etiquetas `<p>`. De manera similar,
+`p a {…}` aplica a todas las etiquetas `<a>` dentro de etiquetas `<p>`,
+sin importar que sean hijas directas o indirectas.
 
-## Query selectors
+## Selectores de consulta
 
 {{index complexity, CSS}}
 
-We won't be using style sheets all that much in this book.
-Understanding them is helpful when programming in the browser, but
-they are complicated enough to warrant a separate book.
+No utilizaremos mucho las hojas de estilo en este libro. Entenderlas
+es útil cuando se programa en el navegador, pero son lo suficientemente
+complicadas para justificar un libro por separado.
 
 {{index "domain-specific language", [DOM, querying]}}
 
-The main reason I introduced _((selector))_ syntax—the notation used
-in style sheets to determine which elements a set of styles apply
-to—is that we can use this same mini-language as an effective way to
-find DOM elements.
+La principal razón por la que introduje la sintaxis de ((selección))—la
+notación usada en las hojas de estilo para determinar a cuales elementos
+aplicar un conjunto de estilos—es que podemos utilizar el mismo
+mini-lenguaje como una manera efectiva de encontrar elementos DOM.
 
 {{index "querySelectorAll method", "NodeList type"}}
 
-The `querySelectorAll` method, which is defined both on the `document`
-object and on element nodes, takes a selector string and returns a
-`NodeList` containing all the elements that it matches.
+El método `querySelectorAll`, que se encuentra definido tanto en el
+objeto `document` como en los nodos elemento, toma la cadena de un
+selector y regresa una `NodeList` que contiene todos los elementos
+que coinciden con la consulta.
 
 ```{lang: "text/html"}
 <p>And if you go chasing
   <span class="animal">rabbits</span></p>
 <p>And you know you're going to fall</p>
-<p>Tell 'em a <span class="character">hookah smoking
+<p>Tell 'em a <span class="caracter">hookah smoking
   <span class="animal">caterpillar</span></span></p>
 <p>Has given you the call</p>
 
 <script>
-  function count(selector) {
+  function contar(selector) {
     return document.querySelectorAll(selector).length;
   }
-  console.log(count("p"));           // All <p> elements
+  console.log(contar("p"));           // Todos los elementos <p>
   // → 4
-  console.log(count(".animal"));     // Class animal
+  console.log(contar(".animal"));     // Clase animal
   // → 2
-  console.log(count("p .animal"));   // Animal inside of <p>
+  console.log(contar("p .animal"));   // Animales dentro de <p>
   // → 2
-  console.log(count("p > .animal")); // Direct child of <p>
+  console.log(contar("p > .animal")); // Hijos directos de <p>
   // → 1
 </script>
 ```
 
 {{index "live data structure"}}
 
-Unlike methods such as `getElementsByTagName`, the object returned by
-`querySelectorAll` is _not_ live. It won't change when you change the
-document. It is still not a real array, though, so you still need to
-call `Array.from` if you want to treat it like one.
+A diferencia de métodos como `getElementsByTagName`, el objeto que
+regresa `querySelectorAll` no es un objeto en tiempo real. No cambiará
+cuando cambies el documento. Sin embargo, sigue sin ser un arreglo real,
+por lo que aún necesitas llamar a `Array.from` si lo quieres tratar como
+uno real.
 
 {{index "querySelector method"}}
 
-The `querySelector` method (without the `All` part) works in a similar
-way. This one is useful if you want a specific, single element. It
-will return only the first matching element or null when no element
-matches.
+El método `querySelector` (sin la parte de `All`) trabaja de una manera
+similar. Este es útil si quieres un único elemento en específico. Regresará
+únicamente el primer elemento que coincida o _null_ en el caso que
+ningún elemento coincida.
 
 {{id animation}}
 
-## Positioning and animating
+## Posicionamiento y animaciones
 
 {{index "position (CSS)", "relative positioning", "top (CSS)", "left (CSS)", "absolute positioning"}}
 
-The `position` style property influences layout in a powerful way. By
-default it has a value of `static`, meaning the element sits in its
-normal place in the document. When it is set to `relative`, the
-element still takes up space in the document, but now the `top` and
-`left` style properties can be used to move it relative to that normal
-place. When `position` is set to `absolute`, the element is removed
-from the normal document flow—that is, it no longer takes up space and
-may overlap with other elements. Also, its `top` and `left` properties
-can be used to absolutely position it relative to the top-left corner
-of the nearest enclosing element whose `position` property isn't
-`static`, or relative to the document if no such enclosing element
-exists.
+La propiedad de estilo `position` influye de un manera poderosa sobre
+la estructura. Por defecto, tiene el valor de `static`, eso significa
+que el elemento se coloca en su lugar normal en el documento. Cuando
+se establece como `relative`, el elemento sigue utilizando espacio en el
+documento pero ahora las propiedades `top` y `left` pueden ser
+utilizadas para moverlo relativamente a ese espacio normal. Cuando
+`position` se establece como `absolute`, el elemento es removido del
+flujo normal del documento—esto es, deja de tomar espacio y puede
+encimarse con otros elementos. Además, sus propiedades `top` y `left`
+pueden ser utilizadas para posicionarlo absolutamente con relación a
+la esquina superior izquierda del elemento envolvente más cercano cuya
+propiedad `position` no sea `static`, o con relación al documento si dicho
+elemento envolvente no existe.
 
 {{index [animation, "spinning cat"]}}
 
-We can use this to create an animation. The following document
-displays a picture of a cat that moves around in an ((ellipse)):
+Podemos utilizar esto para crear una animación. El siguiente
+documento despliega una imagen de un gato que se mueve alrededor
+de una ((elipse)):
 
 ```{lang: "text/html", startCode: true}
 <p style="text-align: center">
   <img src="img/cat.png" style="position: relative">
 </p>
 <script>
-  let cat = document.querySelector("img");
-  let angle = Math.PI / 2;
-  function animate(time, lastTime) {
-    if (lastTime != null) {
-      angle += (time - lastTime) * 0.001;
+  let gato = document.querySelector("img");
+  let angulo = Math.PI / 2;
+  function animar(tiempo, ultimoTiempo) {
+    if (ultimoTiempo != null) {
+      angulo += (tiempo - ultimoTiempo) * 0.001;
     }
-    cat.style.top = (Math.sin(angle) * 20) + "px";
-    cat.style.left = (Math.cos(angle) * 200) + "px";
-    requestAnimationFrame(newTime => animate(newTime, time));
+    gato.style.top = (Math.sin(angulo) * 20) + "px";
+    gato.style.left = (Math.cos(angulo) * 200) + "px";
+    requestAnimationFrame(nuevoTiempo => animar(nuevoTiempo, tiempo));
   }
-  requestAnimationFrame(animate);
+  requestAnimationFrame(animar);
 </script>
 ```
 
 {{if book
 
-The gray arrow shows the path along which the image moves.
+La flecha gris indica el camino por el que se mueve la imagen.
 
 {{figure {url: "img/cat-animation.png", alt: "A moving cat head",width: "8cm"}}}
 
@@ -902,124 +927,135 @@ if}}
 
 {{index "top (CSS)", "left (CSS)", centering, "relative positioning"}}
 
-Our picture is centered on the page and given a `position` of
-`relative`. We'll repeatedly update that picture's `top` and `left`
-styles to move it.
+Nuestra imagen se centra en la página y se le da un valor para `position`
+de `relative`. Actualizaremos repetidamente los estilos `top` y `left`
+de la imagen para moverla.
 
 {{index "requestAnimationFrame function", drawing, animation}}
 
 {{id animationFrame}}
 
-The script uses `requestAnimationFrame` to schedule the `animate`
-function to run whenever the browser is ready to repaint the screen.
-The `animate` function itself again calls `requestAnimationFrame` to
-schedule the next update. When the browser window (or tab) is active,
-this will cause updates to happen at a rate of about 60 per second,
-which tends to produce a good-looking animation.
+El script utiliza `requestAnimationFrame` para programar la función
+`animar` para ejecutarse en el momento en el que el navegador está
+listo para volver a pintar la pantalla. La misma función `animar`
+llama a `requestAnimationFrame` otra vez para programar la siguiente
+actualización. Cuando la ventana del navegador (o pestaña) está activa,
+esto causará que sucedan actualizaciones a un rango de aproximadamente
+60 actualizaciones por segundo, lo que tiende a producir una animación
+agradable a la vista.
 
 {{index timeline, blocking}}
 
-If we just updated the DOM in a loop, the page would freeze, and
-nothing would show up on the screen. Browsers do not update their
-display while a JavaScript program is running, nor do they allow any
-interaction with the page. This is why we need
-`requestAnimationFrame`—it lets the browser know that we are done for
-now, and it can go ahead and do the things that browsers do, such as
-updating the screen and responding to user actions.
+Si únicamente actualizáramos el DOM en un ciclo, la página se
+congelaría, y no se mostraría nada en la pantalla. Los navegadores
+no actualizan la pantalla si un programa de JavaScript se encuentra
+en ejecución, tampoco permiten ninguna interacción con la página. Es
+por esto que necesitamos a `requestAnimationFrame`—le permite al navegador
+saber que hemos terminado por el momento, y que puede empezar a hacer las
+cosas que le navegador hace, cómo actualizar la pantalla y responder a las
+acciones del usuario.
 
 {{index "smooth animation"}}
 
-The animation function is passed the current ((time)) as an
-argument. To ensure that the motion of the cat per millisecond is
-stable, it bases the speed at which the angle changes on the
-difference between the current time and the last time the function
-ran. If it just moved the angle by a fixed amount per step, the motion
-would stutter if, for example, another heavy task running on the same
-computer were to prevent the function from running for a fraction of a
-second.
+A la función `animar` se le pasa el ((tiempo)) actual como un
+argumento. Para asegurarse de que el movimiento del gato por milisegundo
+es estable, basa la velocidad a la que cambia el ángulo en la
+diferencia entre el tiempo actual y la última vez que la función
+se ejecutó. Si solamente movieramos el ángulo una cierta cantidad
+por paso, la animación tartamudearía si, por ejemplo, otra tarea
+pesada se encontrara ejecutándose en la misma computadora que
+pudiera prevenir que la función se ejecutará por una fracción de segundo.
 
 {{index "Math.cos function", "Math.sin function", cosine, sine, trigonometry}}
 
 {{id sin_cos}}
 
-Moving in ((circle))s is done using the trigonometry functions
-`Math.cos` and `Math.sin`. For those who aren't familiar with
-these, I'll briefly introduce them since we will occasionally use them
-in this book.
+Moverse en círculos se logra a través de las funciones `Math.cos` y
+`Math.sin`. Para aquellos que no estén familiarizados con estas,
+las introduciré brevemente dado que las usaremos ocasionalmente en
+este libro.
 
 {{index coordinates, pi}}
 
-`Math.cos` and `Math.sin` are useful for finding points that lie on a
-circle around point (0,0) with a radius of one. Both functions
-interpret their argument as the position on this circle, with zero
-denoting the point on the far right of the circle, going clockwise
-until 2π (about 6.28) has taken us around the whole circle. `Math.cos`
-tells you the x-coordinate of the point that corresponds to the given
-position, and `Math.sin` yields the y-coordinate. Positions (or
-angles) greater than 2π or less than 0 are valid—the rotation repeats
-so that _a_+2π refers to the same ((angle)) as _a_.
+Las funciones `Math.cos` y `Math.sin` son útiles para encontrar puntos
+que recaen en un círculo alrededor del punto (0,0) con un radio de
+uno. Ambas funciones interpretan sus argumentos como las posiciones
+en el círculo, con cero denotando el punto en la parte más alejada
+del lado derecho del círculo, moviéndose en el sentido de las manecillas del
+reloj hasta que 2π (cerca de 6.28) nos halla tomado alrededor de todo el
+círculo. `Math.cos` indica la coordenada x del punto que corresponde
+con la posición dada, y `Math.sin` indica la coordenada y. Las
+posiciones (o ángulos) mayores que 2π o menores que 0 son válidas—la
+rotación se repite por lo que _a_+2π se refiere al mismo ((ángulo))
+que _a_.
 
 {{index "PI constant"}}
 
-This unit for measuring angles is called ((radian))s—a full circle is
-2π radians, similar to how it is 360 degrees when measuring in
-degrees. The constant π is available as `Math.PI` in JavaScript.
+Esta unidad para medir ángulos se conoce como ((radian))es-un círculo
+completo corresponde a 2π radianes, de manera similar a 360 grados
+cuando se utilizan grados. La constante π está disponible como `Math.PI`
+en JavaScript.
 
 {{figure {url: "img/cos_sin.svg", alt: "Using cosine and sine to compute coordinates",width: "6cm"}}}
 
 {{index "counter variable", "Math.sin function", "top (CSS)", "Math.cos function", "left (CSS)", ellipse}}
 
-The cat animation code keeps a counter, `angle`, for the current angle
-of the animation and increments it every time the `animate` function
-is called. It can then use this angle to compute the current position
-of the image element. The `top` style is computed with `Math.sin` and
-multiplied by 20, which is the vertical radius of our ellipse. The
-`left` style is based on `Math.cos` and multiplied by 200 so that the
-ellipse is much wider than it is high.
+El código de animación del gato mantiene un contador, `angulo`,
+para el ángulo actual de la animación y lo incrementa cada vez que la
+función `animar` es llamada. Luego, se puede utilizar este ángulo para
+calcular la posición actual del elemento imagen. El estilo `top` es
+calculado con `Math.sin` y multiplicado por 20, que es el radio
+vertical de nuestra elipse. El estilo `left` se basa en `Math.cos`
+multiplicado por 200 por lo que la elipse es mucho más ancha que su
+altura.
 
 {{index "unit (CSS)"}}
 
-Note that styles usually need _units_. In this case, we have to append
-`"px"` to the number to tell the browser that we are counting in ((pixel))s
-(as opposed to centimeters, "ems", or other units). This is easy to
-forget. Using numbers without units will result in your style being
-ignored—unless the number is 0, which always means the same thing,
-regardless of its unit.
+Nótese que los estilos usualmente necesitan _unidades_. En este caso,
+tuvimos que agregar `"px"` al número para informarle al navegador que
+estábamos contando en ((pixel))es (al contrario de centímetros, "ems",
+u otras unidades). Esto es sencillo de olvidar. Usar números sin
+unidades resultará en estilos que son ignorados—a menos que el número
+sea 0, que siempre indica la misma cosa, independientemente de su
+unidad.
 
-## Summary
+## Resumen
 
-JavaScript programs may inspect and interfere with the document that
-the browser is displaying through a data structure called the DOM.
-This data structure represents the browser's model of the document,
-and a JavaScript program can modify it to change the visible document.
+Los programas de JavaScript pueden inspeccionar e interferir con el
+documento que el navegador está desplegando a través de una estructura
+de datos llamada el DOM. Esta estructura de datos representa el modelo
+del navegador del documento, y un programa de JavaScript puede
+modificarlo para cambiar el documento visible.
 
-The DOM is organized like a tree, in which elements are arranged
-hierarchically according to the structure of the document. The objects
-representing elements have properties such as `parentNode` and
-`childNodes`, which can be used to navigate through this tree.
+El DOM está organizado como un árbol, en el cual los elementos están
+ordenados jerárquicamente de acuerdo a la estructura del documento.
+Estos objetos que representan a los elementos tienen propiedades como
+`parentNode` y `childNodes`, que pueden ser usadas para navegar
+a través de este árbol.
 
-The way a document is displayed can be influenced by _styling_, both
-by attaching styles to nodes directly and by defining rules that match
-certain nodes. There are many different style properties, such as
-`color` or `display`. JavaScript code can manipulate an element's
-style directly through its `style` property.
+La forma en que un documento es desplegado puede ser influenciada por
+la _estilización_, tanto agregando estilos directamente a los nodos
+cómo definiendo reglas que coincidan con ciertos nodos. Hay muchas
+propiedades de estilo diferentes, tales como `color` o `display`. El
+código de JavaScript puede manipular el estilo de un elemento
+directamente a través de su propiedad de `style`.
 
-## Exercises
+## Ejercicios
 
 {{id exercise_table}}
 
-### Build a table
+### Construye una tabla
 
 {{index "table (HTML tag)"}}
 
-An HTML table is built with the following tag structure:
+Una tabla HTML se construye con la siguiente estructura de etiquetas:
 
 ```{lang: "text/html"}
 <table>
   <tr>
-    <th>name</th>
-    <th>height</th>
-    <th>place</th>
+    <th>nombre</th>
+    <th>altura</th>
+    <th>ubicacion</th>
   </tr>
   <tr>
     <td>Kilimanjaro</td>
@@ -1031,46 +1067,48 @@ An HTML table is built with the following tag structure:
 
 {{index "tr (HTML tag)", "th (HTML tag)", "td (HTML tag)"}}
 
-For each _((row))_, the `<table>` tag contains a `<tr>` tag. Inside of
-these `<tr>` tags, we can put cell elements: either heading cells
-(`<th>`) or regular cells (`<td>`).
+Para cada _((fila))_, la etiqueta `<table>` contiene una etiqueta `<tr>`.
+Dentro de estas etiquetas `<tr>`, podemos poner ciertos elementos:
+ya sean celdas cabecera (`<th>`) o celdas regulares (`<td>`).
 
-Given a data set of mountains, an array of objects with `name`,
-`height`, and `place` properties, generate the DOM structure for a
-table that enumerates the objects. It should have one column per key
-and one row per object, plus a header row with `<th>` elements at the
-top, listing the column names.
+Dado un conjunto de datos de montañas, un arreglo de objetos con
+propiedades `nombre`, `altura` y `lugar`, genera la estructura DOM
+para una tabla que enlista esos objetos. Deberá tener una columna
+por llave y una fila por objeto, además de una fila cabecera con elementos
+`<th>` en la parte superior, listando los nombres de las columnas.
 
-Write this so that the columns are automatically derived from the
-objects, by taking the property names of the first object in the data.
+Escribe esto de manera que las columnas se deriven automáticamente de
+los objetos, tomando los nombres de propiedad del primer objeto en los
+datos.
 
-Add the resulting table to the element with an `id` attribute of
-`"mountains"` so that it becomes visible in the document.
+Agrega la tabla resultante al elemento con el atributo `id` de `"montañas"`
+de manera que se vuelva visible en el documento.
 
 {{index "right-aligning", "text-align (CSS)"}}
 
-Once you have this working, right-align cells that contain number
-values by setting their `style.textAlign` property to `"right"`.
+Una vez que lo tengas funcionando, alinea a la derecha las celdas que
+contienen valores numéricos, estableciendo su propiedad `style.textAlign`
+cómo `"right"`.
 
 {{if interactive
 
 ```{test: no, lang: "text/html"}
-<h1>Mountains</h1>
+<h1>Montañas</h1>
 
-<div id="mountains"></div>
+<div id="montañas"></div>
 
 <script>
-  const MOUNTAINS = [
-    {name: "Kilimanjaro", height: 5895, place: "Tanzania"},
-    {name: "Everest", height: 8848, place: "Nepal"},
-    {name: "Mount Fuji", height: 3776, place: "Japan"},
-    {name: "Vaalserberg", height: 323, place: "Netherlands"},
-    {name: "Denali", height: 6168, place: "United States"},
-    {name: "Popocatepetl", height: 5465, place: "Mexico"},
-    {name: "Mont Blanc", height: 4808, place: "Italy/France"}
+  const MONTAÑAS = [
+    {nombre: "Kilimanjaro", altura: 5895, ubicacion: "Tanzania"},
+    {nombre: "Everest", altura: 8848, ubicacion: "Nepal"},
+    {nombre: "Monte Fuji", altura: 3776, ubicacion: "Japón"},
+    {nombre: "Vaalserberg", altura: 323, ubicacion: "Países Bajos"},
+    {nombre: "Denali", altura: 6168, ubicacion: "Estados Unidos"},
+    {nombre: "Popocatepetl", altura: 5465, ubicacion: "México"},
+    {nombre: "Mont Blanc", altura: 4808, ubicacion: "Italia/Francia"}
   ];
 
-  // Your code here
+  // Tu codigo va aqui
 </script>
 ```
 
@@ -1080,59 +1118,61 @@ if}}
 
 {{index "createElement method", "table example", "appendChild method"}}
 
-You can use `document.createElement` to create new element nodes,
-`document.createTextNode` to create text nodes, and the `appendChild`
-method to put nodes into other nodes.
+Puedes utilizar `document.createElement` para crear nuevos nodos elemento,
+`document.createTextNode` para crear nuevos nodos de texto, y el método
+`appendChild` para poner nodos dentro de otros nodos.
 
 {{index "Object.keys function"}}
 
-You'll want to loop over the key names once to fill in the top row and
-then again for each object in the array to construct the data rows. To
-get an array of key names from the first object, `Object.keys` will be
-useful.
+Querrás recorrer los nombres de las llaves una vez para llenar la fila
+superior y luego nuevamente para cada objeto en el arreglo para
+construir las filas de datos. Para obtener un arreglo con los nombres
+de las llaves proveniente del primer objeto, la función `Object.keys`
+será de utilidad.
 
 {{index "getElementById method", "querySelector method"}}
 
-To add the table to the correct parent node, you can use
-`document.getElementById` or `document.querySelector` to find the node
-with the proper `id` attribute.
+Para agregar la tabla al nodo padre correcto, puedes utilizar
+`document.getElementById` o `document.querySelector` para encontrar el
+nodo con el atributo `id` adecuado.
 
 hint}}
 
-### Elements by tag name
+### Elementos por nombre de tag
 
 {{index "getElementsByTagName method", recursion}}
 
-The `document.getElementsByTagName` method returns all child elements
-with a given tag name. Implement your own version of this as a
-function that takes a node and a string (the tag name) as arguments
-and returns an array containing all descendant element nodes with the
-given tag name.
+El método `document.getElementsByTagName` regresa todos los elementos
+hijo con un nombre de etiqueta dado. Implementa tu propia versión de
+esto como una función que toma un nodo y una cadena (el nombre de la
+etiqueta) como argumentos y regresa un arreglo que contiene todos los
+nodos elemento descendientes con el nombre del tag dado.
 
 {{index "nodeName property", capitalization, "toLowerCase method", "toUpperCase method"}}
 
-To find the tag name of an element, use its `nodeName` property. But
-note that this will return the tag name in all uppercase. Use the
-`toLowerCase` or `toUpperCase` string methods to compensate for this.
+Para encontrar el nombre del tag de un elemento, utiliza su propiedad
+`nodeName`. Pero considera que esto regresará el nombre de la etiqueta
+todo en mayúsculas. Utiliza las funciones de las cadenas (`string`),
+`toLowerCase` o `toUpperCase` para compensar esta situación.
 
 {{if interactive
 
 ```{lang: "text/html", test: no}
-<h1>Heading with a <span>span</span> element.</h1>
-<p>A paragraph with <span>one</span>, <span>two</span>
-  spans.</p>
+<h1>Encabezado con un elemento <span>span</span>.</h1>
+<p>Un parráfo con <span>uno</span>, <span>dos</span>
+spans.</p>
 
 <script>
-  function byTagName(node, tagName) {
-    // Your code here.
+  function byTagName(nodo, etiqueta) {
+    // Tu código va aquí.
   }
 
   console.log(byTagName(document.body, "h1").length);
   // → 1
   console.log(byTagName(document.body, "span").length);
   // → 3
-  let para = document.querySelector("p");
-  console.log(byTagName(para, "span").length);
+  let parrafo = document.querySelector("p");
+  console.log(byTagName(parrafo, "span").length);
   // → 2
 </script>
 ```
@@ -1142,48 +1182,51 @@ if}}
 
 {{index "getElementsByTagName method", recursion}}
 
-The solution is most easily expressed with a recursive function,
-similar to the [`talksAbout` function](dom#talksAbout) defined earlier
-in this chapter.
+La solución es expresada de manera más sencilla con una función
+recursiva, similar a la [función `hablaSobre`](dom#talksAbout) definida
+anteriormente en este capítulo.
 
 {{index concatenation, "concat method", closure}}
 
-You could call `byTagname` itself recursively, concatenating the
-resulting arrays to produce the output. Or you could create an inner
-function that calls itself recursively and that has access to an array
-binding defined in the outer function, to which it can add the
-matching elements it finds. Don't forget to call the ((inner
-function)) once from the outer function to start the process.
+Puedes llamar a `byTagname` recursivamente, concatenando los arreglos
+resultantes para producir la salida. O puedes crear una función
+interna que se llama a sí misma recursivamente y que tiene acceso a
+un arreglo definido en la función exterior, al cual se
+puede agregar los elementos coincidentes que encuentre. No
+olvides llamar a la ((función interior)) una vez desde la función
+exterior para iniciar el proceso.
 
 {{index "nodeType property", "ELEMENT_NODE code"}}
 
-The recursive function must check the node type. Here we are
-interested only in node type 1 (`Node.ELEMENT_NODE`). For such
-nodes, we must loop over their children and, for each child, see
-whether the child matches the query while also doing a recursive call
-on it to inspect its own children.
+La función recursiva debe revisar el tipo de nodo. En este caso
+solamente estamos interesados por los nodos de tipo 1
+(`Node.ELEMENT_NODE`). Para tales nodos, debemos de iterar sobre
+sus hijos y, para cada hijo, observar si los hijos coinciden con la
+consulta mientras también se realiza una llamada recursiva en él
+para inspeccionar a sus propios hijos.
 
 hint}}
 
-### The cat's hat
+### El sombrero del gato
 
 {{index "cat's hat (exercise)", [animation, "spinning cat"]}}
 
-Extend the cat animation defined [earlier](dom#animation) so that
-both the cat and his hat (`<img src="img/hat.png">`) orbit at opposite
-sides of the ellipse.
+Extiende la animación del gato definida [anteriormente](dom#animation)
+de manera de que tanto el gato como su sombrero (`<img src="img/hat.png">`)
+orbiten en lados opuestos de la elipse.
 
-Or make the hat circle around the cat. Or alter the animation in some
-other interesting way.
+O haz que el sombrero circule alrededor del gato. O altera la
+animación en alguna otra forma interesante.
 
 {{index "absolute positioning", "top (CSS)", "left (CSS)", "position (CSS)"}}
 
-To make positioning multiple objects easier, it is probably a good
-idea to switch to absolute positioning. This means that `top` and
-`left` are counted relative to the top left of the document. To avoid
-using negative coordinates, which would cause the image to move
-outside of the visible page, you can add a fixed number of pixels to
-the position values.
+Para hacer el posicionamiento de múltiples objetos más sencillo,
+probablemente sea buena idea intercambiar a un posicionamiento absoluto.
+Esto significa que `top` y `left` serán contados con relación a la
+parte superior izquierda del documento. Para evitar usar coordenadas
+negativas, que pueden causar que la imagen se mueva fuera de la página
+visible, puedes agregar un número fijo de pixeles a los valores de las
+posiciones.
 
 {{if interactive
 
@@ -1193,22 +1236,22 @@ the position values.
 <img src="img/hat.png" id="hat" style="position: absolute">
 
 <script>
-  let cat = document.querySelector("#cat");
-  let hat = document.querySelector("#hat");
+  let gato = document.querySelector("#cat");
+  let sombrero = document.querySelector("#hat");
 
-  let angle = 0;
-  let lastTime = null;
-  function animate(time) {
-    if (lastTime != null) angle += (time - lastTime) * 0.001;
-    lastTime = time;
-    cat.style.top = (Math.sin(angle) * 40 + 40) + "px";
-    cat.style.left = (Math.cos(angle) * 200 + 230) + "px";
+  let angulo = 0;
+  let ultimoTiempo = null;
+  function animar(tiempo) {
+    if (ultimoTiempo != null) angulo += (tiempo - ultimoTiempo) * 0.001;
+    ultimoTiempo = tiempo;
+    gato.style.top = (Math.sin(angulo) * 40 + 40) + "px";
+    gato.style.left = (Math.cos(angulo) * 200 + 230) + "px";
 
-    // Your extensions here.
+    // Tus extensiones van aquí.
 
-    requestAnimationFrame(animate);
+    requestAnimationFrame(animar);
   }
-  requestAnimationFrame(animate);
+  requestAnimationFrame(animar);
 </script>
 ```
 
@@ -1216,9 +1259,9 @@ if}}
 
 {{hint
 
-`Math.cos` and `Math.sin` measure angles in radians, where a full
-circle is 2π. For a given angle, you can get the opposite angle by
-adding half of this, which is `Math.PI`. This can be useful for
-putting the hat on the opposite side of the orbit.
+Las funciones `Math.cos` y `Math.sin` miden los ángulos en radianes,
+donde un círculo completo es 2π. Para un ángulo dado, puedes obtener
+el ángulo inverso agregando la mitad de esto, que es `Math.PI`. Esto
+puede ser útil para colocar el sombrero en el lado opuesto de la órbita.
 
 hint}}
