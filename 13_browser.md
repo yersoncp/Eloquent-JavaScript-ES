@@ -119,3 +119,58 @@ Este es un modelo conveniente. Podrías decir que ((TCP)) provee una
 abstracción de la red.
 
 {{id web}}
+
+## La Web
+
+La ((Red Mundial)) (del inglés World Wide Web, no confundir con ((Internet)))
+es un conjunto de ((protocolo))s y formatos que nos permiten visitar
+páginas web en un navegador. La parte "Web" del nombre se refiere al
+hecho de que esas páginas pueden enlazarse fácilmente unas con otras,
+conectandose a una gran ((red)) a entre la cual los usuarios pueden
+moverse.
+
+Para llegar a ser parte de la Web, todo lo que tienes que hacer es
+conectar una computadora a ((Internet)) y ponerla a escuchar en el
+puerto 80 con el protocolo ((HTTP)) para que otras computadoras puedan
+pedirle documentos.
+
+{{index URL}}
+
+{{indexsee "Uniform Resource Locator", URL}}
+
+Cada ((documento)) en la Web es nombrado por un _Localizador Uniforme
+de Recursos_ (URL del inglés Uniform Resource Locator), y se ve así:
+
+```{lang: null}
+  http://eloquentjavascript.net/13_browser.html
+ |      |                      |               |
+ protocolo      servidor             ruta
+```
+
+{{index HTTPS}}
+
+La primera sección nos dice que ésta URL utiliza el ((protocolo)) HTTP
+(La versión ecriptada sería _https://_). Posteriormente sigue la sección
+que identifica a qué ((servidor)) estamos solicitado el documento. La
+última sección es una cadena de ruta que identifica el documento especifico
+(o _((recurso))_) que nos interesa.
+
+Las computadoras conectadas a internet obtienen una _((dirección IP))_, que
+es un número que puede utilizado para enviar mensajes a esa computadora, ese
+número se ve así `149.210.142.219` o así `2001:4860:4860::8888`. Pero
+números casi aleatorios son dificiles de recordar y es raro para escribirlos,
+así que en lugar de eso puedes registrar un _nombre de ((dominio))_ para
+un una dirección específica o un conjunto de direcciones. Yo registré
+_eloquentjavascript.net_ para apuntar a una dirección IP de una computadora
+que controlo y así puedo usar ese nombre de dominio para entregar páginas
+web.
+
+{{index browser}}
+
+Si escribes esa URL en la ((barra de dirección)) del navegador, el navegador
+intentará obtener y mostrar el document en esa URL. Primero, el navegador
+tiene que encontrar la dirección a la que _eloquentjavascript.net_ se
+refiere. Entonces, utilizando el protocolo ((HTTP)), hará una conexión
+al servidor en esa dirección y solicitará el recurso _/13_browser.html_.
+Si todo sale bien, el servidor envía de vuelta un documento, que el
+navegador muestra en la pantalla.
