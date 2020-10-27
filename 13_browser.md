@@ -14,7 +14,7 @@ quote}}
 {{figure {url: "img/chapter_picture_13.jpg", alt: "Picture of a telephone switchboard", chapter: "framed"}}}
 
 Los próximos capítulos del libro hablarán del navegador web. Sin
-((navegador))es web, no existiría JavaScript. Incluso, si existiera,
+((navegador))es web, no existiría JavaScript. Incluso, si existieran,
 nadie le habría puesto atención.
 
 {{index decentralization, compatibility}}
@@ -318,4 +318,3 @@ implicitamente en los ejemplos, incluso cuando no se muestran en el
 texto.
 
 {{id script_tag}}
-
