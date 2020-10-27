@@ -122,7 +122,7 @@ abstracción de la red.
 
 ## La Web
 
-La ((Red Mundial)) (del inglés World Wide Web, no confundir con ((Internet)))
+La ((Red Mundial)) (en inglés World Wide Web, no confundir con ((Internet)))
 es un conjunto de ((protocolo))s y formatos que nos permiten visitar
 páginas web en un navegador. La parte "Web" del nombre se refiere al
 hecho de que esas páginas pueden enlazarse fácilmente unas con otras,
@@ -174,3 +174,148 @@ refiere. Entonces, utilizando el protocolo ((HTTP)), hará una conexión
 al servidor en esa dirección y solicitará el recurso _/13_browser.html_.
 Si todo sale bien, el servidor envía de vuelta un documento, que el
 navegador muestra en la pantalla.
+
+## HTML
+
+{{index HTML}}
+
+{{indexsee "Hypertext Markup Language", HTML}}
+
+HTML, que significa _Lenguaje de Marcado de Hipertexto_ (en inglés
+Hypertext Markup Language), es el formato de documento utilizado
+para páginas web. Un documento HTML contiene ((texto)), así como
+((etiqueta))s que dan estructura al texto, describiendo elementos
+como enlaces, párrafos y encabezados.
+
+Un pequeño documento HTML puede verse así:
+
+```{lang: "text/html"}
+<!doctype html>
+<html>
+  <head>
+    <title>Mi página de inicio</title>
+  </head>
+  <body>
+    <h1>Mi página de inicio</h1>
+    <p>Hola, mi nombre es Marijn y esta es mi página de inicio.</p>
+    <p>También escribí un libro! Léelo
+      <a href="http://eloquentjavascript.net">aquí</a>.</p>
+  </body>
+</html>
+```
+
+{{if book
+
+Así es como el documento se vería en el navegador:
+
+{{figure {url: "img/home-page.png", alt: "My home page",width: "6.3cm"}}}
+
+if}}
+
+{{index [HTML, notation]}}
+
+Las etiquetas, encerradas entre ((paréntesis angulares)) (`<` y `>`,
+los símbolos para _Menor qué_ y _Mayor qué_), proveen información acerca
+de la ((estructura)) del documento. El otro ((texto)) es sólo texto
+plano.
+
+{{index doctype, version}}
+
+El documento inicia con `<!doctype html>`, eso le indica al navegador
+que interprete la página como HTML _moderno_, no como distintos lenguajes
+que fueron utilizados en el pasado.
+
+{{index "head (HTML tag)", "body (HTML tag)", "title (HTML tag)", "h1 (HTML tag)", "p (HTML tag)"}}
+
+
+Los documentos HTML tienen un encabezado y un cuerpo. El encabezado
+contiene información _acerca del_ documento, y el cuerpo contiene
+el documento en sí. En este caso, el encabezado declara que el título
+del documento es "Mi página de inicio" y que está utilizando la
+codificación UTF-8, que es una forma de codificar texto Unicode como
+información binaria. El cuerpo del documento contiene un encabezado
+(`<h1>`, que significa "encabezado 1", `<h2>` a `<h6>` produce
+sub-encabezados) y dos ((párrafo))s (`<p>`). 
+
+{{index "href attribute", "a (HTML tag)"}}
+
+Las etiquetas vienen en distintas formas. Algunos ((elemento))s, como el cuerpo,
+un párrafo, o un enlace, se inicia por una _((etiqueta de apertura))_ como
+`<p>` y finaliza con una _((etiqueta de cierre))_ como `</p>`. Algunas
+etiquetas de apertura, como la utilizada para los enlaces, (`<a>`),
+contienen información extra en forma de pares `name="value"`. Estos
+se llaman _((atributos))_. En este caso, el destino del enlace
+está indicado con `href="http://eloquentjavascript.net"`, donde
+`href` significa "referencia de hipertexto".
+
+{{index "src attribute", "self-closing tag", "img (HTML tag)"}}
+
+Algunos tipos de ((etiqueta))s no encierran nada, y por lo tanto no
+necesitan ser cerradas. La etiqueta meta `<meta charset="utf-8">`
+es un ejemplo de esto.
+
+{{index [escaping, "in HTML"]}}
+
+Para poder incluir paréntesis angulares en el texto de un documento,
+aunque tengan un significado especial en HTML, otra forma de notación
+especial tiene que ser introducida. Un paréntesis angular de apertura
+es escrito como `&lt;` (menor qué del inglés less than), y un
+paréntesis angular de cierre es escrito como `&gt;` (mayor qué del
+inglés greater than). En HTML, un ampersand (`&`) seguido por un nombre
+o código de caracter, y un punto y coma (`;`) es llamado una _((entidad))_
+y será reemplazada por el caracter que codifica.
+
+{{index ["backslash character", "in strings"], "ampersand character", "double-quote character"}}
+
+Esto es análogo a la forma en que las diagonales invertidas son
+utilizadas en las cadenas en JavaScript. Ya que este mecanismo le
+da a los carácteres ampersand un significado especial, también,
+tienen que ser escapadas como `&amp;`. Dentro de los valores de los
+atributos, que son encerrados en comillas dobles, `&quot;` pueden ser
+utilizados para insertar un carácter de comillas.
+
+{{index "error tolerance", parsing}}
+
+HTML es analizado en una forma tolerante a errores. Cuando las etiquetas
+que deberían estar ahí no están, el navegador las reconstruye. La forma
+en que esto se realiza está estandarizado, y puedes confiar en que
+todos los navegadores modernos lo realizarán de la misma manera.
+
+El siguiente documento será tratado identicamente al mostrado anteriormente:
+
+```{lang: "text/html"}
+<!doctype html>
+
+<meta charset=utf-8>
+<title>Mi página de inicios</title>
+
+<h1>Mi página de inicio</h1>
+<p>Hola, mi nombre es Marijn y esta es mi página de inicio.
+<p>También escribí un libro! Léelo
+  <a href=http://eloquentjavascript.net>aquí</a>.
+```
+
+{{index "title (HTML tag)", "head (HTML tag)", "body (HTML tag)", "html (HTML tag)"}}
+
+Las etiquetas `<html>`, `<head>` y `<body>` fueron removidas completamente.
+El navegador sabe que `<meta>` y `<title>` pertenecen al encabezado y
+`<h1>` significa que el cuerpo del documento ha iniciado. Además,
+los párrafos no se están cerrando explícitamente ya que el abrir un
+nuevo párrafo o finalizar el documento los cierra implicitamente.
+Las comillas alrededor de los valores de los atributos tampoco están.
+
+Este libro generalmente omitirá las etiquetas `<html>`, `<head>` y `<body>`
+de los ejemplos para mantenerlos cortos. Pero cerraré etiquetas e incluiré
+comillas alrededor de los atributos.
+
+{{index browser}}
+
+Usualmente omitiré las declaraciones ((doctype)) y `charset`. Eso
+no significa que tu tienes que hacer lo mismo. Los navegadores
+puede llegar a hacer cosas ridiculas cuando las omites. Siempre
+considera que las declaraciones ((doctype)) y `charset` están ahí
+implicitamente en los ejemplos, incluso cuando no se muestran en el
+texto.
+
+{{id script_tag}}
+
