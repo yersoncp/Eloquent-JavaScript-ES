@@ -295,22 +295,21 @@ También podrías usar el método `closePath` para cerrar una ruta de
 forma explícita agregando un segmento de ((linea)) de vuelta al inicio de la ruta.
 Este segmento _es_ dibujado cuando delineas la ruta.
 
-## Curves
+## Curvas
 
 {{index [path, canvas], canvas, drawing}}
 
-A path may also contain ((curve))d ((line))s. These are unfortunately
-a bit more involved to draw.
+Una ruta puede contener ((linea))s ((curva))s. Desafortunadamente
+requieren algo más que dibujar.
 
 {{index "quadraticCurveTo method"}}
 
-The `quadraticCurveTo` method draws a curve to a given point. To
-determine the curvature of the line, the method is given a ((control
-point)) as well as a destination point. Imagine this control point as
-_attracting_ the line, giving it its curve. The line won't go through
-the control point, but its direction at the start and end points will
-be such that a straight line in that direction would point toward the
-control point. The following example illustrates this:
+El método `quadraticCurveTo` dibuja una curva dado un punto.
+Para determinar la curvatura de la linea, el método proporciona un ((punto de
+control)) que funciona como punto de destino. Imagina este punto de control como
+_ancla_ de la línea, dándole su curvatura. La línea no irá a través
+del punto de control, pero su dirección entre los puntos de inicio y cierre
+será como una línea recta en esa dirección que guía el punto de control. Veamos el siguiente ejemplo:
 
 ```{lang: "text/html"}
 <canvas></canvas>
@@ -328,28 +327,28 @@ control point. The following example illustrates this:
 
 {{if book
 
-It produces a path that looks like this:
+Genera una ruta que se ve así:
 
-{{figure {url: "img/canvas_quadraticcurve.png", alt: "A quadratic curve",width: "2.3cm"}}}
+{{figure {url: "img/canvas_quadraticcurve.png", alt: "Una curva cuadrática",width: "2.3cm"}}}
 
 if}}
 
 {{index "stroke method"}}
 
-We draw a ((quadratic curve)) from the left to the right, with (60,10)
-as control point, and then draw two ((line)) segments going through
-that control point and back to the start of the line. The result
-somewhat resembles a _((Star Trek))_ insignia. You can see the effect
-of the control point: the lines leaving the lower corners start off in
-the direction of the control point and then ((curve)) toward their
-target.
+Dibujamos una ((curva cuadrática)) de la izquierda a la derecha, con la coordenada (60,10)
+como punto de control, y dibujamos dos segmentos de ((linea)) a través 
+del punto de control y de regreso al principio de la línea. El resultado
+se asemeja a una insignia de _((Star Trek))_. Puedes ver el efecto
+del punto de control: las líneas empiezan en la esquina inferior
+y toman la dirección del punto de control y se ((curvan)) hacia
+el objetivo.
 
 {{index canvas, "bezierCurveTo method"}}
 
-The `bezierCurveTo` method draws a similar kind of curve. Instead of a
-single ((control point)), this one has two—one for each of the
-((line))'s endpoints. Here is a similar sketch to illustrate the
-behavior of such a curve:
+El método `bezierCurveTo` dibuja un tipo de curva similar. En vez de
+un sólo ((punto de control)), este posee dos para cada uno
+de los vértices de la ((linea)). A continuación un ejemplo para
+ilustrar el comportamiento de la curva:
 
 ```{lang: "text/html"}
 <canvas></canvas>
@@ -366,38 +365,39 @@ behavior of such a curve:
 </script>
 ```
 
-The two control points specify the direction at both ends of the
-curve. The farther they are away from their corresponding point, the
-more the curve will "bulge" in that direction.
+Ambos puntos de control especifican la dirección en la que ambos terminan
+la curva. Mientras más lejos estén de los puntos de inicio correspondientes, más
+se "abultará" la curva en esa dirección.
 
 {{if book
 
-{{figure {url: "img/canvas_beziercurve.png", alt: "A bezier curve",width: "2.2cm"}}}
+{{figure {url: "img/canvas_beziercurve.png", alt: "Una curva abultada",width: "2.2cm"}}}
 
 if}}
 
 {{index "trial and error"}}
 
-Such ((curve))s can be hard to work with—it's not always clear how to
-find the ((control point))s that provide the ((shape)) you are looking
-for. Sometimes you can compute them, and sometimes you'll just have to
-find a suitable value by trial and error.
+Dichas ((curva))s pueden ser difíciled de trabajar, dado que no siempre
+es posible encontrar los ((puntos de control)) que proporciona la ((figura)) que quieres
+dibujar. A veces puedes calcularlos, y otras debes encontrar
+el valor mediante prueba y error.
 
 {{index "arc method", arc}}
 
-The `arc` method is a way to draw a line that curves along the edge of
-a circle. It takes a pair of ((coordinates)) for the arc's center, a
-radius, and then a start angle and end angle.
+El método `arc` es una manera de dibujar una linea que se curva en el
+borde de un circulo. Toma un par de ((coordenadas)) para el centro del arco, un
+radio, y un ángulo de inicio y un ángulo de fin.
 
 {{index pi, "Math.PI constant"}}
 
-Those last two parameters make it possible to draw only part of the
-circle. The ((angle))s are measured in ((radian))s, not ((degree))s.
-This means a full ((circle)) has an angle of 2π, or `2 * Math.PI`,
-which is about 6.28. The angle starts counting at the point to the
-right of the circle's center and goes clockwise from there. You can
-use a start of 0 and an end bigger than 2π (say, 7) to draw a full
-circle.
+Estos últimos dos parámetros hacen posible dibujar sólo parte del
+circulo. Los ((ángulo))s se miden en ((radian))es, no en ((grados)).
+Esto implica que un ((círculo)) tiene un ángulo de 2π, or `2 * Math.PI`,
+que es alrededor de 6.28. El ángulo comienza a contarse desde el
+punto a la derecha del centro del círculo y sigue el sentido de 
+las manecillas del reloj.
+Puedes usar un inicio de 0 y con un final mayor que 2π (digamos, 7)
+para dibujar un círculo completo.
 
 ```{lang: "text/html"}
 <canvas></canvas>
@@ -414,67 +414,66 @@ circle.
 
 {{index "moveTo method", "arc method", [path, " canvas"]}}
 
-The resulting picture contains a ((line)) from the right of the full
-circle (first call to `arc`) to the right of the quarter-((circle))
-(second call). Like other path-drawing methods, a line drawn with
-`arc` is connected to the previous path segment. You can call `moveTo`
-or start a new path to avoid this.
+La ilustración resultante muestra una ((línea)) desde la derecha del 
+círculo (llamando primero a `arc`) hasta la derecha de la semiluna
+(segunda llamada). Al igual que otros métodos, una línea dibujada
+con `arc` esta relacionada con la ruta del segmento anterior.
+Puedes llamar a `moveTo` o empezar una nueva ruta para evitar esto.
 
 {{if book
 
-{{figure {url: "img/canvas_circle.png", alt: "Drawing a circle",width: "4.9cm"}}}
+{{figure {url: "img/canvas_circle.png", alt: "Dibujando un círcuo",width: "4.9cm"}}}
 
 if}}
 
 {{id pie_chart}}
 
-## Drawing a pie chart
+## Dibujando una gráfica de pastel
 
 {{index "pie chart example"}}
 
-Imagine you've just taken a ((job)) at EconomiCorp, Inc., and your
-first assignment is to draw a pie chart of its customer satisfaction
-((survey)) results.
+Imagina que tienes un ((trabajo)) en EconomiCorp, Inc., y tu
+primera tarea es dibujar una gráfica de pastel de los resultados 
+de la ((encuesta)) de satifacción al cliente.
 
-The `results` binding contains an array of objects that represent the
-survey responses.
+En este caso `resultados` contiene un arreglo de objetos que 
+representa las respuestas de las encuestas.
 
 ```{sandbox: "pie", includeCode: true}
-const results = [
-  {name: "Satisfied", count: 1043, color: "lightblue"},
+const resultados = [
+  {name: "Satisfecho", count: 1043, color: "lightblue"},
   {name: "Neutral", count: 563, color: "lightgreen"},
-  {name: "Unsatisfied", count: 510, color: "pink"},
-  {name: "No comment", count: 175, color: "silver"}
+  {name: "Insatisfecho", count: 510, color: "pink"},
+  {name: "No comentó", count: 175, color: "silver"}
 ];
 ```
 
 {{index "pie chart example"}}
 
-To draw a pie chart, we draw a number of pie slices, each made up of
-an ((arc)) and a pair of ((line))s to the center of that arc. We can
-compute the ((angle)) taken up by each arc by dividing a full circle
-(2π) by the total number of responses and then multiplying that number
-(the angle per response) by the number of people who picked a given
-choice.
+Para dibujar una gráfica de pastel, dibujamos un número de rebanadas, cada una hecha de
+un ((arco)) y un par de ((línea))s hacia el centro de dicho arco. 
+Podemos calcular el ((ángulo)) de cada arco diviendo el círculo
+(2π) entre el total de respuestas y multiplicar el resultado por el
+(el ángulo por respuesta) por el numero de personas que seleccionaron una opción.
 
 ```{lang: "text/html", sandbox: "pie"}
 <canvas width="200" height="200"></canvas>
 <script>
   let cx = document.querySelector("canvas").getContext("2d");
-  let total = results
+  let total = resultados
     .reduce((sum, {count}) => sum + count, 0);
-  // Start at the top
+  // Comienza desde el valor más alto
   let currentAngle = -0.5 * Math.PI;
-  for (let result of results) {
-    let sliceAngle = (result.count / total) * 2 * Math.PI;
+  for (let resultado of resultados) {
+    let sliceAngle = (resultado.count / total) * 2 * Math.PI;
     cx.beginPath();
     // center=100,100, radius=100
-    // from current angle, clockwise by slice's angle
+    // desde el ángulo actual, sigue en el sentido de las maneciilas del reloj
     cx.arc(100, 100, 100,
            currentAngle, currentAngle + sliceAngle);
     currentAngle += sliceAngle;
     cx.lineTo(100, 100);
-    cx.fillStyle = result.color;
+    cx.fillStyle = resultado.color;
     cx.fill();
   }
 </script>
@@ -482,23 +481,22 @@ choice.
 
 {{if book
 
-This draws the following chart:
+Lo anterior muestra la siguiente gráfica:
 
-{{figure {url: "img/canvas_pie_chart.png", alt: "A pie chart",width: "5cm"}}}
+{{figure {url: "img/canvas_pie_chart.png", alt: "Una gráfica de pastel",width: "5cm"}}}
 
 if}}
 
-But a chart that doesn't tell us what the slices mean isn't very
-helpful. We need a way to draw text to the ((canvas)).
+Pero una gráfica que no indica que significa las secciones no es
+muy útil. Necesitamos mostrar texto en el ((canvas)).
 
-## Text
+## Texto
 
 {{index stroking, filling, "fillStyle property", "fillText method", "strokeText method"}}
 
-A 2D canvas drawing context provides the methods `fillText` and
-`strokeText`. The latter can be useful for outlining letters, but
-usually `fillText` is what you need. It will fill the outline of the
-given ((text)) with the current `fillStyle`.
+El contexto de un dibujo en un canvas 2D proporciona los métodos
+`fillText` y `strokeText`. El útltimo es muy útil para delinear las
+letras, pero por lo general `fillText` es lo que usarás. Para el delinear el ((text)) con el `fillStyle` actual.
 
 ```{lang: "text/html"}
 <canvas></canvas>
@@ -506,33 +504,34 @@ given ((text)) with the current `fillStyle`.
   let cx = document.querySelector("canvas").getContext("2d");
   cx.font = "28px Georgia";
   cx.fillStyle = "fuchsia";
-  cx.fillText("I can draw text, too!", 10, 50);
+  cx.fillText("¡También puedo dibujar texto!", 10, 50);
 </script>
 ```
 
-You can specify the size, style, and ((font)) of the text with the
-`font` property. This example just gives a font size and family name.
-It is also possible to add `italic` or `bold` to the start of the
-string to select a style.
+Puedes específicar el tamaño, estilo, y ((fuente)) del texto con
+la propiedad `font`. Este ejemplo sólo muestra un tamaño de fuente
+y el nombre de la familia.
+También es posible agregar `italic` (cursiva) o `bold` (negrita) 
+al principio de una cadena para darles un estilo.
 
 {{index "fillText method", "strokeText method", "textAlign property", "textBaseline property"}}
 
-The last two arguments to `fillText` and `strokeText` provide the
-position at which the font is drawn. By default, they indicate the
-position of the start of the text's alphabetic baseline, which is the
-line that letters "stand" on, not counting hanging parts in letters
-such as _j_ or _p_. You can change the horizontal position by setting the
-`textAlign` property to `"end"` or `"center"` and the vertical
-position by setting `textBaseline` to `"top"`, `"middle"`, or
-`"bottom"`.
+Los últimos dos argumentos de `fillText` y `strokeText` indican la
+posición en la cuál se dibujan las fuentes. Por defecto, indican
+la posición del comienzo de la línea base del alfabeto del texto,
+que es la línea en las que las letras se apoyan, no se cuentan las
+letras con ganchos como la _j_ o la _p_. Puedes cambiar la 
+propiedad `textAlign`  a `"end"` (final) o `"center"` (centrar) y 
+la posición vertical cambiando `textBaseline` a `"top"` (superior)
+, `"middle"` (en medio), o`"bottom"` (inferior).
 
 {{index "pie chart example"}}
 
-We'll come back to our pie chart, and the problem of ((label))ing the
-slices, in the [exercises](canvas#exercise_pie_chart) at the end of
-the chapter.
+Regresaremos a nuestra gráfica de pastel, y el problema de ((etiquetar)) las
+secciones, en los [ejercicios](canvas#exercise_pie_chart) al final
+del capítulo.
 
-## Images
+## Imágenes
 
 {{index "vector graphics", "bitmap graphics"}}
 
