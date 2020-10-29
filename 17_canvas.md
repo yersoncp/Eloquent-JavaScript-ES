@@ -535,22 +535,22 @@ del capítulo.
 
 {{index "vector graphics", "bitmap graphics"}}
 
-In computer ((graphics)), a distinction is often made between _vector_
-graphics and _bitmap_ graphics. The first is what we have been doing
-so far in this chapter—specifying a picture by giving a logical
-description of ((shape))s. Bitmap graphics, on the other hand, don't
-specify actual shapes but rather work with ((pixel)) data (rasters of
-colored dots).
+En computación ((gráfica)), a menudo se distingue entre gráficos de _vectores_
+y gráficos de _mapa de bits_. Los primeros son los que hemos estado 
+trabajando en este capítulo, especificando una imagen mediante la
+descripción lógica de sus ((figura))s. Los gráficos de mapa de bits,
+por otro lado, especifican figuras, pero funcionan con datos de pixeles 
+(rejillas de puntos coloreados).
 
 {{index "load event", "event handling", "img (HTML tag)", "drawImage method"}}
 
-The `drawImage` method allows us to draw ((pixel)) data onto a
-((canvas)). This pixel data can originate from an `<img>` element or
-from another canvas. The following example creates a detached `<img>`
-element and loads an image file into it. But it cannot immediately
-start drawing from this picture because the browser may not have
-loaded it yet. To deal with this, we register a `"load"` event handler
-and do the drawing after the image has loaded.
+El método `drawImage` nos permite dibujar datos de ((pixel))es en
+un ((canvas)). Estos datos pueden originarse desde un elemento `<img>` o
+desde otro canvas. El siguiente ejemplo crea un elemento `<img>`
+y carga un archivo de imagen en él. Pero no podemos empezar a
+de esta imagen porquen el navegador podría no haberla cargadao aún.
+Para lidiar con esto, registramos un `"load"` _event handler_
+y dibujamos después de que la imagen se ha cargado.
 
 ```{lang: "text/html"}
 <canvas></canvas>
@@ -568,42 +568,42 @@ and do the drawing after the image has loaded.
 
 {{index "drawImage method", scaling}}
 
-By default, `drawImage` will draw the image at its original size. You
-can also give it two additional arguments to set a different width
-and height.
+Por defecto, `drawImage` dibujará la imagen en su tamaño original.
+También puedes darle dos argumentos adicionales para definir 
+ancho y alto distintos.
 
-When `drawImage` is given _nine_ arguments, it can be used to draw
-only a fragment of an image. The second through fifth arguments
-indicate the rectangle (x, y, width, and height) in the source image
-that should be copied, and the sixth to ninth arguments give the
-rectangle (on the canvas) into which it should be copied.
+Cuando `drawImage` recibe _nueve_ argumentos, puede usarse para
+dibujar solo un fragmento de la imagen. Del segundo al quinto argumentos
+indican el rectángulo (x, y, ancho y alto) en la imagen de origen
+que debe copiarse, y de los argumentos cinco a nueve indicen el
+otro (en el canvas) en donde serán copiados.
 
 {{index "player", "pixel art"}}
 
-This can be used to pack multiple _((sprite))s_ (image elements) into
-a single image file and then draw only the part you need. For example,
-we have this picture containing a game character in multiple
+Esto puede ser usado para empaquetar múltiples _((sprite))s_ (elementos de imagen) 
+en una sola imagen y dibujar solo la parte que necesitas. Por ejemplo,
+tenemos una imagen con un personaje de un juego en múltiples
 ((pose))s:
 
-{{figure {url: "img/player_big.png", alt: "Various poses of a game character",width: "6cm"}}}
+{{figure {url: "img/player_big.png", alt: "Varias poses de un personaje",width: "6cm"}}}
 
 {{index [animation, "platform game"]}}
 
-By alternating which pose we draw, we can show an animation that
-looks like a walking character.
+Alternando las poses que dibujamos, podemos mostrar una animación 
+en la que se vea nuestro personaje caminando.
 
 {{index "fillRect method", "clearRect method", clearing}}
 
-To animate a ((picture)) on a ((canvas)), the `clearRect` method is
-useful. It resembles `fillRect`, but instead of coloring the
-rectangle, it makes it ((transparent)), removing the previously drawn
-pixels.
+Para animar una ((imagen)) en un ((canvas)), el método `clearRect` es
+muy útil. Reutiliza `fillRect`, pero en vez de colorear el
+rectángulo, lo vuelve ((transparente)), quitando los pixeles
+previamente dibujados.
 
 {{index "setInterval function", "img (HTML tag)"}}
 
-We know that each _((sprite))_, each subpicture, is 24 ((pixel))s wide
-and 30 pixels high. The following code loads the image and then sets
-up an interval (repeated timer) to draw the next ((frame)):
+Sabemos que cada _((sprite))_, cada subimagen, es de 24 ((pixele))s de ancho
+y 30 pixeles de alto. El siguiente código carga la imagen y establece
+un intervalo de tiempo para dibujar el siguiente ((frame)):
 
 ```{lang: "text/html"}
 <canvas></canvas>
@@ -613,15 +613,15 @@ up an interval (repeated timer) to draw the next ((frame)):
   img.src = "img/player.png";
   let spriteW = 24, spriteH = 30;
   img.addEventListener("load", () => {
-    let cycle = 0;
+    let ciclo = 0;
     setInterval(() => {
       cx.clearRect(0, 0, spriteW, spriteH);
       cx.drawImage(img,
                    // source rectangle
-                   cycle * spriteW, 0, spriteW, spriteH,
+                   ciclo * spriteW, 0, spriteW, spriteH,
                    // destination rectangle
                    0,               0, spriteW, spriteH);
-      cycle = (cycle + 1) % 8;
+      ciclo = (ciclo + 1) % 8;
     }, 120);
   });
 </script>
@@ -629,11 +629,11 @@ up an interval (repeated timer) to draw the next ((frame)):
 
 {{index "remainder operator", "% operator", [animation, "platform game"]}}
 
-The `cycle` binding tracks our position in the animation. For each
-((frame)), it is incremented and then clipped back to the 0 to 7 range
-by using the remainder operator. This binding is then used to compute
-the x-coordinate that the sprite for the current pose has in the
-picture.
+El valor `ciclo` rastrea la posición en la animación. Para cada
+((frame)), se incrementa y regresa al rango del 0 al 7 usando
+el operador del remanente. Entonces este valor es usado para
+calcular la coordenada en x que tiene el _sprite_ para la pose que
+tiene actualmente la imagen.
 
 ## Transformation
 
