@@ -146,7 +146,7 @@ output.push({
 
 if (allSolutions.length) {
   console.error("Solution files " + allSolutions + " were not used.");
-  failed = true;
+  // failed = true;
 }
 
 if (!failed)
