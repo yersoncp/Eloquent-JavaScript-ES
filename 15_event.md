@@ -215,7 +215,7 @@ mouse)), ambos manejadores se ejecutarán.
 
 {{index "event propagation", "target property"}}
 
-La mayoría de objetos de eventos tienen una propiedad `tarjet` que se refiere al
+La mayoría de objetos de eventos tienen una propiedad `target` que se refiere al
 nodo donde se originaron. Se puede usar esta propiedad para asegurar de que no
 se está manejando accidentalmente algo que se propagó desde un nodo que no se
 desea manejar.
@@ -330,9 +330,7 @@ que presionas una tecla, esto también puede influir en el nombre de la
 tecla-`"v"` se convierte en `"V"` y `"1"` puede convertirse en `"!"`, es lo que
 se produce al presionar [shift]{keyname}-1 en tu teclado.
 
-{{index "modifier key", "shift key", "control key", "alt key", "meta key",
-"command key", "ctrlKey property", "shiftKey property", "altKey property",
-"metaKey property"}}
+{{index "modifier key", "shift key", "control key", "alt key", "meta key", "command key", "ctrlKey property", "shiftKey property", "altKey property", "metaKey property"}}
 
 La teclas modificadoras como [shift]{keyname}, [control]{keyname},
 [alt]{keyname} y [meta]{keyname} ([command]{keyname} en Mac) generan eventos de
@@ -405,8 +403,7 @@ que contiene ambos párrafos.
 Si se producen dos clics juntos, un evento `"dblclick"` (doble-clic) también se
 lanza, después del segundo evento de clic.
 
-{{index pixel, "clientX property", "clientY property", "pageX property", "pageY
-property", "event object"}}
+{{index pixel, "clientX property", "clientY property", "pageX property", "pageY property", "event object"}}
 
 Para obtener la información precisa sobre el lugar en donde un evento del mouse
 ocurrió, se puede ver en las propiedades `clientX` y `clientY`, los cuales
@@ -415,8 +412,7 @@ izquierda de la ventana o `pageX` y `pageY`, las cuales son relativas a la
 esquina superior izquierda de todo el documento (el cual puede ser diferente
 cuando la ventana ha sido desplazada).
 
-{{index "border-radius (CSS)", "absolute positioning", "drawing program
-example"}}
+{{index "border-radius (CSS)", "absolute positioning", "drawing program example"}}
 
 {{id mouse_drawing}}
 
@@ -550,8 +546,7 @@ dedo inicia tocando la pantalla, se obtiene el evento `"touchstart"`. Cuando
 este es movido mientras se toca, se lanza el evento `"touchmove"`. Finalmente,
 cuando se deja de tocar la pantalla, se lanzará un evento `"touchend"`.
 
-{{index "touches property", "clientX property", "clientY property", "pageX
-property", "pageY property"}}
+{{index "touches property", "clientX property", "clientY property", "pageX property", "pageY property"}}
 
 Debido a que muchas pantallas táctiles pueden detectar multiples dedos al mismo
 tiempo, estos eventos no tienen un solo conjunto de coordenadas asociados a
@@ -631,8 +626,7 @@ actualiza para que se llene a medida que se desplza hacia abajo:
 </script>
 ```
 
-{{index "unit (CSS)", scrolling, "position (CSS)", "fixed positioning",
-"absolute positioning", percentage, "repeat method"}}
+{{index "unit (CSS)", scrolling, "position (CSS)", "fixed positioning", "absolute positioning", percentage, "repeat method"}}
 
 Darle a un elemento una `position` de `fixed` actua como una posición `absolute`
 pero también evita que se desplace junto con el resto del documento. El efecto
@@ -746,8 +740,7 @@ muestran.
 
 ## Eventos y el ciclo de eventos
 
-{{index "requestAnimationFrame function", "event handling", timeline, "script
-(HTML tag)"}}
+{{index "requestAnimationFrame function", "event handling", timeline, "script (HTML tag)"}}
 
 En el contexto del ciclo de eventos, como se explica en el [Chapter ?](async),
 los manejadores de eventos del navegador se comportan como otras notificaciones
@@ -1062,8 +1055,7 @@ La creación de los elementos se realiza de mjor manera con un ciclo. Añadelos 
 documento para que aparezcan. Para poder acceder a ellos más tarde para cambiar
 su posición, querrás alamacenar los elementos en una matriz.
 
-{{index "mousemove event", [array, indexing], "remainder operator", "%
-operator"}}
+{{index "mousemove event", [array, indexing], "remainder operator", "% operator"}}
 
 Se puede hacer un ciclo a través de ellos manteniendo una ((variable contador))
 y agregando 1 cada vez que se activa el evento `"mousemove"`. El operador
@@ -1091,8 +1083,7 @@ Los paneles con pestañas son utilizados ampliamente en las interfaces de
 usuario. Te permiten seleccionar un panel de interfaz eligiendo entre una serie
 de pestañas "que sobresalen" sobre un elemento.
 
-{{index "button (HTML tag)", "display (CSS)", "hidden element", "data
-attribute"}}
+{{index "button (HTML tag)", "display (CSS)", "hidden element", "data attribute"}}
 
 En este ejercicio debes implementar una interfaz con pestañas simple. Escribe
 una función, `asTabs`, que tome un nodo DOM y cree una interfaz con pestañas que
