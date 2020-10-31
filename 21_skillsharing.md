@@ -40,41 +40,42 @@ para Node.js, y poder correrlo directamente en una página HTML es poco
 probable.]{if interactive} El proyecto completo puede ser ((descarga))do de
 [_https://eloquentjavascript.net/code/skillsharing.zip_](https://eloquentjavascript.net/code/skillsharing.zip) (En inglés).
 
-## Design
+## Diseño
 
-{{index "skill-sharing project", persistence}}
+{{index "proyecto para compartir habilidades", persistencia}}
 
-There is a _((server))_ part to this project, written for ((Node.js)),
-and a _((client))_ part, written for the ((browser)). The server
-stores the system's data and provides it to the client. It also serves
-the files that implement the client-side system.
+El proyecto tiene un parte de _((servidor))_, escrita para ((Node.js)),
+y una parte _((cliente))_, escrita para el ((navegador)). La parte del
+servidor guarda la información del sistema y se lo pasa al cliente.
+Además, sirve los archivos que implementan la parte cliente.
 
-{{index [HTTP, client]}}
+{{index [HTTP, cliente]}}
 
-The server keeps the list of ((talk))s proposed for the next meeting,
-and the client shows this list. Each talk has a presenter name, a
-title, a summary, and an array of ((comment))s associated with it. The
-client allows users to propose new talks (adding them to the list),
-delete talks, and comment on existing talks. Whenever the user makes
-such a change, the client makes an HTTP ((request)) to tell the
-server about it.
+El servidor mantiene la lista de ((exposiciones)) propuestas para la
+próxima charla, y el cliente muestra la lista. Cada charla tiene el
+nombre del presentados, un título, un resumen, y una lista de
+((comentario))s asociados. el cliente permite proponer nuevas charlas,
+(agregándolas a la lista), borrar charlas y comentar en las existentes.
+Cuando un usuario hace un cambio, el cliente hace la ((petición))
+HTTP para notificar al servidor.
 
-{{figure {url: "img/skillsharing.png", alt: "Screenshot of the skill-sharing website",width: "10cm"}}}
+{{figure {url: "img/skillsharing.png", alt: "Captura de pantalla del sitio para compartir habilidades",width: "10cm"}}}
 
-{{index "live view", "user experience", "pushing data", connection}}
+{{index "vista en vivo", "experiencia de usuario", "empujar datos", conexión}}
 
-The ((application)) will be set up to show a _live_ view of the
-current proposed talks and their comments. Whenever someone,
-somewhere, submits a new talk or adds a comment, all people who have
-the page open in their browsers should immediately see the change.
-This poses a bit of a challenge—there is no way for a web server to
-open a connection to a client, nor is there a good way to know which
-clients are currently looking at a given website.
+La ((aplicación)) será construida para mostrar una vista _en vivo_ de las
+charlas propuestas y sus comentarios. Cuando alguien en algún lugar manda
+una nueva charla o agrega un comentario, todas las personas que
+tienen la página abierta en sus navegadores deberían ver inmediatamente el
+cambio. Esto nos reta un poco: no hay forma de que el servidor abra una
+conexión a un cliente, ni una buena forma de saber qué clientes están
+viendo un sitio web.
 
 {{index "Node.js"}}
 
-A common solution to this problem is called _((long polling))_, which
-happens to be one of the motivations for Node's design.
+Una solución común a este problema es llamada _((sondeo largo))_ (le
+llamaremos _((long polling))_), que de casualidad es una de las
+motivaciones para el diseño de Node.
 
 ## Long polling
 
