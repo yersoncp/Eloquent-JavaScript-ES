@@ -77,62 +77,61 @@ Una solución común a este problema es llamada _((sondeo largo))_ (le
 llamaremos _((long polling))_), que de casualidad es una de las
 motivaciones para el diseño de Node.
 
-## Long polling
+## Long Polling
 
-{{index firewall, notification, "long polling", network, [browser, security]}}
+{{index firewall, notificación, "long polling", red, [navegador, seguridad]}}
 
-To be able to immediately notify a client that something changed, we
-need a ((connection)) to that client. Since web browsers do not
-traditionally accept connections and clients are often behind
-((router))s that would block such connections anyway, having the
-server initiate this connection is not practical.
+Para ser capaces de notificar inmediatamente a un cliente que algo ha cambiado, necesitamos una ((conexión)) con ese cliente. Como los navegadores normalmente no aceptan conexiones y los clientes están detrás
+de ((router))s que bloquearían la conexión de todas maneras, hacer que el
+servidor inicie la conexión no es práctico.
 
-We can arrange for the client to open the connection and keep it
-around so that the server can use it to send information when it needs
-to do so.
+Podemos hacer que el cliente abra la conexión y la mantenga de tal manera que
+el servidor pueda usarla para mandar información cunado lo necesite.
 
 {{index socket}}
 
-But an ((HTTP)) request allows only a simple flow of information: the
-client sends a request, the server comes back with a single response,
-and that is it. There is a technology called _((WebSockets))_,
-supported by modern browsers, that makes it possible to open
-((connection))s for arbitrary data exchange. But using them properly
-is somewhat tricky.
+Pero una petición ((HTTP)) permite sólamente un flujo simple de información:
+el cliente manda una petición, el servidor responde con una sola respuesta,
+y eso es todo. Existe una tecnología moderna llamada _((WebSockets))_,
+soportada por los principales navegadores, que hace posible abrir
+((conexiones)) para intercambio arbitrario de datos. Pero usarla
+correctamente es un poco complicado.
 
-In this chapter, we use a simpler technique—((long polling))—where
-clients continuously ask the server for new information using regular
-HTTP requests, and the server stalls its answer when it has nothing
-new to report.
+En este capítulo usamos una técnica más simple, el _long polling_ en donde los
+clientes continuamente le piden al servidor nueva información usando
+las peticiones HTTP regulares, y el server detiene su respuesta cuando no
+hay nada nuevo que reportar.
 
-{{index "live view"}}
+{{index "vista en vivo"}}
 
-As long as the client makes sure it constantly has a polling request
-open, it will receive information from the server quickly after it
-becomes available. For example, if Fatma has our skill-sharing
-application open in her browser, that browser will have made a request
-for updates and will be waiting for a response to that request. When Iman
-submits a talk on Extreme Downhill Unicycling, the server will notice
-that Fatma is waiting for updates and send a response containing the
-new talk to her pending request. Fatma's browser will receive the data
-and update the screen to show the talk.
+Mientras el cliente se asegure de tener constantemente abierta una
+petición de sondeo, recibirá nueva información del servidor
+muy poco tiempo después de que esté disponible. Por ejemplo, si
+Fatma tiene nuestra aplicación abierta in su navegador, ese navegador
+ya habrá hecho una petición de actualizaciones y estará esperando por
+una respuesta a esa petición. Cuando Iman manda una charla acerca de
+Bajada Extrema en Monociclo, el servidor se dará cuenta de que
+Fatma está esperando actualizaciones y mandará una respuesta
+conteniendo la nueva charla, respondiendo a la petición pendiente. El
+navegador de Fatma recibirá los datos y actualizará la pantalla.
 
-{{index robustness, timeout}}
+{{index robustez, vencimiento}}
 
-To prevent connections from timing out (being aborted because of a
-lack of activity), ((long polling)) techniques usually set a maximum
-time for each request, after which the server will respond anyway,
-even though it has nothing to report, after which the client will
-start a new request. Periodically restarting the request also makes
-the technique more robust, allowing clients to recover from temporary
-((connection)) failures or server problems.
+Para evitar que las conexiones se venzan (que sean abortadas por falta
+de actividad), las técnicas de _((long polling))_ usualmente ponen el
+tiempo máximo para cada petición después de lo cuál el servidor
+responderá de todos modos aunque no tenga nada que reportar, después
+de lo cuál el cliente iniciará otra petición. Reiniciar periódicamente
+la petición hace además la técnica más robusta, permitiendo a los clientes
+recuperarse de fallas temporales en la ((conexión)) o problemas del servidor.
+
 
 {{index "Node.js"}}
 
-A busy server that is using long polling may have thousands of waiting
-requests, and thus ((TCP)) connections, open. Node, which makes it
-easy to manage many connections without creating a separate thread of
-control for each one, is a good fit for such a system.
+Un servidor ocupado que esté usando _long polling_ podría tener miles de
+peticiones esperando, y por lo tanto miles de conexiones ((TCP)) abiertas.
+Node, que hace fácil de manejar muchas conexiones sin crear un hilo de control
+para cada una, es un buen elemento para nuestro sistema.
 
 ## HTTP interface
 
