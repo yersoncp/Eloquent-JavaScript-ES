@@ -2,9 +2,9 @@
 
 {{quote {author: "Tim Berners-Lee", title: "The World Wide Web: A very short personal history", chapter: true}
 
-El sueño detrás de la Web es el de un espacio común de información 
-en el cual nos comunicamos compartiendo información. 
-Su universalidad es esencial: el echo de que un enlace pueda apuntar a cualquier cosa, 
+El sueño detrás de la Web es el de un espacio común de información
+en el cual nos comunicamos compartiendo información.
+Su universalidad es esencial: el echo de que un enlace pueda apuntar a cualquier cosa,
 ya sea personal, local o global, ya sea un borrador o este muy pulido.
 
 quote}}
@@ -227,7 +227,6 @@ que fueron utilizados en el pasado.
 
 {{index "head (HTML tag)", "body (HTML tag)", "title (HTML tag)", "h1 (HTML tag)", "p (HTML tag)"}}
 
-
 Los documentos HTML tienen un encabezado y un cuerpo. El encabezado
 contiene información _acerca del_ documento, y el cuerpo contiene
 el documento en sí. En este caso, el encabezado declara que el título
@@ -235,7 +234,7 @@ del documento es "Mi página de inicio" y que está utilizando la
 codificación UTF-8, que es una forma de codificar texto Unicode como
 información binaria. El cuerpo del documento contiene un encabezado
 (`<h1>`, que significa "encabezado 1", `<h2>` a `<h6>` produce
-sub-encabezados) y dos ((párrafo))s (`<p>`). 
+sub-encabezados) y dos ((párrafo))s (`<p>`).
 
 {{index "href attribute", "a (HTML tag)"}}
 
@@ -317,4 +316,4 @@ considera que las declaraciones ((doctype)) y `charset` están ahí
 implicitamente en los ejemplos, incluso cuando no se muestran en el
 texto.
 
-{{id script_tag}}
+
