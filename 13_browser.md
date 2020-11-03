@@ -316,4 +316,71 @@ considera que las declaraciones ((doctype)) y `charset` están ahí
 implicitamente en los ejemplos, incluso cuando no se muestran en el
 texto.
 
+{{id script_tag}}
 
+## HTML y JavaScript
+
+{{index [JavaScript, "in HTML"], "script (HTML tag)"}}
+
+En el contexto de este libro, la etiqueta HTML más importante es
+`<script>`. Esta etiqueta nos permite incluir un fragmento de JavaScript
+en un documento.
+
+```{lang: "text/html"}
+<h1>Testing alert</h1>
+<script>alert("hello!");</script>
+```
+
+{{index "alert function", timeline}}
+
+Ese comando será ejecutado tan pronto como su etiqueta `<script>` es
+encontrada mientras el navegador lee el HTML. Esta página mostrará un
+diálogo en cuanto sea abierta, la función `alert` se parece a `prompt`
+en que muestra una pequeña ventana, pero sólo muestra un mensaje sin
+esperar datos de entrada.
+
+{{index "src attribute"}}
+
+Incluir grandes programas directamente en un documento HTML
+es muchas veces impráctico. A la etiqueta `<script>` se le puede proveer
+un atributo `src` para obtener un archivo de script (un archivo de texto
+que contiene un fragmento de códido JavaScript) de una URL.
+
+```{lang: "text/html"}
+<h1>Testing alert</h1>
+<script src="code/hello.js"></script>
+```
+
+El archivo _code/hello.js_ incluido aquí contiene el mismo programa,
+`alert("hello!")`. Cuando una página HTML hace referencia a otras URLs como
+parte de si misma, por ejemplo, un archivo de imagen o un script, los navegadores
+los recuperarán inmediatamente y los incluirán en la página.
+
+{{index "script (HTML tag)", "closing tag"}}
+
+Una etiqueta de script siempre debe cerrarse con `</script>`, incluso si se
+refiere a un archivo de script y no contiene código en su interior. Si olvidas
+cerrarla, el resto de la página será interpretada como parte del script.
+
+{{index "relative path", dependency}}
+
+Puedes cargar ((módulos ES)) (ver [Chapter ?](modules#es)) en el navegador
+si le provees a tu etiqueta script un atributo `type="module"`. Esos módulos
+pueden depender de otros módulos usando ((URL))s relativas a si mismos como
+nombres de módulos en declaraciones `import`.
+
+{{index "button (HTML tag)", "onclick attribute"}}
+
+Algunos atributos también pueden contener un programa JavaScript. La etiqueta
+`<button>` mostrada a continuación (que muestra un botón) tiene un atributo
+`onclick`. El valor del atributo será ejecutado siempre que el botón sea presionado.
+
+```{lang: "text/html"}
+<button onclick="alert('Boom!');">NO PRESIONAR</button>
+```
+
+{{index "single-quote character", [escaping, "in HTML"]}}
+
+Nota que tuve que usar comillas simples para la cadena en el atributo `onclick`
+porque las comillas dobles ya están siendo utilizadas para encerrar el atributo
+completo. También pude haber usado `&quot;`.
