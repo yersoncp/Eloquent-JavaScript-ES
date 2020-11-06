@@ -635,7 +635,7 @@ el operador del remanente. Entonces este valor es usado para
 calcular la coordenada en x que tiene el _sprite_ para la pose que
 tiene actualmente la imagen.
 
-## Transformation
+## Transformaciones
 
 {{index transformation, mirroring}}
 
@@ -771,82 +771,81 @@ universo alrededor del centro vertical de los personajes.
 </script>
 ```
 
-## Storing and clearing transformations
+## Almacenando y limpiando transformaciones
 
 {{index "side effect", canvas, transformation}}
 
-Transformations stick around. Everything else we draw after
-((drawing)) that mirrored character would also be mirrored. That might
-be inconvenient.
+La transformaciones se mantienen. Todo lo que dibujemos después de
+((dibujar)) de nuestro personaje espejeado también puede ser
+espejeado. Eso puede ser un inconveniente.
 
-It is possible to save the current transformation, do some drawing and
-transforming, and then restore the old transformation. This is usually
-the proper thing to do for a function that needs to temporarily
-transform the coordinate system. First, we save whatever
-transformation the code that called the function was using. Then the
-function does its thing, adding more transformations on top of the
-current transformation. Finally, we revert to the
-transformation we started with.
+Es posible guardar el estado actual de la transformación, dibujar
+de nuevo y restaurar la transformación anterior. Usualmente esto
+es lo que debemos hacer para una función que necesite transformar
+de forma temporal el sistema de coordenadas. Primero, guardamos el
+código de la transformación que haya llamado a la función que estamos
+usando. La función hace lo suyo, agregando más transformaiones
+sobre la transformación actual. Finalmente, revertimos a la 
+transformación con la que empezamos.
 
 {{index "save method", "restore method", [state, "of canvas"]}}
 
-The `save` and `restore` methods on the 2D ((canvas)) context do this
-((transformation)) management. They conceptually keep a stack of
-transformation states. When you call `save`, the current state is
-pushed onto the stack, and when you call `restore`, the state on top
-of the stack is taken off and used as the context's current
-transformation. You can also call `resetTransform` to fully reset the
-transformation.
+Los métodos `save` y `restore` en el contexto del ((canvas)) 2D 
+realizan el manejo de las ((transformaciones)). Conceptualmente
+mantienen una pila de los estados de la transformación. Cuando
+se llama `save`, el estado actual se agrega a la pila, y cuando se
+llama `restore`, el estado en la cima de la pila se usa en el
+contexto actual de la transformación. También puedes llamar 
+`resetTransform` para resetear por completo la transformación.
 
 {{index "branching recursion", "fractal example", recursion}}
 
-The `branch` function in the following example illustrates what you
-can do with a function that changes the transformation and then calls
-a function (in this case itself), which continues drawing with
-the given transformation.
+La función `ramificar` en el siguiente ejemplo ilustra lo que puedes
+hacer con una función que cambia la transformación y llama una
+función (en este caso a sí misma), que continúa dibujando con una
+transformación dada.
 
-This function draws a treelike shape by drawing a line, moving the
-center of the coordinate system to the end of the line, and calling
-itself twice—first rotated to the left and then rotated to the right.
-Every call reduces the length of the branch drawn, and the recursion
-stops when the length drops below 8.
+La función dibuja un árbol dibujando una línea, moviendo el centro
+del sistema de coordenadas hacia el final de la línea, y llamándose
+a sí misma rotándose a la izquierda y luego a la derecha.
+Cada cada llamada reduce el ancho de la rama dibujada, y la
+recursión se detiene cuando el ancho es menor a 8.
 
 ```{lang: "text/html"}
 <canvas width="600" height="300"></canvas>
 <script>
   let cx = document.querySelector("canvas").getContext("2d");
-  function branch(length, angle, scale) {
+  function ramificar(length, angle, scale) {
     cx.fillRect(0, 0, 1, length);
     if (length < 8) return;
     cx.save();
     cx.translate(0, length);
     cx.rotate(-angle);
-    branch(length * scale, angle, scale);
+    ramificar(length * scale, angle, scale);
     cx.rotate(2 * angle);
-    branch(length * scale, angle, scale);
+    ramificar(length * scale, angle, scale);
     cx.restore();
   }
   cx.translate(300, 0);
-  branch(60, 0.5, 0.8);
+  ramificar(60, 0.5, 0.8);
 </script>
 ```
 
 {{if book
 
-The result is a simple fractal.
+El resultado es un simple fractal.
 
-{{figure {url: "img/canvas_tree.png", alt: "A recursive picture",width: "5cm"}}}
+{{figure {url: "img/canvas_tree.png", alt: "Una imagen recursiva",width: "5cm"}}}
 
 if}}
 
 {{index "save method", "restore method", canvas, "rotate method"}}
 
-If the calls to `save` and `restore` were not there, the second
-recursive call to `branch` would end up with the position and rotation
-created by the first call. It wouldn't be connected to the current
-branch but rather to the innermost, rightmost branch drawn by the
-first call. The resulting shape might also be interesting, but it is
-definitely not a tree.
+Sí la llamada a `save` y `restore` no estuvieran, la segunda llamada
+recursiva a `ramificar` terminarían con la posición y rotación
+creados en la primera llamada. No se conectarían con la rama actual,
+excepto por las mas cercanas, la mayoría dibujadas en la primera
+llamada. La figura resultante sería interesante, pero no es un árbol definitivamente.
 
 {{id canvasdisplay}}
 
