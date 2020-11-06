@@ -641,15 +641,15 @@ tiene actualmente la imagen.
 
 {{indexsee flipping, mirroring}}
 
-But what if we want our character to walk to the left instead of to
-the right? We could draw another set of sprites, of course. But we can
-also instruct the ((canvas)) to draw the picture the other way round.
+¿Pero que pasa si quieremos que nuestro personaje camine a la izquierda
+en vez de la derecha? Podríamos dibujar otro conjunto de _sprites_... o podríamos
+decirle al ((canvas)) que redibuje la ilustración hacia el otro lado.
 
 {{index "scale method", scaling}}
 
-Calling the `scale` method will cause anything drawn after it to be
-scaled. This method takes two parameters, one to set a horizontal
-scale and one to set a vertical scale.
+Llamar al método `scale` provocará que todo lo que dibujemos después sea escalado. Este método toma dos parámetros, uno para
+establecer la escala horizontal y otro para establecer la 
+escala vertical.
 
 ```{lang: "text/html"}
 <canvas></canvas>
@@ -665,66 +665,66 @@ scale and one to set a vertical scale.
 
 {{if book
 
-Because of the call to `scale`, the circle is drawn three times as wide
-and half as high.
+El resultado de llamar a `scale`, es que el círculo es dibujado con
+el triple de ancho y la mitad de alto.
 
-{{figure {url: "img/canvas_scale.png", alt: "A scaled circle",width: "6.6cm"}}}
+{{figure {url: "img/canvas_scale.png", alt: "Un círculo escalado",width: "6.6cm"}}}
 
 if}}
 
 {{index mirroring}}
 
-Scaling will cause everything about the drawn image, including the
-((line width)), to be stretched out or squeezed together as specified.
-Scaling by a negative amount will flip the picture around. The
-flipping happens around point (0,0), which means it will also flip the
-direction of the coordinate system. When a horizontal scaling of -1 is
-applied, a shape drawn at x position 100 will end up at what used to
-be position -100.
+Escalar provoca que todo lo que se encuentre sobre la imagen, incluyendo el
+((ancho de línea)), y se ajustan de acuerdo a las instrucciones que se dieron.
+Escalar en una escala negativa dará vuelta a la figura. El giro
+sucede sobre la coordenada (0,0), lo que significa que también gira
+la dirección del sistema de coordinadas. Cuando el escalado
+horzontal es de -1 es aplicado, una figura en la posición 100
+terminará en lo que era la posición -100.
 
 {{index "drawImage method"}}
 
-So to turn a picture around, we can't simply add `cx.scale(-1, 1)`
-before the call to `drawImage` because that would move our picture
-outside of the ((canvas)), where it won't be visible. You could adjust
-the ((coordinates)) given to `drawImage` to compensate for this by
-drawing the image at x position -50 instead of 0. Another solution,
-which doesn't require the code that does the drawing to know about the
-scale change, is to adjust the ((axis)) around which the scaling
-happens.
+Para girar una imagen, podemos sencillamente agregar `cx.scale(-1, 1)`
+antes de llamar `drawImage` porque eso movería nuestra figura 
+fuera del ((canvas)), donde no será visible. Puedes ajustar
+las ((coordenadas)) dadas a `drawImage` para compensar que la
+la imagen se dibuja en la posición x -50 en vez de 0. Otra solución,
+que no requiere que el código que hace le dibujo necesite saber
+sobre el cambio de escala, es ajustar el ((eje)) sobre el que el
+escalado sucede.
 
 {{index "rotate method", "translate method", transformation}}
 
-There are several other methods besides `scale` that influence the
-coordinate system for a ((canvas)). You can rotate subsequently drawn
-shapes with the `rotate` method and move them with the `translate`
-method. The interesting—and confusing—thing is that these
-transformations _stack_, meaning that each one happens relative to the
-previous transformations.
+Hay otros métodos además de `scale` que influencian el sistema
+de coordenadas de un ((canvas)). Puedes rotar las figuras de forma
+subsecuente con el método `rotate` y movelos con el método 
+`translate`. Lo interesante —y confuso— de esto es que las
+transformaciones se _apilan_, lo que significa que cada una sucede
+de forma relativa a la transformación anterior.
 
 {{index "rotate method", "translate method"}}
 
-So if we translate by 10 horizontal pixels twice, everything will be
-drawn 20 pixels to the right. If we first move the center of the
-coordinate system to (50,50) and then rotate by 20 ((degree))s (about
-0.1π ((radian))s), that rotation will happen _around_ point (50,50).
+Entonces trasladando por 10 pixeles horizontales dos veces, todo de dibujará
+20 pixeles a la derecha. Si primero movemos el centro del sistema
+de coordenadas hacia (50,50) y lo rotamos por 20 ((grado))s (alrededor
+de 0.1π ((radian))es), la rotación sucederá _alredador_ del punto (50,50).
 
-{{figure {url: "img/transform.svg", alt: "Stacking transformations",width: "9cm"}}}
+{{figure {url: "img/transform.svg", alt: "Apilando transformaciones",width: "9cm"}}}
 
 {{index coordinates}}
 
-But if we _first_ rotate by 20 degrees and _then_ translate by
-(50,50), the translation will happen in the rotated coordinate system
-and thus produce a different orientation. The order in which
-transformations are applied matters.
+Pero si _primero_ rotamos por 20 grados _y entonces_ trasladamos
+(50,50), la traslación sucederá en el sistema de coordenadas rotadas
+y esto producirá una orientación distinta. El orden en el cual se
+aplican las transformaciones importa.
 
 {{index axis, mirroring}}
 
-To flip a picture around the vertical line at a given x position, we
-can do the following:
+Para voltear una imagen alrededor de la línea vertical dada una 
+posición en x, podemos hacer lo siguiente:
 
 ```{includeCode: true}
-function flipHorizontally(context, around) {
+function voltearHorizontalmente(context, around) {
   context.translate(around, 0);
   context.scale(-1, 1);
   context.translate(-around, 0);
@@ -733,26 +733,28 @@ function flipHorizontally(context, around) {
 
 {{index "flipHorizontally method"}}
 
-We move the y-((axis)) to where we want our ((mirror)) to be, apply
-the mirroring, and finally move the y-axis back to its proper place in
-the mirrored universe. The following picture explains why this works:
+Recorremos el ((eje))-y donde queramor colocar el ((espejo)),
+aplicamos el espejeado, y regresamos el eje-y  de regreso a su lugar
+en el universo espejeado. la sigiente imagen explica como funciona:
 
-{{figure {url: "img/mirror.svg", alt: "Mirroring around a vertical line",width: "8cm"}}}
+{{figure {url: "img/mirror.svg", alt: "Espejeando sobre la línea vertical",width: "8cm"}}}
 
 {{index "translate method", "scale method", transformation, canvas}}
 
-This shows the coordinate systems before and after mirroring across
-the central line. The triangles are numbered to illustrate each step.
-If we draw a triangle at a positive x position, it would, by default,
-be in the place where triangle 1 is. A call to `flipHorizontally`
-first does a translation to the right, which gets us to triangle 2. It
-then scales, flipping the triangle over to position 3. This is not
-where it should be, if it were mirrored in the given line. The second
-`translate` call fixes this—it "cancels" the initial translation and
-makes triangle 4 appear exactly where it should.
+Esto muestra el sistema de coordenadas antes y después de espejear
+atravesando la línea central. Los tríangulos están numerados para 
+illustrar cada paso.
+Si dibujamos un triángulo en una posición x positiva, debería estar
+por defecto en el lugar donde se encuentra el tríangulo 1. Una 
+llamada a  `voltearHorizontalmente`
+realiza primero la traslación a la derecha, la cual nos da el
+triángulo 2. Cuando lo escala, voltea el triángulo hacia la 
+posición 3. Esto no debería ser así, si espejeamos en la línea inicial.
+La segunda llamada a `translate` corrige esto, "cancelando" la 
+traslación inicial y el triángulo 4 aparece donde debe.
 
-We can now draw a mirrored character at position (100,0) by flipping
-the world around the character's vertical center.
+Ahora podemos dibujar un personaje en la posición (100,0) girando el
+universo alrededor del centro vertical de los personajes.
 
 ```{lang: "text/html"}
 <canvas></canvas>
@@ -762,7 +764,7 @@ the world around the character's vertical center.
   img.src = "img/player.png";
   let spriteW = 24, spriteH = 30;
   img.addEventListener("load", () => {
-    flipHorizontally(cx, 100 + spriteW / 2);
+    voltearHorizontalmente(cx, 100 + spriteW / 2);
     cx.drawImage(img, 0, 0, spriteW, spriteH,
                  100, 0, spriteW, spriteH);
   });
