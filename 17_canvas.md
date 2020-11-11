@@ -849,30 +849,31 @@ llamada. La figura resultante sería interesante, pero no es un árbol definitiv
 
 {{id canvasdisplay}}
 
-## Back to the game
+## De regreso al juego
 
 {{index "drawImage method"}}
 
-We now know enough about ((canvas)) drawing to start working on a
-((canvas))-based ((display)) system for the ((game)) from the
-[previous chapter](game). The new display will no longer be showing
-just colored boxes. Instead, we'll use `drawImage` to draw pictures
-that represent the game's elements.
+Ahora que sabemos dibujar en el ((canvas)), es tiempo de empezar
+a trabajar en el sistema de ((_display_)) basado en el ((canvas))
+para el ((juego)) del [capítulo anterior](game). El nuevo display 
+no mostrará sólo cajas de colores. En vez de eso, usaremos 
+`drawImage` para dibujar imágenes que representen los elementos 
+del juego.
 
 {{index "CanvasDisplay class", "DOMDisplay class", [interface, object]}}
 
-We define another display object type called `CanvasDisplay`,
-supporting the same interface as `DOMDisplay` from [Chapter
-?](game#domdisplay), namely, the methods `syncState` and `clear`.
+Definimos otro objeto del _display_ llamado `CanvasDisplay`,
+que soporta la misma interfaz que en `DOMDisplay` del [Capítulo
+?](game#domdisplay), los métodos `syncState` y `clear`.
 
 {{index [state, "in objects"]}}
 
-This object keeps a little more information than `DOMDisplay`. Rather
-than using the scroll position of its DOM element, it tracks its own
-((viewport)), which tells us what part of the level we are currently
-looking at. Finally, it keeps a `flipPlayer` property so that even
-when the player is standing still, it keeps facing the direction it
-last moved in.
+Este objeto posee algo más de información que `DOMDisplay`. En vez
+de usar la posición del _scroll_ de su elemento DOM, rastrea su propio
+((_viewport_)), que nos dice en que parte del nivel nos encontramos. 
+Finalmente, hace uso de la propiedas `flipPlayer` de modo que 
+incluso cuando el jugador se encuentra detenido, lo hace en la última
+dirección en que se movió.
 
 ```{sandbox: "game", includeCode: true}
 class CanvasDisplay {
@@ -899,8 +900,8 @@ class CanvasDisplay {
 }
 ```
 
-The `syncState` method first computes a new viewport and then draws
-the game scene at the appropriate position.
+El método `syncState` calcula primero un nuevo _viewport_ y después 
+dibuja la escena del juego en la posición apropiada.
 
 ```{sandbox: "game", includeCode: true}
 CanvasDisplay.prototype.syncState = function(state) {
@@ -913,19 +914,18 @@ CanvasDisplay.prototype.syncState = function(state) {
 
 {{index scrolling, clearing}}
 
-Contrary to `DOMDisplay`, this display style _does_ have to redraw the
-background on every update. Because shapes on a canvas are just
-((pixel))s, after we draw them there is no good way to move them (or
-remove them). The only way to update the canvas display is to clear it
-and redraw the scene. We may also have scrolled, which requires the
-background to be in a different position.
+Contrario al `DOMDisplay`, este estilo de display _tiene que_ redibujar
+el fondo en cada _frame_. Esto se debe a que las figuras en un canvas
+son solo ((pixel))es, después de que los dibujamos no hay un método
+apropiado para movelos (o eliminarlos). La única forma de actualizar
+el canvas es limpiarlo y redibujar la escena. También podríamos desplazarlo,
+Lo que requiere que el fondo este en una posición diferente.
 
 {{index "CanvasDisplay class"}}
 
-The `updateViewport` method is similar to `DOMDisplay`'s
-`scrollPlayerIntoView` method. It checks whether the player is too
-close to the edge of the screen and moves the ((viewport)) when this
-is the case.
+El método `updateViewport` es similar al método `scrollPlayerIntoView`
+del método `DOMDisplay`. Comprueba si el jugador esta muy cerca 
+del borde de la pantalla y mueve el ((_viewport_)) cuando asi sea el caso
 
 ```{sandbox: "game", includeCode: true}
 CanvasDisplay.prototype.updateViewport = function(state) {
@@ -950,14 +950,14 @@ CanvasDisplay.prototype.updateViewport = function(state) {
 
 {{index boundary, "Math.max function", "Math.min function", clipping}}
 
-The calls to `Math.max` and `Math.min` ensure that the viewport does
-not end up showing space outside of the level. `Math.max(x, 0)` makes
-sure the resulting number is not less than zero. `Math.min`
-similarly guarantees that a value stays below a given bound.
+Las llamadas a `Math.max` y `Math.min` aseguran que el _viewport_
+no termine mostrando espacio fuera del nivel. 
+`Math.max(x, 0)` aseguramos que el resultado sea mayor a cero. 
+`Math.min` hacer algo similar al garantizar que un valor se mantenga
+por debajo de lo indicado.
 
-When ((clearing)) the display, we'll use a slightly different
-((color)) depending on whether the game is won (brighter) or lost
-(darker).
+Cuando se ((limpia)) el _display_, usamos un ((color)) ligeramente
+distinto dependiendo si el jugador ganó (más claro) o perdió (más oscuro).
 
 ```{sandbox: "game", includeCode: true}
 CanvasDisplay.prototype.clearDisplay = function(status) {
@@ -975,9 +975,9 @@ CanvasDisplay.prototype.clearDisplay = function(status) {
 
 {{index "Math.floor function", "Math.ceil function", rounding}}
 
-To draw the background, we run through the tiles that are visible in
-the current viewport, using the same trick used in the `touches`
-method from the [previous chapter](game#touches).
+Para dibujar el fondo, hacemos que los mosaicos sean visibles en el
+_viewport_ actual, usando el mismo truco que en el método `touches`
+del [capítulo anterior](game#touches).
 
 ```{sandbox: "game", includeCode: true}
 let otherSprites = document.createElement("img");
@@ -1007,46 +1007,47 @@ CanvasDisplay.prototype.drawBackground = function(level) {
 
 {{index "drawImage method", sprite, tile}}
 
-Tiles that are not empty are drawn with `drawImage`. The
-`otherSprites` image contains the pictures used for elements other
-than the player. It contains, from left to right, the wall tile, the
-lava tile, and the sprite for a coin.
+Los mosaicos que no están vacíos se dibujan con `drawImage`. La
+imagen `otherSprites` contiene las imagenes usadas para los elementos
+distintos al jugador. Contiene, de izquierda a derecha, el 
+mosaico del muro, el mosaico de lava, y el _sprite_ de una moneda.
 
-{{figure {url: "img/sprites_big.png", alt: "Sprites for our game",width: "1.4cm"}}}
+{{figure {url: "img/sprites_big.png", alt: "Sprites para nuestro juego",width: "1.4cm"}}}
 
 {{index scaling}}
 
-Background tiles are 20 by 20 pixels since we will use the same scale
-that we used in `DOMDisplay`. Thus, the offset for lava tiles is 20
-(the value of the `scale` binding), and the offset for walls is 0.
+Los mosaicos del fondo son de 20 por 20 pixeles dado que usaremos
+la misma escala que en `DOMDisplay`. Así, el _offset_ para el
+mosaico de lava es de 20 (el valor encapsulado de `scale`), y 
+el _offset_ para el de muro es de 0.
 
 {{index drawing, "load event", "drawImage method"}}
 
-We don't bother waiting for the sprite image to load. Calling
-`drawImage` with an image that hasn't been loaded yet will simply do
-nothing. Thus, we might fail to draw the game properly for the first
-few ((frame))s, while the image is still loading, but that is not a
-serious problem. Since we keep updating the screen, the correct scene
-will appear as soon as the loading finishes.
+No hace falta quedarse esperando a que carge el _sprite_ de la imagen.
+Llamar a `drawImage` con una imagen que aún no ha sido cargada,
+simplemente no hace anda. Aun así, podría fallar en dibujar el luego
+de forma adecuada durante los primeros ((_frame_))s, mientras la 
+imagen siga cargádose, pero esto no es un problema. Mietras sigamos
+actualizando la pantalla, la escena correcta aparecerá tan pronto
+la imagen termine de cargarse.
 
 {{index "player", [animation, "platform game"], drawing}}
 
-The ((walking)) character shown earlier will be used to represent the
-player. The code that draws it needs to pick the right ((sprite)) and
-direction based on the player's current motion. The first eight
-sprites contain a walking animation. When the player is moving along a
-floor, we cycle through them based on the current time. We want to
-switch frames every 60 milliseconds, so the ((time)) is divided by 60
-first. When the player is standing still, we draw the ninth sprite.
-During jumps, which are recognized by the fact that the vertical speed
-is not zero, we use the tenth, rightmost sprite.
+El personaje ((caminante)) mostrado antes será usado para representar al
+jugador. El código que lo dibuja necesita escoger el ((sprite))  correcto y la
+dirección basados en el movimiento actual del jugador. Los primeros ocho
+_sprites_ contienen una animación de caminata. Cuando el jugador se mueve sobre
+el suelo, los pasamos conforme al tiempo actual. Como queremos
+cambiar _frames_ cada 60 millisegundos, entonces el ((tiempo)) es dividido entre 60
+ṕrimero. Cuando el jugador se detiene, dibujamos el noveno _sprite_.
+Durante los saltos, que reconoceremos por el hecho de que la velocidad vertical
+no es cero, usaremos el décimo _sprite_.
 
 {{index "flipHorizontally function", "CanvasDisplay class"}}
 
-Because the ((sprite))s are slightly wider than the player object—24
-instead of 16 pixels to allow some space for feet and arms—the method
-has to adjust the x-coordinate and width by a given amount
-(`playerXOverlap`).
+Ya que los ((_sprite_))s son ligeramente más anchos que el jugador
+—24 píxeles en vez de 16 para permitir algo de espacio para
+pies y brazos— tenemos que ajustar las coordenadas en x y el ancho por el cantidad dada por (`playerXOverlap`).
 
 ```{sandbox: "game", includeCode: true}
 let playerSprites = document.createElement("img");
@@ -1079,8 +1080,8 @@ CanvasDisplay.prototype.drawPlayer = function(player, x, y,
 };
 ```
 
-The `drawPlayer` method is called by `drawActors`, which is
-responsible for drawing all the actors in the game.
+El método `drawPlayer` es llamado por `drawActors`, que es
+responsable de dibujar todos los involucrados en el juego.
 
 ```{sandbox: "game", includeCode: true}
 CanvasDisplay.prototype.drawActors = function(actors) {
@@ -1101,21 +1102,22 @@ CanvasDisplay.prototype.drawActors = function(actors) {
 };
 ```
 
-When ((drawing)) something that is not the ((player)), we look at its
-type to find the offset of the correct sprite. The ((lava)) tile is
-found at offset 20, and the ((coin)) sprite is found at 40 (two times
-`scale`).
+Cuando  se trata de ((dibujar)) algo que no es el ((jugador)), nos fijamos en
+el tipo de objeto que es para encontrar el _offset_ del _sprite_ correcto. 
+El mosaico de ((lava)) se encuentra en un _offset_ de 20, y el _sprite_
+de ((moneda)) se encuentra en 40 (dos veces `scale`).
 
 {{index viewport}}
 
-We have to subtract the viewport's position when computing the actor's
-position since (0,0) on our ((canvas)) corresponds to the top left of
-the viewport, not the top left of the level. We could also have used
-`translate` for this. Either way works.
+Debemos restar la posición del viewport cuando calculamos la posición
+de los involucrados desde la posición (0,0) en nuestro ((canvas)) 
+correspondiente a la esquina superior izquierda del viewport,
+no la esquina superior izquierda del nivel. También podemos hacer
+uso de `translate` para esto. Ambos métodos funcionan.
 
 {{if interactive
 
-This document plugs the new display into `runGame`:
+Este documento se enlaza con el nuevo display en `runGame`:
 
 ```{lang: "text/html", sandbox: game, focus: yes, startCode: true}
 <body>
@@ -1131,10 +1133,10 @@ if}}
 
 {{index [game, screenshot], [game, "with canvas"]}}
 
-That concludes the new ((display)) system. The resulting game looks
-something like this:
+Con eso terminamos el nuevo sistema de ((display)). El luego resultante
+luce como algo así:
 
-{{figure {url: "img/canvas_game.png", alt: "The game as shown on canvas",width: "8cm"}}}
+{{figure {url: "img/canvas_game.png", alt: "El juego se muestra en el canvas",width: "8cm"}}}
 
 if}}
 
