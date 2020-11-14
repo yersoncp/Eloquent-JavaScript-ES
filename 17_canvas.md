@@ -1142,65 +1142,66 @@ if}}
 
 {{id graphics_tradeoffs}}
 
-## Choosing a graphics interface
+## Escogiendo una interfaz gráfica
 
-So when you need to generate graphics in the browser, you can choose
-between plain HTML, ((SVG)), and ((canvas)). There is no single
-_best_ approach that works in all situations. Each option has
-strengths and weaknesses.
+Cuando se necesita generar gráficos en el navegador, se puede escoger
+entre HTML plano, ((SVG)), y ((canvas)). No existe un enfoque que
+funcione mejor en cualquier situación. Cada opción tiene sus pros
+y sus contras.
 
 {{index "text wrapping"}}
 
-Plain HTML has the advantage of being simple. It also integrates well
-with ((text)). Both SVG and canvas allow you to draw text, but they
-won't help you position that text or wrap it when it takes up more
-than one line. In an HTML-based picture, it is much easier to include
-blocks of text.
+El HTML plano tiene la ventaja de ser simple. También puede integrar 
+((texto)). Tanto el SVG como el canvas permiten dibujar texto, pero
+no te ayudarán si necesitas cambiar la posición o acomodarlo cuando
+necesites más de una línea. En una imagen basada en HTML es mucho 
+más fácil incluir bloques de texto.
 
 {{index zooming, SVG}}
 
-SVG can be used to produce ((crisp)) ((graphics)) that look good at
-any zoom level. Unlike HTML, it is designed for drawing
-and is thus more suitable for that purpose.
+SVG puede usarse para generar ((gráficos)) ((claros)) que se ven 
+bien con cualquier nivel de zoom. a diferencia del HTML, está diseñado 
+para dibjar y es más adecuado a para ese propósito.
 
 {{index [DOM, graphics], SVG, "event handling", ["data structure", tree]}}
 
-Both SVG and HTML build up a data structure (the DOM) that
-represents your picture. This makes it possible to modify elements
-after they are drawn. If you need to repeatedly change a small part of
-a big ((picture)) in response to what the user is doing or as part of
-an ((animation)), doing it in a canvas can be needlessly expensive.
-The DOM also allows us to register mouse event handlers on every
-element in the picture (even on shapes drawn with SVG). You can't do
-that with canvas.
+Tanto SVG como HTML contienen una estrucura de datos (el DOM) que
+representa tu imagen. Esto hace posible modificar elementos después
+después de que son dibujados. Si necesitas cambiar de forma repetida
+una pequeña parte de una ((imagen)) grande como respuesta a lo que
+el usuario este haciendo o como parte de una ((animación)), hacerlo
+en un canvas puede ser innecesariamente difícil.
+El DOM también nos permite registrar los _event handlers_ del mouse
+en cada elemento en la imagen (incluso en figuras dibujadas en SVG), cosa que no se puede hacer con el canvas.
 
 {{index performance, optimization}}
 
-But ((canvas))'s ((pixel))-oriented approach can be an advantage when
-drawing a huge number of tiny elements. The fact that it does not
-build up a data structure but only repeatedly draws onto the same
-pixel surface gives canvas a lower cost per shape.
+Pero el enfoque orientado a ((pixeles)) del ((canvas)) puede ser una ventaja
+cuando se trata de dibujar un gran número de elementos pequeños.
+El hecho de que no posea una estructura de datos sino únicamente de 
+dibujar de forma repetida sobre la misma superficie de pixeles le
+da al canvas un costo menor por figura.
 
 {{index "ray tracer"}}
 
-There are also effects, such as rendering a scene one pixel at a time
-(for example, using a ray tracer) or postprocessing an image with
-JavaScript (blurring or distorting it), that can be realistically
-handled only by a ((pixel))-based approach.
+También se pueden agregar efectos, como renderizar una escena con un pixel
+a la vez (por ejemplo, usando trazado de rayos) o postprocesar una
+imagen con JavaScript (agregando _blur o distorsionándola_), que
+puede hacerse de forma realista usando un enfoque basados en pizeles.
 
-In some cases, you may want to combine several of these techniques.
-For example, you might draw a ((graph)) with ((SVG)) or ((canvas)) but
-show ((text))ual information by positioning an HTML element on top
-of the picture.
+En algunso casos, podrías intentar combinar varias de estas técnicas.
+Por ejemplo, podrías dibujar un ((gráfico)) con ((SVG)) o ((canvas)) pero
+mostral información con ((texto)) posicionando un elemnto HTML en
+la parte superior de la imagen.
 
 {{index display}}
 
-For nondemanding applications, it really doesn't matter much which
-interface you choose. The display we built for our game in this
-chapter could have been implemented using any of these three
-((graphics)) technologies since it does not need to draw text, handle
-mouse interaction, or work with an extraordinarily large number of
-elements.
+Para aplicaciones de baja demanda, no importa mucho que interfaz
+escogas. El display que construimos para nuestro juego en este
+capítulo podría haberse hecho implementando cual sea de estas tres
+tecnologías de ((gráficos)) dado que no necesitamos dibujar texto,
+manejar interacciones del mouse o trabajar con un numero de elementos
+extraordinariamente grande.
 
 ## Summary
 
