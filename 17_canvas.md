@@ -1203,47 +1203,48 @@ tecnologías de ((gráficos)) dado que no necesitamos dibujar texto,
 manejar interacciones del mouse o trabajar con un numero de elementos
 extraordinariamente grande.
 
-## Summary
+## Resumen
 
-In this chapter we discussed techniques for drawing graphics in the
-browser, focusing on the `<canvas>` element.
+En este capítulo discutimos técnicas para dibujo de gráficos en el
+navegador, enfoncándonos en el elemento `<canvas>`.
 
-A canvas node represents an area in a document that our program may
-draw on. This drawing is done through a drawing context object,
-created with the `getContext` method.
+Un nodo de canvas representa un área en un documento en el que nuestro
+programa puede dibujar. Este dibujo se hace a través de objetos de
+contexto de dibujo, usando el método `getContext`.
 
-The 2D drawing interface allows us to fill and stroke various shapes.
-The context's `fillStyle` property determines how shapes are filled.
-The `strokeStyle` and `lineWidth` properties control the way lines are
-drawn.
+La interfaz de dibujo 2D nos permite rellenar y delineas varias figuras.
+La propiedad `fillStyle` del contexto determina como las figuras son rellenadas.
+Las propiedades `strokeStyle` y `lineWidth` controlan la manera en
+que las líneas se dibujan.
 
-Rectangles and pieces of text can be drawn with a single method call.
-The `fillRect` and `strokeRect` methods draw rectangles, and the
-`fillText` and `strokeText` methods draw text. To create custom
-shapes, we must first build up a path.
+Los rectángulos y textos se pueden dibujar con una simple llamada de método.
+Los métodos `fillRect` y `strokeRect` dibujan rectángulos y los
+métodos `fillText` y `strokeText` dibujan texto. Para crear 
+figuras a medida, primero debemos crear una ruta.
 
 {{index stroking, filling}}
 
-Calling `beginPath` starts a new path. A number of other methods add
-lines and curves to the current path. For example, `lineTo` can add a
-straight line. When a path is finished, it can be filled with the
-`fill` method or stroked with the `stroke` method.
+Llamar a `beginPath` empieza una nueva ruta. Otra serie de métodos
+agregan líneas y curvas a la ruta actual. Por ejemplo `lineTo` 
+puede dibujar una línea reacta. Cuando la ruta de termina, puede
+rellenarse con el método `fill` o delinearse con el método `stroke`.
 
-Moving pixels from an image or another canvas onto our canvas is done
-with the `drawImage` method. By default, this method draws the whole
-source image, but by giving it more parameters, you can copy a
-specific area of the image. We used this for our game by copying
-individual poses of the game character out of an image that contained
-many such poses.
+Mover pixeles desde una imagen o desde un canvas a otro puede hacerse
+con el método `drawImage`. Por defecto, este método dibuja la imagen
+fuente completa, pero dándole parámetros, puedes copiar un área
+específica de la imagen. La usamos para nuestro juego copiando poses
+individuales del personajes salidas de una imagen que contiene
+muchas poses.
 
-Transformations allow you to draw a shape in multiple orientations. A
-2D drawing context has a current transformation that can be changed
-with the `translate`, `scale`, and `rotate` methods. These will affect
-all subsequent drawing operations. A transformation state can be saved
-with the `save` method and restored with the `restore` method.
+Las transformaciones te permiten dibujar una figura en múltiples orientaciones
+un contexto de dibujo 2D tiene transformaciones que se pueden usar
+con los métodos `translate`, `scale` y `rotate`. Estos afectarán
+todas las operaciones de dibujo subsecuentes. El estado de una
+transformación se puede guardar con el método `save` y restaurar
+con el método `restore`.
 
-When showing an animation on a canvas, the `clearRect` method can be
-used to clear part of the canvas before redrawing it.
+Cuando se muestra una animación en un canvas, el método `clearRect`
+puede usarse para limpiar parte del canvas antes de redibujarlo.
 
 ## Exercises
 
