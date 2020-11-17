@@ -1071,7 +1071,7 @@ CanvasDisplay.prototype.drawPlayer = function(player, x, y,
 
   this.cx.save();
   if (this.flipPlayer) {
-    flipHorizontally(this.cx, x + width / 2);
+    voltearHorizontalmente(this.cx, x + width / 2);
   }
   let tileX = tile * width;
   this.cx.drawImage(playerSprites, tileX, 0, width, height,
@@ -1246,38 +1246,39 @@ con el método `restore`.
 Cuando se muestra una animación en un canvas, el método `clearRect`
 puede usarse para limpiar parte del canvas antes de redibujarlo.
 
-## Exercises
+## Ejercicios
 
-### Shapes
+### Figuras
 
 {{index "shapes (exercise)"}}
 
-Write a program that draws the following ((shape))s on a ((canvas)):
+Escribe un programa que dibuje las siguientes ((figura))s en un ((canvas)):
 
 {{index rotation}}
 
-1. A ((trapezoid)) (a ((rectangle)) that is wider on one side)
+1. Un ((trapezoide)) (un ((rectángle)) que es más inclinado de un lado).
 
-2. A red ((diamond)) (a rectangle rotated 45 degrees or ¼π radians)
+2. Un ((diamante)) rojo (un rentángulo rotado 45 grados o ¼π radianes).
 
-3. A zigzagging ((line))
+3. Una ((línea)) zigzaggeada.
 
-4. A ((spiral)) made up of 100 straight line segments
+4. Una ((espiral)) hecha de 100 segmentos de línea.
 
-5. A yellow ((star))
+5. Una ((estrella)) amarilla.
 
-{{figure {url: "img/exercise_shapes.png", alt: "The shapes to draw",width: "8cm"}}}
+{{figure {url: "img/exercise_shapes.png", alt: "Las figuras a dibujar",width: "8cm"}}}
 
-When drawing the last two, you may want to refer to the explanation of
-`Math.cos` and `Math.sin` in [Chapter ?](dom#sin_cos), which describes
-how to get coordinates on a circle using these functions.
+Cuando dibujes las últimas dos, quizás te interese ver las explicaciones
+de `Math.cos` y `Math.sin` en el  [capítulo ?](dom#sin_cos), que
+describe como obtener coordenadas en un círculo usando estas funciones.
 
 {{index readability, "hard-coding"}}
 
-I recommend creating a function for each shape. Pass the position, and
-optionally other properties such as the size or the number of points,
-as parameters. The alternative, which is to hard-code numbers all over
-your code, tends to make the code needlessly hard to read and modify.
+Recomiendo crear una función para cada figura. Pasa la prporción y
+optionalmente otras propiedades como el tamaño o el número de puntos
+como parámetros. La alternativa, que requiere escribir una numerología
+complicada, tiende a hacer el código innecesariamente difícil de
+leer y modificar.
 
 {{if interactive
 
@@ -1286,7 +1287,7 @@ your code, tends to make the code needlessly hard to read and modify.
 <script>
   let cx = document.querySelector("canvas").getContext("2d");
 
-  // Your code here.
+  // Tu código va aquí.
 </script>
 ```
 
@@ -1296,43 +1297,45 @@ if}}
 
 {{index [path, canvas], "shapes (exercise)"}}
 
-The ((trapezoid)) (1) is easiest to draw using a path. Pick suitable
-center coordinates and add each of the four corners around the center.
+El ((trapezoide)) (1) es el más sencillo de dibujar usando una ruta.
+Escoge unas coordenadas para el centro y agrega una de las esquinas
+alrededor del centro.
 
 {{index "flipHorizontally function", rotation}}
 
-The ((diamond)) (2) can be drawn the straightforward way, with a path,
-or the interesting way, with a `rotate` ((transformation)). To use
-rotation, you will have to apply a trick similar to what we did in the
-`flipHorizontally` function. Because you want to rotate around the
-center of your rectangle and not around the point (0,0), you must
-first `translate` to there, then rotate, and then translate back.
-
-Make sure you reset the transformation after drawing any shape that
-creates one.
+El ((diamante)) (2) puede dibujarse de la forma simple, con una ruta,
+o de la forma interesante, con una ((transformación)) `rotate`. 
+Para usar rotación, tendrás que usar un truco similar al que usamos
+con la función `voltearHorizontalmente`. Ya que lo que se quiere
+es rotar alrededor del centro de su rectángulo y no alrededor del
+punto (0,0), deberías primero usar `translate` ahí, luego rotar, y
+trasladar de regreso.
+Asegúrate de reiniciar la transformación después de dibujar cualquier
+figura que se haya creado.
 
 {{index "remainder operator", "% operator"}}
 
-For the ((zigzag)) (3) it becomes impractical to write a new call to
-`lineTo` for each line segment. Instead, you should use a ((loop)).
-You can have each iteration draw either two ((line)) segments (right
-and then left again) or one, in which case you must use the evenness
-(`% 2`) of the loop index to determine whether to go left or right.
+Para el ((zigzag)) (3) se vuelve impráctico escribir una nueva llamada
+a `lineTo` para cada línea de segmento. En vez de eso, deberías 
+usar un ((loop)). Puedes tener una iteración de dibujo por cada dos
+segmentos de ((línea))s (derecha y luego izquierda de nuevo) o uno,
+en cuyo caso deberías usar el operador (`% 2`) del índice del loop
+para determinar la dirección a la derecha o a la izquierda.
 
-You'll also need a loop for the ((spiral)) (4). If you draw a series
-of points, with each point moving further along a circle around the
-spiral's center, you get a circle. If, during the loop, you vary the
-radius of the circle on which you are putting the current point and go
-around more than once, the result is a spiral.
+También necesitarás usar un loop para el ((espiral)) (4). Sí dibujas
+una serie de puntos, con cada punto moviéndose en un círculo alrededor
+del centro de la espiral, obtienes un círculo. Sí durante el loop 
+varías el radio del círculo en el que colocas el punto y lo repites,
+el resultado es una espiral.
 
 {{index "quadraticCurveTo method"}}
 
-The ((star)) (5) depicted is built out of `quadraticCurveTo` lines.
-You could also draw one with straight lines. Divide a circle into
-eight pieces for a star with eight points, or however many pieces you
-want. Draw lines between these points, making them curve toward the
-center of the star. With `quadraticCurveTo`, you can use the center as
-the control point.
+La ((estrella)) (5) se puede dibujar a partir de las líneas de `quadraticCurveTo`.
+También podrías dibujar una con líneas gruesas. Divide un círculo
+en ocho piezas para una estrella de ocho puntos, o cuantas piezas
+quieras. Dibuja líneas entre estos puntos, haciéndolas curvas alrededor
+del centro de la estrella. Con `quadraticCurveTo`, puedes hacer uso
+del centro como punto de control.
 
 hint}}
 
