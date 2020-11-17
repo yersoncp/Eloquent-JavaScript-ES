@@ -1341,19 +1341,19 @@ hint}}
 
 {{id exercise_pie_chart}}
 
-### The pie chart
+### La gráfica de pastel
 
 {{index label, text, "pie chart example"}}
 
-[Earlier](canvas#pie_chart) in the chapter, we saw an example program
-that drew a pie chart. Modify this program so that the name of each
-category is shown next to the slice that represents it. Try to find a
-pleasing-looking way to automatically position this text that would
-work for other data sets as well. You may assume that categories are
-big enough to leave ample room for their labels.
+[Anteriormente](canvas#pie_chart) en este capítulo, vimos el ejemplo
+de un programa que dibuja una gráfica de pastel. Modifica este programa
+de forma que el nombre de cada categoría este al lado de la sección
+que representa. Trata de encontrar una forma que se posicione automáticamente
+de forma adecuada que funcione con otros conjuntos de datos. Puedes
+asumir que esas categorías son lo suficientemente amplias para las etiquetas.
 
-You might need `Math.sin` and `Math.cos` again, which are described in
-[Chapter ?](dom#sin_cos).
+Podrías necesitar `Math.sin` y `Math.cos` de nuevo, las cuales se 
+describen en el [Capítulo ?](dom#sin_cos).
 
 {{if interactive
 
@@ -1366,7 +1366,8 @@ You might need `Math.sin` and `Math.cos` again, which are described in
   let currentAngle = -0.5 * Math.PI;
   let centerX = 300, centerY = 150;
 
-  // Add code to draw the slice labels in this loop.
+  // Agrega código en este loop para dibujar las etiquetas 
+  // de las secciones
   for (let result of results) {
     let sliceAngle = (result.count / total) * 2 * Math.PI;
     cx.beginPath();
@@ -1386,19 +1387,19 @@ if}}
 
 {{index "fillText method", "textAlign property", "textBaseline property", "pie chart example"}}
 
-You will need to call `fillText` and set the context's `textAlign` and
-`textBaseline` properties in such a way that the text ends up where
-you want it.
+Necesitarás llamar `fillText` y establecer el contexto de `textAlign`
+y las propiedades de `textBaseline` de manera que el texto termine
+donde quieres.
 
-A sensible way to position the labels would be to put the text on the
-line going from the center of the pie through the middle of the slice.
-You don't want to put the text directly against the side of the pie
-but rather move the text out to the side of the pie by a given number
-of pixels.
+Una manera sensible de posicionar las etiquetas podría ser poner el
+texto en la línea desde el centro de la gráfica a través de la mitad
+de la sección.
+No queremos que el texto quede directamente al lado de la gráfica,
+sino moverlo al lado de la gráfica por unos cuantos píxeles.
 
-The ((angle)) of this line is `currentAngle + 0.5 * sliceAngle`. The
-following code finds a position on this line 120 pixels from the
-center:
+El ((ángulo)) de está línea es `currentAngle + 0.5 * sliceAngle`. 
+El siguiente código encuentra una posición en esta línea 120 píxels
+desde el centro:
 
 ```{test: no}
 let middleAngle = currentAngle + 0.5 * sliceAngle;
@@ -1406,19 +1407,17 @@ let textX = Math.cos(middleAngle) * 120 + centerX;
 let textY = Math.sin(middleAngle) * 120 + centerY;
 ```
 
-For `textBaseline`, the value `"middle"` is probably appropriate when
-using this approach. What to use for `textAlign` depends on which side
-of the circle we are on. On the left, it should be `"right"`, and on
-the right, it should be `"left"`, so that the text is positioned away
-from the pie.
+Para `textBaseline`, el valor `"middle"` es muy apropiado cuando
+se quiere usar este enfoque. Para lo que se use `textAlign` depende
+de que lado del círculo este. A la izquierda, deberá ser `"right"`, a la derecha, deberá ser `"left"`, para que el texto se coloque lejos de la gráfica.
 
 {{index "Math.cos function"}}
 
-If you are not sure how to find out which side of the circle a given
-angle is on, look to the explanation of `Math.cos` in [Chapter
-?](dom#sin_cos). The cosine of an angle tells us which x-coordinate it
-corresponds to, which in turn tells us exactly which side of the
-circle we are on.
+Si no estamos seguros de como encontrar el lado del círculo dado
+un ángulo, mira la explicación de `Math.cos` en el [Capítulo
+?](dom#sin_cos). El coseno de un ángulo nos dice en que coordenada
+en x le corresponde para saber exactamente en que lado del círculo
+nos encontramos.
 
 hint}}
 
