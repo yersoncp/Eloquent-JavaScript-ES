@@ -1421,14 +1421,14 @@ nos encontramos.
 
 hint}}
 
-### A bouncing ball
+### Un balón botador
 
 {{index [animation, "bouncing ball"], "requestAnimationFrame function", bouncing}}
 
-Use the `requestAnimationFrame` technique that we saw in [Chapter
-?](dom#animationFrame) and [Chapter ?](game#runAnimation) to draw a
-((box)) with a bouncing ((ball)) in it. The ball moves at a constant
-((speed)) and bounces off the box's sides when it hits them.
+Usar la técnica de `requestAnimationFrame` que vimos en el [Capítulo
+?](dom#animationFrame) y [Chapter ?](game#runAnimation) para dibujar una
+((caja)) con un ((balón)) botando en el. El balón se mueve a una
+((velocidad)) constante y bota fuera de la caja cuando golpea un borde de la caja.
 
 {{if interactive
 
@@ -1448,7 +1448,7 @@ Use the `requestAnimationFrame` technique that we saw in [Chapter
   requestAnimationFrame(frame);
 
   function updateAnimation(step) {
-    // Your code here.
+    // Tu código va aquí.
   }
 </script>
 ```
@@ -1459,26 +1459,27 @@ if}}
 
 {{index "strokeRect method", animation, "arc method"}}
 
-A ((box)) is easy to draw with `strokeRect`. Define a binding that
-holds its size or define two bindings if your box's width and height
-differ. To create a round ((ball)), start a path and call `arc(x, y,
-radius, 0, 7)`, which creates an arc going from zero to more than a
-whole circle. Then fill the path.
+Una ((caja)) es fácil de dibujar con `strokeRect`. Define los bordes
+para su tamaño o define dos bordes si el ancho y largo de la caja
+son distintos. Para crear el ((balón)), empieza una ruta y llama
+`arc(x, y, radius, 0, 7)`, que crea un arco desde cero hasta algo
+más de un círculo entero. Entonces rellena la ruta.
 
 {{index "collision detection", "Vec class"}}
 
-To model the ball's position and ((speed)), you can use the `Vec`
-class from [Chapter ?](game#vector)[ (which is available on this
-page)]{if interactive}. Give it a starting speed, preferably one that
-is not purely vertical or horizontal, and for every ((frame)) multiply
-that speed by the amount of time that elapsed. When the ball gets
-too close to a vertical wall, invert the x component in its speed.
-Likewise, invert the y component when it hits a horizontal wall.
+Para modelar la posición y ((velocidad)), puedes usar la clase `Vec`
+del [Capítulo ?](game#vector)[ (que está disponible en está página
+)]{if interactive}. Dada una velocidad inicial, preferentemente uno
+que no es puramente vertical o horizontal, y para cada ((frame))
+multiplica esa velocidad por el monto de tiempo que transcurra.
+Cuando el balón esté cerca de un muro vertical, invierte el componente x
+en su velocidad. De manera similar, invierte el componente y cuando
+golpee un muro horizontal.
 
 {{index "clearRect method", clearing}}
 
-After finding the ball's new position and speed, use `clearRect` to
-delete the scene and redraw it using the new position.
+Después de encontrar la nueva posición y velocidad del balón, usa 
+`clearRect` para borrar la escena y redibujarla usando la nueva posición.
 
 hint}}
 
