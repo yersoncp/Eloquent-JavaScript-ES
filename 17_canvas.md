@@ -1483,42 +1483,44 @@ Después de encontrar la nueva posición y velocidad del balón, usa
 
 hint}}
 
-### Precomputed mirroring
+### Reflejo precalculado
 
 {{index optimization, "bitmap graphics", mirror}}
 
-One unfortunate thing about ((transformation))s is that they slow down
-the drawing of bitmaps. The position and size of each ((pixel)) has to be
-transformed, and though it is possible that ((browser))s will get
-cleverer about transformation in the ((future)), they currently cause a
-measurable increase in the time it takes to draw a bitmap.
+Una cosa desafortunada sobre la ((transformacion))es que ralentizan
+el dibujado de mapa de bits. La posición y tamaño de cada ((pixel))
+tiene que ser transformada e incluso es posible que los ((navegador))es
+estén listos para la transformación en el ((futuro)), actualmente
+causa un incremento considerable en el tiempo que toma dibujar un 
+mapa de bits.
 
-In a game like ours, where we are drawing only a single transformed
-sprite, this is a nonissue. But imagine that we need to draw hundreds
-of characters or thousands of rotating particles from an explosion.
+En un juego como el nuestro, donde dibujamos un simple sprite transformado
+que no es un gran problema. Pero imagina que necesitamos dibujar
+cientos de personajes o miles de partículas rotatorias de una explosión.
 
-Think of a way to allow us to draw an inverted character without
-loading additional image files and without having to make transformed
-`drawImage` calls every frame.
+Piensa en una forma de permitirnos dibujar personajes sin cargar 
+imágenes adiciones y sin tener que transformar las llamadas de
+`drawImage` cada frame.
 
 {{hint
 
 {{index mirror, scaling, "drawImage method"}}
 
-The key to the solution is the fact that we can use a ((canvas))
-element as a source image when using `drawImage`. It is possible to
-create an extra `<canvas>` element, without adding it to the document,
-and draw our inverted sprites to it, once. When drawing an actual
-frame, we just copy the already inverted sprites to the main canvas.
+La clave de la solución es el hecho de que podemos hacer uso de un elemento
+((canvas)) como fuente de la image cuando usemos `drawImage`. Es
+posible crear un elemento `<canvas>`, sin agregarlos al documento,
+y dibujar nuestros sprites invertidos en ello. Cuando dibujamos un
+frame, en realidad solo copiamos los sprites invertidos al canvas principal.
 
 {{index "load event"}}
 
-Some care would be required because images do not load instantly. We
-do the inverted drawing only once, and if we do it before the image
-loads, it won't draw anything. A `"load"` handler on the image can be
-used to draw the inverted images to the extra canvas. This canvas can
-be used as a drawing source immediately (it'll simply be blank until
-we draw the character onto it).
+Podríamos necesitar algunas precauciones para evitar que las imágenes 
+se carguen de forma instantánea. Hacemos el dibujo invertido una 
+sola vez, y si lo hacemos antes de que cargue la imagen, no dibujará nada.
+Un handler `"load"` en la imagen puede usarse para dibujar imágenes
+invertidas al canvas extra. Este canvas puede ser usado como una 
+imagen fuente (solo aparecerá en blanco hasta que dibujemos un
+personaje en él).
 
 hint}}
 
