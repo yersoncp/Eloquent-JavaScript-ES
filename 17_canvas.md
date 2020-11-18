@@ -42,7 +42,7 @@ intefaz de programción para dibujar ((forma))s en el espacio
 del nodo. La principal diferencia entre un canvas y una imagen
 SVG es que en SVG la descripción original de las figuras es
 preservada de manera que puedan ser movidas o reescaladas en cualquier momento. Un canvas,
-por otro lado, convierte las figuras a ((pixele))s (puntos de color en
+por otro lado, convierte las figuras a ((pixel))es (puntos de color en
 una rejilla) tan pronto son dibujadas y no recuerda cuáles
 pixeles representa. La única forma de mover una figura en un canvas es limpíando
 el canvas (o la parte del canvas alrededor de la figura) y redibujarlo
@@ -72,8 +72,7 @@ El atributo `xmlns` cambia un elemento (y sus hijos) a un
 _XML namespace_ diferente. Este _namespace_, identificado por una ((URL)),
 especifica el dialecto que estamos usando. las etiquetas 
 `<circle>` y `<rect>`, —que no existen en HTML, pero tienen un significado en
-SVG— dibujan formas usando el estilo y posición especificados por sus
-atributos.
+SVG— dibujan formas usando el estilo y posición especificados por sus atributos.
 
 {{if book
 
@@ -119,8 +118,8 @@ gráficos de tres dimensiones mediante la intefaz de OpenGL.
 Este libro no abordará WebGL —nos limitaremos a dos dimensiones—. Pero si
 de verdad te interesan los gráficos tridimensionales, te recomiendo que
 investigues sobre WebGL. Provee una interfaz directa hacia hardware de
-gráficos y te permite renderizar escenarios complicados de forma eficiente
-usando JavaScript.
+gráficos y te permite renderizar escenarios complicados de forma 
+eficiente usando JavaScript.
 
 {{index "getContext method", [canvas, context]}}
 
@@ -140,12 +139,12 @@ elemento `<canvas>` del DOM.
 ```
 
 Después de crear el objeto contexto, el ejemplo dibuja un
-((rectangulo)) rojo de 100 ((pixel))es de ancho y 50 pixeles de alto con su esquina superior izquierda
+((rectángulo)) rojo de 100 ((pixel))es de ancho y 50 pixeles de alto con su esquina superior izquierda
 en las coordenadas (10,10).
 
 {{if book
 
-{{figure {url: "img/canvas_fill.png", alt: "Un canvas con un rectangulo",width: "2.5cm"}}}
+{{figure {url: "img/canvas_fill.png", alt: "Un canvas con un rectángulo",width: "2.5cm"}}}
 
 if}}
 
@@ -164,15 +163,13 @@ la esquina superior izquierda.
 
 En la interfaz del ((canvas)), una figura puede ser _rellenada_ dado
 un cierto color o diseño, o puede ser _delimtada_, que
-significa una ((linea)) dibujada en los bordes. La misma terminología aplica
-para SVG.
+significa una ((línea)) dibujada en los bordes. La misma terminología aplica para SVG.
 
 {{index "fillRect method", "strokeRect method"}}
 
 El método `fillRect` rellena un ((rectángulo)). Usa primero las ((coordenadas)) `x` e
 `y` desde la esquina superior izquierda del rectángulo, después su dimensiones de ancho
-y alto. Un método parecido `strokeRect`, dibuja los
-((bordes)) del rectángulo.
+y alto. Un método parecido `strokeRect`, dibuja los ((bordes)) del rectángulo.
 
 {{index [state, "of canvas"]}}
 
@@ -184,8 +181,8 @@ propiedades del contexto del objeto.
 {{index filling, "fillStyle property"}}
 
 La propiedad `fillStyle` controla La manera que se rellenan las figuras. Puede ser 
-estableciendo una cadena que especifique un ((color)), usando la misma notación
-que en ((CSS)).
+estableciendo una cadena que especifique un ((color)), usando la 
+misma notación que en ((CSS)).
 
 {{index stroking, "line width", "strokeStyle property", "lineWidth property", canvas}}
 
@@ -1322,9 +1319,9 @@ segmentos de ((línea))s (derecha y luego izquierda de nuevo) o uno,
 en cuyo caso deberías usar el operador (`% 2`) del índice del loop
 para determinar la dirección a la derecha o a la izquierda.
 
-También necesitarás usar un loop para el ((espiral)) (4). Sí dibujas
+También necesitarás usar un loop para el ((espiral)) (4). Si dibujas
 una serie de puntos, con cada punto moviéndose en un círculo alrededor
-del centro de la espiral, obtienes un círculo. Sí durante el loop 
+del centro de la espiral, obtienes un círculo. Si durante el loop 
 varías el radio del círculo en el que colocas el punto y lo repites,
 el resultado es una espiral.
 
@@ -1494,21 +1491,21 @@ estén listos para la transformación en el ((futuro)), actualmente
 causa un incremento considerable en el tiempo que toma dibujar un 
 mapa de bits.
 
-En un juego como el nuestro, donde dibujamos un simple sprite transformado
-que no es un gran problema. Pero imagina que necesitamos dibujar
+En un juego como el nuestro, donde dibujamos un simple sprite transformado,
+esto no es un gran problema. Pero imagina que necesitamos dibujar
 cientos de personajes o miles de partículas rotatorias de una explosión.
 
 Piensa en una forma de permitirnos dibujar personajes sin cargar 
 imágenes adiciones y sin tener que transformar las llamadas de
-`drawImage` cada frame.
+`drawImage` en cada frame.
 
 {{hint
 
 {{index mirror, scaling, "drawImage method"}}
 
 La clave de la solución es el hecho de que podemos hacer uso de un elemento
-((canvas)) como fuente de la image cuando usemos `drawImage`. Es
-posible crear un elemento `<canvas>`, sin agregarlos al documento,
+((canvas)) como fuente de la imagen cuando usemos `drawImage`. Es
+posible crear un elemento `<canvas>` sin agregarlo al documento
 y dibujar nuestros sprites invertidos en ello. Cuando dibujamos un
 frame, en realidad solo copiamos los sprites invertidos al canvas principal.
 
@@ -1518,7 +1515,7 @@ Podríamos necesitar algunas precauciones para evitar que las imágenes
 se carguen de forma instantánea. Hacemos el dibujo invertido una 
 sola vez, y si lo hacemos antes de que cargue la imagen, no dibujará nada.
 Un handler `"load"` en la imagen puede usarse para dibujar imágenes
-invertidas al canvas extra. Este canvas puede ser usado como una 
+invertidas en el canvas extra. Este canvas puede ser usado como una 
 imagen fuente (solo aparecerá en blanco hasta que dibujemos un
 personaje en él).
 
