@@ -422,3 +422,42 @@ desarrolladores del navegador responden arreglando ese problema, y todo está bi
 nuevamente, hasta que el próximo problema es descubierto, y tal vez se haga
 público, en lugar de ser explotado de forma secreta por una agencia del gobierno
 o ((mafia)).
+
+## Compatibilidad y la guerra de los navegadores
+
+{{index Microsoft, "World Wide Web"}}
+
+En las etapas tempranas de la Web, un navegador llamado ((Mosaic)) dominó el mercado.
+Después de unos cuantos años, la balanza se inclinó hacia ((Netscape)), el cual fue
+suplantado después por el browser de Microsoft ((Internet Explorer)). En cualquier punto
+en el que un único ((navegador)) fuera dominante, el fabricante de ese navegador se
+sentía con derecho de inventar nuevas caracteristicas unilateralmente para la Web.
+Ya que la mayoria de los usuarios usaban el navegador más popular, los ((sitios web))
+simplemente empezarían a usar esas caracteristicas sin importarles los otros navegadores.
+
+Ésta fue la edad oscura de la ((compatibilidad)), algunas veces llamada
+_((guerra de navegadores))_. Los desarrolladores Web tenían que lidiar con
+dos o tres plataformas incompatibles. Para hacer las cosas peor, los navegadores
+usados alrededor del 2003 estaban llenos de ((defectos)), y  por supuesto,
+los defectos eran distintos para cada ((navegador)). La vida era dura para los
+que escribian páginas Web.
+
+{{index Apple, "Internet Explorer", Mozilla}}
+
+Mozilla ((Firefox)), una derivación sin fines de lucro de ((Netscape)), retó
+la posición de Internet Explorer a finales de los 2000. Ya que ((Microsoft))
+no estaba interesado en mantenerse competitivo en ese momento, Firefox tomó
+una gran parte del mercado de Internet Explorer. Más o menos al mismo tiempo,
+((Google)) introdujo su navegador ((Chrome)), el navegador ((Safari)) de Apple
+también ganó popularidad, llevando a una situación en la que existieron cuatro
+grandes competidores, en lugar de uno.
+
+{{index compatibility}}
+
+Los nuevos competidores tuvieron una actitud más seria hacia los ((estándar))es y
+mejores prácticas de ((ingeniería)), dándonos menos incompatibilidad y menos
+defectos. Microsoft, al vez que su parte del mercado caerse, le dio la vuelta y
+adoptó esas actitudes en su navegador Edge, el cual reemplaza a Internet Explorer.
+Si tú estás empezando a aprender desarrollo web, considérate afortunado. Las
+últimas versiones de los navegadores se comportan uniformemente bien y tienen
+relativamente menos defectos.
