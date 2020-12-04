@@ -384,3 +384,41 @@ Algunos atributos también pueden contener un programa JavaScript. La etiqueta
 Nota que tuve que usar comillas simples para la cadena en el atributo `onclick`
 porque las comillas dobles ya están siendo utilizadas para encerrar el atributo
 completo. También pude haber usado `&quot;`.
+
+## En la caja de arena
+
+{{index "malicious script", "World Wide Web", browser, website, security}}
+
+Ejecutar programas descargados de ((Internet)) es pontencialmente peligroso.
+No conoces mucho de las personas detrás de la mayoría de los sitios que visitas,
+y no necesariamente quieren hacer el bien. Ejecutar programas de gente que no
+quiere hacer el bien es como tu computadora se infecta de ((virus)), te roban
+la información y compromenten tus cuentas.
+
+Aunque la atracción de la Web es que puedes navegar sin necesariamente ((confiar))
+en todas las páginas que visitas. Ésa es la razón por la cual los navegadores
+limitan en gran medida las cosas que un programa JavaScript puede hacer: no puede
+revisar los archivos en tu computadora o modificar nada relacionado a la página web
+en la que se inscrustó.
+
+{{index isolation}}
+
+Aislar un entorno de programación en ésta forma es llamado _((sandbox))ing_,
+la idea es que el programa pueda ejecutarse sin daños en una caja de arena.
+Pero deberías imaginar que este tipo particular de caja de arena es como tener
+los programas detrás de barras de acero y que no pueden salir.
+
+la parte complicada del sandboxing es permitirle al programa suficientes permisos
+para ser útil y a la vez restringirlo de hacer cualquier cosa peligrosa. Mucha
+funcionalidad, como comunicarse con otros servidores o leer el contenido del
+portapapeles puede ser problematico, son cosas que invaden la ((privacidad)).
+
+{{index leak, exploit, security}}
+
+De vez en cuando, alguien tiene una nueva forma de evitar las limitaciones de un
+((navegador)) y hacer cosas dañinas, desde exponer información privada sin importancia
+hasta tomar el control de toda la máquina sobre la que corre el navegador. Los
+desarrolladores del navegador responden arreglando ese problema, y todo está bien
+nuevamente, hasta que el próximo problema es descubierto, y tal vez se haga
+público, en lugar de ser explotado de forma secreta por una agencia del gobierno
+o ((mafia)).
