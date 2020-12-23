@@ -57,11 +57,11 @@ Podemos representar el fondo como una tabla ya que es una ((cuadrícula)) invari
 
 {{index performance, [DOM, graphics]}}
 
-En los juegos y otros programas que deben animar ((gráficos)) y responder a la ((entrada)) del usuario sin retraso notable, la ((eficiencia)) es importante. Aunque el DOM no fue diseñado originalmente para gráficos de alto rendimiento, es realmente mejor en ello de lo que se esperaría. Viste algunas ((animaciones)) en [Chapter ?](dom#animation). En una máquina moderna, un simple juego como este desempeña bien, aún si no nos preocupamos mucho de la ((optimización)).
+En los juegos y otros programas que deben animar ((gráficos)) y responder a la ((entrada)) del usuario sin retraso notable, la ((eficiencia)) es importante. Aunque el DOM no fue diseñado originalmente para gráficos de alto rendimiento, es realmente mejor en ello de lo que se esperaría. Viste algunas ((animaciones)) en [Capítulo ?](dom#animation). En una máquina moderna, un simple juego como este desempeña bien, aún si no nos preocupamos mucho de la ((optimización)).
 
 {{index canvas, [DOM, graphics]}}
 
-En el  [siguiente capítulo](canvas), exploraremos otra tecnología del ((navegador)), la etiqueta `<canvas>`, la cual provee un forma más tradicional de dibujar gráficos, trabajando en término de formas y ((pixel))es más que elementos del DOM.
+En el [siguiente capítulo](canvas), exploraremos otra tecnología del ((navegador)), la etiqueta `<canvas>`, la cual provee un forma más tradicional de dibujar gráficos, trabajando en término de formas y ((pixel))es más que elementos del DOM.
 
 ## Niveles
 
@@ -72,7 +72,7 @@ Vamos a querer una forma de especificar niveles que sea fácilmente leíble y ed
 El plano para un nivel pequeño podría lucir como esto:
 
 ```{includeCode: true}
-let planoDeNivel = `
+let simplePlanoDeNivel = `
 ......................
 ..#................#..
 ..#..............=.#..
@@ -141,7 +141,7 @@ Para interpretar los caracteres en el plano, el constructor del `Nivel` usa el o
 
 {{index "Vec class"}}
 
-La posición del actor es guardada como un objeto `Vector`. Este es un vector bidimensional, un objeto con propiedades `x` y `y`, como se vió en los ejercicios de [Chapter ?](object#exercise_vector).
+La posición del actor es guardada como un objeto `Vector`. Este es un vector bidimensional, un objeto con propiedades `x` y `y`, como se vió en los ejercicios de [Capítulo ?](object#exercise_vector).
 
 {{index [state, in objects]}}
 
@@ -170,36 +170,21 @@ La propiedad `estatus` cambiará a `"perdido"` or `"ganado"` cuando el juego hay
 
 Esto es de nuevo una estructura de datos persistente-actualizar el estado del juego crea un nuevo estado y deja el anterior intacto.
 
-## Actors
+## Actores
 
 {{index actor, "Vec class", [interface, object]}}
 
-Actor objects represent the current position and state of a given
-moving element in our game. All actor objects conform to the same
-interface. Their `pos` property holds the coordinates of the
-element's top-left corner, and their `size` property holds its size.
+Los objetos Actor representan la posición actual y el estado de un elemento móvil dado en nuestro juego. Todos los objetos Actor se ajustan a la misma interface. Su propiedad `posicion` tiene las coordenadas de la esquina superior izquierda del elemento y su propiedad `tamano` tiene su tamaño.
 
-Then they have an `update` method, which is used to compute their
-new state and position after a given time step. It simulates the thing
-the actor does—moving in response to the arrow keys for the player and
-bouncing back and forth for the lava—and returns a new, updated actor
-object.
+Luego tienen un método `update`, que es usado para computar su nuevo estado y posición después de un paso de tiempo. Simula lo que hace el actor -moviéndose en respuesta a las teclas de flecha para el jugador y rebotar de un lado a otro para la lava-y regresa un objeto actor nuevo y actualizado.
 
-A `type` property contains a string that identifies the type of the
-actor—`"player"`, `"coin"`, or `"lava"`. This is useful when drawing
-the game—the look of the rectangle drawn for an actor is based on its
-type.
+Una propiedad `tipo` contiene la cadena de caracteres que identifica el tipo de actor `"jugador"`, `"moneda"` o `"lava"`. Esto es útil cuando se dibuja el juego-la apariencia del rectángulo dibujado para un actor está basado en su tipo.
 
-Actor classes have a static `create` method that is used by the
-`Level` constructor to create an actor from a character in the level
-plan. It is given the coordinates of the character and the character
-itself, which is needed because the `Lava` class handles several
-different characters.
+Las clases actor tienen un método estático `create` que es usado por el constructor de `Nivel` para crear un actor a partir de un caracter en el plano de nivel. Se le dan las coordenadas del caracter y el caracter mismo, el cuál es necesario debido a que la clase `Lava` maneja diferentes caracteres.
 
 {{id vector}}
 
-This is the `Vector` class that we'll use for our two-dimensional values,
-such as the position and size of actors.
+Esta es la clase `Vector` que usaremos para nuestros valores bidimensionales, tales como la posición y el tamaño de los actores.
 
 ```{includeCode: true}
 class Vector {
@@ -217,195 +202,139 @@ class Vector {
 
 {{index "times method", multiplication}}
 
-The `times` method scales a vector by a given number. It will be
-useful when we need to multiply a speed vector by a time interval to
-get the distance traveled during that time.
+El método `times` escala un vector por un número dado. Será útil cuando necesitemos multiplicar un vector de velocidad por un intervalo de tiempo para obtener la distancia recorrida durante ese tiempo.
 
-The different types of actors get their own classes since their
-behavior is very different. Let's define these classes. We'll get to
-their `update` methods later.
+Los diferentes tipos de actores tienen sus propias clases ya que su comportamiento es diferente. Vamos a definir estas clases. Veremos sus métodos `update` después.
 
 {{index simulation, "Player class"}}
 
-The player class has a property `speed` that stores its current speed
-to simulate momentum and gravity.
+La clase jugador tiene una propiedad `velocidad` que guarda su velocidad actual para simular momento y gravedad.
 
 ```{includeCode: true}
-class Player {
-  constructor(pos, speed) {
-    this.pos = pos;
-    this.speed = speed;
+class Jugador {
+  constructor(posicion, velocidad) {
+    this.posicion = posicion;
+    this.velocidad = velocidad;
   }
 
-  get type() { return "player"; }
+  get type() { return "jugador"; }
 
-  static create(pos) {
-    return new Player(pos.plus(new Vector(0, -0.5)),
+  static create(posicion) {
+    return new Jugador(posicion.plus(new Vector(0, -0.5)),
                       new Vector(0, 0));
   }
 }
 
-Player.prototype.size = new Vector(0.8, 1.5);
+Player.prototype.tamano = new Vector(0.8, 1.5);
 ```
 
-Because a player is one-and-a-half squares high, its initial position
-is set to be half a square above the position where the `@` character
-appeared. This way, its bottom aligns with the bottom of the square it
-appeared in.
+Debido a que un jugador tiene una altura de un cuadrado y medio, su posición inicial está establecida a ser medio cuadrado arriba de la posición donde el caracter `@` apareció. De esta manera, su parte inferior se alinea con la parte inferior del cuadrado en el que apareció.
 
-The `size` property is the same for all instances of `Player`, so we
-store it on the prototype rather than on the instances themselves. We
-could have used a ((getter)) like `type`, but that would create and
-return a new `Vector` object every time the property is read, which would
-be wasteful. (Strings, being ((immutable)), don't have to be re-created
-every time they are evaluated.)
+La propiedad `tamano` es la misma para todas las instancias de `Jugador`, así que la guardamos en el prototipo en vez de en la instancia misma. Podríamos haber usado un ((getter)) como `type`, pero eso crearía y regresaría un nuevo objeto `Vector` cada vez que la propiedad sea leída, lo cual sería desperdicio. (Las cadenas de caracteres, siendo ((inmutables)), no tienen que ser creadas de nuevo cada vez que son evaluadas.)
 
 {{index "Lava class", bouncing}}
 
-When constructing a `Lava` actor, we need to initialize the object
-differently depending on the character it is based on. Dynamic lava
-moves along at its current speed until it hits an obstacle. At that
-point, if it has a `reset` property, it will jump back to its start
-position (dripping). If it does not, it will invert its speed and
-continue in the other direction (bouncing).
+Al construir un actor `Lava`, necesitamos inicializar el objeto de manera diferente dependiendo del caracter en el que está basado. La lava dinámica se mueve a su velocidad actual hasta que pega con un obstáculo. En ese punto, si tiene una propiedad `reiniciar`, brincará de regreso a su posición inicial (goteando). Si no lo hace, invertirá su velocidad y continuará en otra dirección (rebotando).
 
-The `create` method looks at the character that the `Level`
-constructor passes and creates the appropriate lava actor.
+El método `create` mira al caracter que el constructor de `Level` pasa y crea el actor de lava apropiado.
 
 ```{includeCode: true}
 class Lava {
-  constructor(pos, speed, reset) {
-    this.pos = pos;
-    this.speed = speed;
-    this.reset = reset;
+  constructor(posicion, velocidad, reiniciar) {
+    this.posicion = posicion;
+    this.velocidad = velocidad;
+    this.reiniciar = reiniciar;
   }
 
   get type() { return "lava"; }
 
-  static create(pos, ch) {
-    if (ch == "=") {
-      return new Lava(pos, new Vector(2, 0));
-    } else if (ch == "|") {
-      return new Lava(pos, new Vector(0, 2));
-    } else if (ch == "v") {
-      return new Lava(pos, new Vector(0, 3), pos);
+  static create(posicion, car) {
+    if (car == "=") {
+      return new Lava(posicion, new Vector(2, 0));
+    } else if (car == "|") {
+      return new Lava(posicion, new Vector(0, 2));
+    } else if (car == "v") {
+      return new Lava(posicion, new Vector(0, 3), posicion);
     }
   }
 }
 
-Lava.prototype.size = new Vector(1, 1);
+Lava.prototype.tamano = new Vector(1, 1);
 ```
 
 {{index "Coin class", animation}}
 
-`Coin` actors are relatively simple. They mostly just sit in their
-place. But to liven up the game a little, they are given a "wobble", a
-slight vertical back-and-forth motion. To track this, a coin object
-stores a base position as well as a `wobble` property that tracks the
-((phase)) of the bouncing motion. Together, these determine the coin's
-actual position (stored in the `pos` property).
+Los actores `Moneda` son relativamente simples. Mayormente se quedan en su lugar. Pero para avivar un poco el juego, se les da un "bamboleo", un leve movimiento vertical de arriba a abajo. Para serguir esto, un objeto moneda guarda una posición base así como una propiedad `wobble` que registra la ((fase)) del movimiento de rebote. Juntos, estos determinan la posición real de la moneda (guardada en la propiedad `posicion`).
 
 ```{includeCode: true}
-class Coin {
-  constructor(pos, basePos, wobble) {
-    this.pos = pos;
-    this.basePos = basePos;
-    this.wobble = wobble;
+class Moneda {
+  constructor(posicion, posBase, bamboleo) {
+    this.posicion = posicion;
+    this.posBase = posBase;
+    this.bamboleo = bamboleo;
   }
 
   get type() { return "coin"; }
 
-  static create(pos) {
-    let basePos = pos.plus(new Vector(0.2, 0.1));
-    return new Coin(basePos, basePos,
+  static create(posicion) {
+    let posBase = posicion.plus(new Vector(0.2, 0.1));
+    return new Coin(posBase, posBase,
                     Math.random() * Math.PI * 2);
   }
 }
 
-Coin.prototype.size = new Vector(0.6, 0.6);
+Coin.prototype.tamano = new Vector(0.6, 0.6);
 ```
 
 {{index "Math.random function", "random number", "Math.sin function", sine, wave}}
 
-In [Chapter ?](dom#sin_cos), we saw that `Math.sin` gives us the
-y-coordinate of a point on a circle. That coordinate goes back and
-forth in a smooth waveform as we move along the circle, which makes
-the sine function useful for modeling a wavy motion.
+En el [Capítulo ?](dom#sin_cos), vimos que `Math.sin` nos da la coordenada-y de un punto en un círculo. Esa coordenada va de lado a otro en una forma de onda suave mientras nos movemos por el círculo, lo cual hace útil a la función seno para modelar movimiento ondulado.
 
 {{index pi}}
 
-To avoid a situation where all coins move up and down synchronously,
-the starting phase of each coin is randomized. The _((phase))_ of
-`Math.sin`'s wave, the width of a wave it produces, is 2π. We multiply
-the value returned by `Math.random` by that number to give the coin a
-random starting position on the wave.
+Para evitar una situación donde todas las monedas se mueven arriba y abajo sincrónicamente, la fase inicial de cada moneda es aleatoria. La _((fase))_ de la onda de `Math.sin`, el ancho de la onda que produce, es 2π. Multiplicamos el valor retornado por `Math.random` por ese número para dar a la moneda una posición inicial aleatoria en la onda.
 
 {{index map, [object, "as map"]}}
 
-We can now define the `levelChars` object that maps plan characters to
-either background grid types or actor classes.
+Ahora podemos definir el objeto `caracteresDeNivel` que mapea los caracteres del plano ya sea a rejilla de fondo o clases de actores.
 
 ```{includeCode: true}
-const levelChars = {
-  ".": "empty", "#": "wall", "+": "lava",
-  "@": Player, "o": Coin,
+const caracteresDeNivel = {
+  ".": "vacío", "#": "muro", "+": "lava",
+  "@": Jugador, "o": Moneda,
   "=": Lava, "|": Lava, "v": Lava
 };
 ```
 
-That gives us all the parts needed to create a `Level` instance.
+Eso nos da todas las partes que necesitamos para crear una instancia de `Level`.
 
 ```{includeCode: strip_log}
-let simpleLevel = new Level(simpleLevelPlan);
-console.log(`${simpleLevel.width} by ${simpleLevel.height}`);
+let simpleNivel = new Nivel(simplePlanoDeNivel);
+console.log(`${simpleNivel.width} by ${simpleNivel.height}`);
 // → 22 by 9
 ```
 
-The task ahead is to display such levels on the screen and to model
-time and motion inside them.
+La tarea adelante es mostrar dichos niveles en la pantalla y modelar tiempo y movimiento dentro de ellos.
 
-## Encapsulation as a burden
+## Encapsulación como una carga
 
 {{index "programming style", "program size", complexity}}
 
-Most of the code in this chapter does not worry about
-((encapsulation)) very much for two reasons. First, encapsulation
-takes extra effort. It makes programs bigger and requires additional
-concepts and interfaces to be introduced. Since there is only so much
-code you can throw at a reader before their eyes glaze over, I've made
-an effort to keep the program small.
+La mayoría del código en este capítulo no se preocupa mucho de la ((encapsulación)) por dos razones. Primero, encapsular necesita esfuerzo extra. Hace a los programas más grandes y requiere que conceptos e interfaces adicionales sean introducidos. Dado que sólo hay una cantidad de código que le puedes mostrar a un lector antes de que sus ojos pierdan la atención, he hecho un esfuerzo por mantener el programa pequeño.
 
 {{index [interface, design]}}
 
-Second, the various elements in this game are so closely tied together
-that if the behavior of one of them changed, it is unlikely that any
-of the others would be able to stay the same. Interfaces between the
-elements would end up encoding a lot of assumptions about the way the
-game works. This makes them a lot less effective—whenever you change
-one part of the system, you still have to worry about the way it
-impacts the other parts because their interfaces wouldn't cover the
-new situation.
+Segundo, los elementos varios en este juego están tan estrechamente vinculados que si el comportamiento de uno de ellos cambia, es poco probable que alguno de los otros logre quedarse igual. Las interfaces entre los elementos terminarían codificando muchas de los supuestos acerca de la forma que el juego funciona. Esto las hace mucho menos efectivas-cuando sea que cambies una parte del sistema, todavía tienes que precouparte de la forma en que impacta a las otras partes porque sus interfaces no cubrirían la nueva situación.
 
-Some _((cutting point))s_ in a system lend themselves well to
-separation through rigorous interfaces, but others don't. Trying to
-encapsulate something that isn't a suitable boundary is a sure way to
-waste a lot of energy. When you are making this mistake, you'll
-usually notice that your interfaces are getting awkwardly large and
-detailed and that they need to be changed often, as the program
-evolves.
+Algunos _((puntos de corte))_ en un sistema se prestan bien a la separacion mediante interfaces rigurosas, pero otros no. Intentando encapsular algo que no es un límite adecuado es una manera segura de deserdiciar mucha energía. Cuando cometes este error, te darás cuenta que tus interfaces se hacen incómodamente grandes y detalladas y que necesitan cambiarse frecuentemente, mientras el programa evoluciona.
 
 {{index graphics, encapsulation, graphics}}
 
-There is one thing that we _will_ encapsulate, and that is the
-((drawing)) subsystem. The reason for this is that we'll ((display))
-the same game in a different way in the [next
-chapter](canvas#canvasdisplay). By putting the drawing behind an
-interface, we can load the same game program there and plug in a new
-display ((module)).
+Hay una cosa que sí _vamos_ a encapsular, y eso es el subsistema de ((dibujo)). La razón para esto es que ((mostraremos)) el mismo juego en una manera diferente en el [próximo capítulo](canvas#canvasdisplay). Poniendo el dibujo detrás de una interface, podemos cargar el mismo programa de juego ahí y conectar un nuevo ((module)) de pantalla.
 
 {{id domdisplay}}
 
-## Drawing
+## Dibujar
 
 {{index "DOMDisplay class", [DOM, graphics]}}
 
@@ -519,8 +448,7 @@ don't want space between the ((table)) cells or padding inside them.
 The `background` rule sets the background color. CSS allows colors to
 be specified both as words (`white`) or with a format such as
 `rgb(R, G, B)`, where the red, green, and blue components of the color
-are separated into three numbers from 0 to 255. So, in `rgb(52, 166,
-251)`, the red component is 52, green is 166, and blue is 251. Since
+are separated into three numbers from 0 to 255. So, in `rgb(52, 166, 251)`, the red component is 52, green is 166, and blue is 251. Since
 the blue component is the largest, the resulting color will be bluish.
 You can see that in the `.lava` rule, the first number (red) is the
 largest.
