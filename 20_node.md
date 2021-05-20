@@ -7,7 +7,7 @@
 Un estudiante preguntó: 'Los programadores de antaño sólo usaban
 máquinas simples y ningún lenguaje de programación, pero hicieron
 programas hermosos. ¿Por qué usamos máquinas y lenguajes de
-programación complicados?'. Fu-Tzu respondió, Los constructores de
+programación complicados?'. Fu-Tzu respondió, 'Los constructores de
 antaño sólo usaban palos y arcilla, pero hicieron bellas chozas.'
 
 quote}}
