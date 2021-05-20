@@ -311,7 +311,7 @@ También los strings deben de ser modelados como una serie de bits para poder
 existir dentro del computador. La forma en la que JavaScript hace esto
 es basada en el estándar _((Unicode))_. Este estándar asigna un número a
 todo carácter que alguna vez pudieras necesitar, incluyendo caracteres en
-Griego, Árabe, Japones, Armenio, y asi sucesivamente. Si tenemos un número para
+Griego, Árabe, Japonés, Armenio, y asi sucesivamente. Si tenemos un número para
 representar cada carácter, un string puede ser descrito como una
 secuencia de números.
 
